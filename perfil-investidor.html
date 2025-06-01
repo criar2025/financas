@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Perfil de Investidor - finança.com</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+        .teste-perfil-header {
+            background-color: #f5f8fa;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        .teste-perfil-header h1 {
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .teste-container {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra-suave);
+            margin-bottom: 40px;
+        }
+        
+        .pergunta {
+            margin-bottom: 30px;
+            display: none;
+        }
+        
+        .pergunta.active {
+            display: block;
+        }
+        
+        .pergunta-numero {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background-color: var(--azul-medio);
+            color: var(--branco);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: 600;
+        }
+        
+        .pergunta-texto {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--azul-escuro);
+        }
+        
+        .opcoes {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .opcao {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .opcao:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .opcao.selected {
+            border-color: var(--azul-medio);
+            background-color: rgba(46, 134, 222, 0.05);
+        }
+        
+        .opcao input[type="radio"] {
+            margin-right: 15px;
+        }
+        
+        .navegacao-teste {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        .progresso-container {
+            margin-bottom: 30px;
+        }
+        
+        .progresso-barra {
+            height: 8px;
+            background-color: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progresso-preenchimento {
+            height: 100%;
+            background-color: var(--azul-medio);
+            width: 10%;
+            transition: width 0.3s ease;
+        }
+        
+        .progresso-texto {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .resultado {
+            display: none;
+            text-align: center;
+        }
+        
+        .resultado.active {
+            display: block;
+        }
+        
+        .resultado-titulo {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--azul-escuro);
+        }
+        
+        .resultado-perfil {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: var(--azul-medio);
+        }
+        
+        .resultado-descricao {
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .resultado-recomendacoes {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .resultado-recomendacoes h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        
+        .recomendacao-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .recomendacao-item i {
+            color: var(--verde-suave);
+            margin-right: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .resultado-acoes {
+            margin-top: 30px;
+        }
+        
+        .resultado-acoes .btn {
+            margin: 0 10px;
+        }
+        
+        .perfil-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .perfil-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .perfil-card h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+        }
+        
+        .perfil-card p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .perfil-card .btn {
+            width: 100%;
+        }
+        
+        .perfil-conservador {
+            border-left: 5px solid #2ecc71;
+        }
+        
+        .perfil-moderado {
+            border-left: 5px solid #f1c40f;
+        }
+        
+        .perfil-arrojado {
+            border-left: 5px solid #e74c3c;
+        }
+        
+        @media (max-width: 768px) {
+            .navegacao-teste {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .navegacao-teste .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-principal">
+        <div class="container header-container">
+            <div class="logo-container">
+                <a href="index.html" class="logo"><img src="img/logo.png" alt="finança.com logo"></a>
+                <div class="slogan">INVESTIGAÇÃO, perícia e rastreamento financeiro</div>
+            </div>
+            <nav class="menu-principal">
+                <button class="menu-hamburguer" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="menu-items">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="aplicacoes.html">Aplicações</a></li>
+                    <li><a href="analise.html">Análise de Mercado</a></li>
+                    <li><a href="ferramentas.html">Calculadoras</a></li>
+                    <li><a href="educacao.html" class="active">Educação Financeira</a></li>
+                </ul>
+            </nav>
+            <div class="modo-iniciante-toggle">
+                <label class="switch">
+                    <input type="checkbox" id="toggle-modo-iniciante">
+                    <span class="slider round"></span>
+                </label>
+                <span class="label-modo-iniciante">Modo Iniciante</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="teste-perfil-header">
+        <div class="container">
+            <h1>Teste de Perfil de Investidor</h1>
+            <p>Descubra seu perfil de investidor e receba recomendações personalizadas para seus investimentos.</p>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="teste-container">
+            <div class="progresso-container">
+                <div class="progresso-barra">
+                    <div class="progresso-preenchimento" id="progresso-barra"></div>
+                </div>
+                <div class="progresso-texto">
+                    <span>Início</span>
+                    <span id="progresso-texto">Pergunta 1 de 10</span>
+                    <span>Fim</span>
+                </div>
+            </div>
+
+            <!-- Perguntas -->
+            <div class="pergunta active" data-pergunta="1">
+                <div class="pergunta-texto">
+                    <span class="pergunta-numero">1</span> Qual é o seu principal objetivo ao investir?
+                </div>
+                <div class="opcoes">
+                    <label class="opcao">
+                        <input type="radio" name="pergunta1" value="1">
+                        Preservar meu capital, mesmo que o rendimento seja baixo
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta1" value="2">
+                        Obter rendimentos um pouco acima da inflação, com segurança
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta1" value="3">
+                        Crescimento moderado do capital, aceitando alguma oscilação
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta1" value="4">
+                        Crescimento significativo do capital, mesmo com oscilações consideráveis
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta1" value="5">
+                        Maximizar retornos, aceitando altos riscos e volatilidade
+                    </label>
+                </div>
+            </div>
+
+            <div class="pergunta" data-pergunta="2">
+                <div class="pergunta-texto">
+                    <span class="pergunta-numero">2</span> Por quanto tempo você pretende manter seus investimentos?
+                </div>
+                <div class="opcoes">
+                    <label class="opcao">
+                        <input type="radio" name="pergunta2" value="1">
+                        Menos de 1 ano
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta2" value="2">
+                        Entre 1 e 2 anos
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta2" value="3">
+                        Entre 2 e 5 anos
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta2" value="4">
+                        Entre 5 e 10 anos
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta2" value="5">
+                        Mais de 10 anos
+                    </label>
+                </div>
+            </div>
+
+            <div class="pergunta" data-pergunta="3">
+                <div class="pergunta-texto">
+                    <span class="pergunta-numero">3</span> Como você reagiria se seus investimentos caíssem 20% em um mês?
+                </div>
+                <div class="opcoes">
+                    <label class="opcao">
+                        <input type="radio" name="pergunta3" value="1">
+                        Venderia tudo imediatamente para evitar perdas maiores
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta3" value="2">
+                        Venderia parte dos investimentos para reduzir a exposição ao risco
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta3" value="3">
+                        Não faria nada, esperaria para ver o que acontece
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta3" value="4">
+                        Compraria um pouco mais, aproveitando os preços mais baixos
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta3" value="5">
+                        Compraria muito mais, vendo uma grande oportunidade
+                    </label>
+                </div>
+            </div>
+
+            <div class="pergunta" data-pergunta="4">
+                <div class="pergunta-texto">
+                    <span class="pergunta-numero">4</span> Qual percentual da sua renda mensal você consegue poupar regularmente?
+                </div>
+                <div class="opcoes">
+                    <label class="opcao">
+                        <input type="radio" name="pergunta4" value="1">
+                        Menos de 5%
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta4" value="2">
+                        Entre 5% e 10%
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta4" value="3">
+                        Entre 10% e 20%
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta4" value="4">
+                        Entre 20% e 30%
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta4" value="5">
+                        Mais de 30%
+                    </label>
+                </div>
+            </div>
+
+            <div class="pergunta" data-pergunta="5">
+                <div class="pergunta-texto">
+                    <span class="pergunta-numero">5</span> Qual é a sua experiência com investimentos?
+                </div>
+                <div class="opcoes">
+                    <label class="opcao">
+                        <input type="radio" name="pergunta5" value="1">
+                        Nunca investi antes
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta5" value="2">
+                        Tenho pouca experiência (poupança, CDBs)
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta5" value="3">
+                        Tenho experiência moderada (fundos, Tesouro Direto)
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta5" value="4">
+                        Tenho boa experiência (ações, FIIs)
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta5" value="5">
+                        Sou um investidor experiente (opções, futuros, investimentos internacionais)
+                    </label>
+                </div>
+            </div>
+
+            <div class="pergunta" data-pergunta="6">
+                <div class="pergunta-texto">
+                    <span class="pergunta-numero">6</span> Qual afirmação melhor descreve sua situação financeira atual?
+                </div>
+                <div class="opcoes">
+                    <label class="opcao">
+                        <input type="radio" name="pergunta6" value="1">
+                        Tenho dívidas e/ou não tenho reserva de emergência
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta6" value="2">
+                        Não tenho dívidas, mas ainda estou construindo minha reserva de emergência
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta6" value="3">
+                        Tenho reserva de emergência completa e estou começando a investir
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta6" value="4">
+                        Tenho reserva de emergência e já invisto regularmente
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta6" value="5">
+                        Tenho uma carteira de investimentos diversificada e estou buscando novas oportunidades
+                    </label>
+                </div>
+            </div>
+
+            <div class="pergunta" data-pergunta="7">
+                <div class="pergunta-texto">
+                    <span class="pergunta-numero">7</span> Qual opção de investimento você preferiria?
+                </div>
+                <div class="opcoes">
+                    <label class="opcao">
+                        <input type="radio" name="pergunta7" value="1">
+                        Rendimento garantido de 8% ao ano
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta7" value="2">
+                        50% de chance de ganhar 12% e 50% de chance de ganhar 6% ao ano
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta7" value="3">
+                        50% de chance de ganhar 16% e 50% de chance de ganhar 4% ao ano
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta7" value="4">
+                        50% de chance de ganhar 20% e 50% de chance de ganhar 0% ao ano
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta7" value="5">
+                        50% de chance de ganhar 30% e 50% de chance de perder 5% ao ano
+                    </label>
+                </div>
+            </div>
+
+            <div class="pergunta" data-pergunta="8">
+                <div class="pergunta-texto">
+                    <span class="pergunta-numero">8</span> Qual é a sua idade?
+                </div>
+                <div class="opcoes">
+                    <label class="opcao">
+                        <input type="radio" name="pergunta8" value="3">
+                        Menos de 30 anos
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta8" value="4">
+                        Entre 30 e 40 anos
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta8" value="5">
+                        Entre 40 e 50 anos
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta8" value="2">
+                        Entre 50 e 60 anos
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta8" value="1">
+                        Mais de 60 anos
+                    </label>
+                </div>
+            </div>
+
+            <div class="pergunta" data-pergunta="9">
+                <div class="pergunta-texto">
+                    <span class="pergunta-numero">9</span> Qual percentual do seu patrimônio você está disposto a investir em produtos de maior risco?
+                </div>
+                <div class="opcoes">
+                    <label class="opcao">
+                        <input type="radio" name="pergunta9" value="1">
+                        0% - Não quero correr nenhum risco
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta9" value="2">
+                        Até 10% do meu patrimônio
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta9" value="3">
+                        Entre 10% e 30% do meu patrimônio
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta9" value="4">
+                        Entre 30% e 50% do meu patrimônio
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta9" value="5">
+                        Mais de 50% do meu patrimônio
+                    </label>
+                </div>
+            </div>
+
+            <div class="pergunta" data-pergunta="10">
+                <div class="pergunta-texto">
+                    <span class="pergunta-numero">10</span> Qual é o seu principal objetivo financeiro?
+                </div>
+                <div class="opcoes">
+                    <label class="opcao">
+                        <input type="radio" name="pergunta10" value="1">
+                        Preservar meu patrimônio atual
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta10" value="2">
+                        Complementar minha renda mensal
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta10" value="3">
+                        Comprar um imóvel ou outro bem de alto valor
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta10" value="4">
+                        Garantir minha aposentadoria
+                    </label>
+                    <label class="opcao">
+                        <input type="radio" name="pergunta10" value="5">
+                        Construir riqueza a longo prazo
+                    </label>
+                </div>
+            </div>
+
+            <!-- Resultados -->
+            <div class="resultado" id="resultado-conservador">
+                <div class="resultado-titulo">Seu perfil de investidor é:</div>
+                <div class="resultado-perfil">Conservador</div>
+                <div class="resultado-descricao">
+                    <p>Você tem um perfil conservador, o que significa que prioriza a segurança e a preservação do seu capital. Você prefere investimentos com baixa volatilidade e riscos reduzidos, mesmo que isso signifique retornos potencialmente menores.</p>
+                    <p>Investidores com este perfil geralmente se sentem desconfortáveis com oscilações no valor de seus investimentos e preferem opções mais previsíveis e seguras.</p>
+                </div>
+                <div class="resultado-recomendacoes">
+                    <h3>Recomendações de Investimentos:</h3>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Tesouro Selic e Tesouro IPCA+</strong> - Títulos públicos com segurança e liquidez
+                        </div>
+                    </div>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>CDBs de grandes bancos</strong> - Com garantia do FGC até R$ 250 mil
+                        </div>
+                    </div>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>LCI e LCA</strong> - Isentos de IR e com garantia do FGC
+                        </div>
+                    </div>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Fundos DI e de Renda Fixa</strong> - Com baixa volatilidade
+                        </div>
+                    </div>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Alocação sugerida:</strong> 80-100% em Renda Fixa, 0-20% em Renda Variável
+                        </div>
+                    </div>
+                </div>
+                <div class="resultado-acoes">
+                    <a href="aplicacoes.html" class="btn btn-primary">Ver Aplicações Recomendadas</a>
+                    <a href="educacao.html" class="btn btn-secondary">Voltar para Educação Financeira</a>
+                </div>
+            </div>
+
+            <div class="resultado" id="resultado-moderado">
+                <div class="resultado-titulo">Seu perfil de investidor é:</div>
+                <div class="resultado-perfil">Moderado</div>
+                <div class="resultado-descricao">
+                    <p>Você tem um perfil moderado, o que significa que busca um equilíbrio entre segurança e rentabilidade. Você está disposto a aceitar algum nível de risco em troca de retornos potencialmente maiores.</p>
+                    <p>Investidores com este perfil compreendem que oscilações fazem parte do mercado e conseguem tolerar volatilidade moderada em busca de resultados melhores no médio e longo prazo.</p>
+                </div>
+                <div class="resultado-recomendacoes">
+                    <h3>Recomendações de Investimentos:</h3>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Tesouro IPCA+ e Tesouro Prefixado</strong> - Para proteção contra inflação e ganhos reais
+                        </div>
+                    </div>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>CDBs, LCI e LCA</strong> - Para a parte mais segura da carteira
+                        </div>
+                    </div>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Fundos Multimercado</strong> - Com estratégias diversificadas
+                        </div>
+                    </div>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Fundos Imobiliários (FIIs)</strong> - Para renda passiva e diversificação
+                        </div>
+                    </div>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>ETFs de índices</strong> - Para exposição diversificada ao mercado de ações
+                        </div>
+                    </div>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Alocação sugerida:</strong> 50-70% em Renda Fixa, 30-50% em Renda Variável
+                        </div>
+                    </div>
+                </div>
+                <div class="resultado-acoes">
+                    <a href="aplicacoes.html" class="btn btn-primary">Ver Aplicações Recomendadas</a>
+                    <a href="educacao.html" class="btn btn-secondary">Voltar para Educação Financeira</a>
+                </div>
+            </div>
+
+            <div class="resultado" id="resultado-arrojado">
+                <div class="resultado-titulo">Seu perfil de investidor é:</div>
+                <div class="resultado-perfil">Arrojado</div>
+                <div class="resultado-descricao">
+                    <p>Você tem um perfil arrojado, o que significa que busca maximizar seus retornos e está disposto a aceitar níveis mais elevados de risco e volatilidade para isso. Você tem uma visão de longo prazo e entende que oscilações significativas podem ocorrer no curto prazo.</p>
+                    <p>Investidores com este perfil geralmente têm maior conhecimento do mercado financeiro, maior tolerância a riscos e horizonte de investimento mais longo.</p>
+                </div>
+                <div class="resultado-recomendacoes">
+                    <h3>Recomendações de Investimentos:</h3>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Ações</strong> - Investimento direto em empresas com potencial de valorização
+                        </div>
+                    </div>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Fundos de Ações</strong> - Gestão profissional para o mercado acionário
+                        </div>
+                    </div>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Fundos Imobiliários (FIIs)</strong> - Para diversificação e renda
+                        </div>
+                    </div>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>ETFs alavancados e setoriais</strong> - Para exposições específicas
+                        </div>
+                    </div>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>BDRs</strong> - Para investimento em empresas internacionais
+                        </div>
+                    </div>
+                    <div class="recomendacao-item">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Alocação sugerida:</strong> 20-40% em Renda Fixa, 60-80% em Renda Variável
+                        </div>
+                    </div>
+                </div>
+                <div class="resultado-acoes">
+                    <a href="aplicacoes.html" class="btn btn-primary">Ver Aplicações Recomendadas</a>
+                    <a href="educacao.html" class="btn btn-secondary">Voltar para Educação Financeira</a>
+                </div>
+            </div>
+
+            <div class="navegacao-teste">
+                <button class="btn btn-secondary" id="btn-anterior" style="display: none;">Anterior</button>
+                <button class="btn btn-primary" id="btn-proximo">Próxima</button>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>finança.com</h3>
+                    <p>Análise e investimentos financeiros com dados em tempo real.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="aplicacoes.html">Aplicações</a></li>
+                        <li><a href="analise.html">Análise de Mercado</a></li>
+                        <li><a href="ferramentas.html">Calculadoras</a></li>
+                        <li><a href="educacao.html">Educação Financeira</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Recursos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Glossário Financeiro</a></li>
+                        <li><a href="#">Perguntas Frequentes</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i> contato@financa.com</li>
+                        <li><i class="fas fa-phone"></i> (11) 4002-8922</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000 - São Paulo</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 finança.com - Todos os direitos reservados. Desenvolvido por Harrison Costa.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/alertas.js"></script>
+    <script src="js/prospeccao.js"></script>
+    <script src="js/api-real-time.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const perguntas = document.querySelectorAll('.pergunta');
+            const btnAnterior = document.getElementById('btn-anterior');
+            const btnProximo = document.getElementById('btn-proximo');
+            const progressoBarra = document.getElementById('progresso-barra');
+            const progressoTexto = document.getElementById('progresso-texto');
+            const resultadoConservador = document.getElementById('resultado-conservador');
+            const resultadoModerado = document.getElementById('resultado-moderado');
+            const resultadoArrojado = document.getElementById('resultado-arrojado');
+            
+            let perguntaAtual = 1;
+            const totalPerguntas = perguntas.length;
+            let respostas = {};
+            
+            // Função para atualizar a barra de progresso
+            function atualizarProgresso() {
+                const progresso = (perguntaAtual / totalPerguntas) * 100;
+                progressoBarra.style.width = `${progresso}%`;
+                progressoTexto.textContent = `Pergunta ${perguntaAtual} de ${totalPerguntas}`;
+            }
+            
+            // Função para mostrar a pergunta atual
+            function mostrarPergunta(numero) {
+                perguntas.forEach(pergunta => {
+                    pergunta.classList.remove('active');
+                });
+                
+                document.querySelector(`.pergunta[data-pergunta="${numero}"]`).classList.add('active');
+                
+                // Atualizar botões de navegação
+                if (numero === 1) {
+                    btnAnterior.style.display = 'none';
+                } else {
+                    btnAnterior.style.display = 'block';
+                }
+                
+                if (numero === totalPerguntas) {
+                    btnProximo.textContent = 'Ver Resultado';
+                } else {
+                    btnProximo.textContent = 'Próxima';
+                }
+                
+                atualizarProgresso();
+            }
+            
+            // Função para calcular o perfil do investidor
+            function calcularPerfil() {
+                let pontuacao = 0;
+                let perguntasRespondidas = 0;
+                
+                for (let i = 1; i <= totalPerguntas; i++) {
+                    const resposta = respostas[`pergunta${i}`];
+                    if (resposta) {
+                        pontuacao += parseInt(resposta);
+                        perguntasRespondidas++;
+                    }
+                }
+                
+                if (perguntasRespondidas < totalPerguntas) {
+                    alert('Por favor, responda todas as perguntas antes de ver o resultado.');
+                    return false;
+                }
+                
+                const mediaPontuacao = pontuacao / totalPerguntas;
+                
+                // Esconder todas as perguntas
+                perguntas.forEach(pergunta => {
+                    pergunta.style.display = 'none';
+                });
+                
+                // Esconder botões de navegação
+                btnAnterior.style.display = 'none';
+                btnProximo.style.display = 'none';
+                
+                // Mostrar resultado baseado na pontuação média
+                if (mediaPontuacao < 2.5) {
+                    resultadoConservador.classList.add('active');
+                } else if (mediaPontuacao < 3.5) {
+                    resultadoModerado.classList.add('active');
+                } else {
+                    resultadoArrojado.classList.add('active');
+                }
+                
+                // Atualizar barra de progresso para 100%
+                progressoBarra.style.width = '100%';
+                progressoTexto.textContent = 'Resultado';
+                
+                return true;
+            }
+            
+            // Event listeners para os botões de navegação
+            btnProximo.addEventListener('click', function() {
+                // Verificar se a pergunta atual foi respondida
+                const perguntaAtualNome = `pergunta${perguntaAtual}`;
+                const opcoesPerguntaAtual = document.querySelectorAll(`input[name="${perguntaAtualNome}"]`);
+                let respondida = false;
+                
+                opcoesPerguntaAtual.forEach(opcao => {
+                    if (opcao.checked) {
+                        respostas[perguntaAtualNome] = opcao.value;
+                        respondida = true;
+                    }
+                });
+                
+                if (!respondida) {
+                    alert('Por favor, selecione uma opção antes de continuar.');
+                    return;
+                }
+                
+                if (perguntaAtual === totalPerguntas) {
+                    // Última pergunta, calcular perfil
+                    calcularPerfil();
+                } else {
+                    // Avançar para a próxima pergunta
+                    perguntaAtual++;
+                    mostrarPergunta(perguntaAtual);
+                }
+            });
+            
+            btnAnterior.addEventListener('click', function() {
+                if (perguntaAtual > 1) {
+                    perguntaAtual--;
+                    mostrarPergunta(perguntaAtual);
+                }
+            });
+            
+            // Event listeners para as opções
+            document.querySelectorAll('.opcao').forEach(opcao => {
+                opcao.addEventListener('click', function() {
+                    // Remover seleção de todas as opções do mesmo grupo
+                    const input = this.querySelector('input');
+                    const name = input.getAttribute('name');
+                    
+                    document.querySelectorAll(`input[name="${name}"]`).forEach(radio => {
+                        radio.parentElement.classList.remove('selected');
+                    });
+                    
+                    // Selecionar a opção clicada
+                    this.classList.add('selected');
+                    input.checked = true;
+                    
+                    // Armazenar resposta
+                    respostas[name] = input.value;
+                });
+            });
+            
+            // Inicializar
+            mostrarPergunta(1);
+        });
+    </script>
+</body>
+</html>

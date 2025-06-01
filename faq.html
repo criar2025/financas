@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perguntas Frequentes - finança.com</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+        .faq-header {
+            background-color: #f5f8fa;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        .faq-header h1 {
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .faq-categorias {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .faq-categoria {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra-suave);
+            flex: 1 1 200px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-categoria:hover,
+        .faq-categoria.active {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            transform: translateY(-5px);
+        }
+        
+        .faq-categoria i {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .faq-categoria h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0;
+        }
+        
+        .faq-item {
+            background-color: var(--branco);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            box-shadow: var(--sombra-suave);
+            overflow: hidden;
+        }
+        
+        .faq-pergunta {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--azul-escuro);
+        }
+        
+        .faq-pergunta i {
+            transition: transform 0.3s ease;
+        }
+        
+        .faq-item.active .faq-pergunta i {
+            transform: rotate(180deg);
+        }
+        
+        .faq-resposta {
+            padding: 0 20px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        
+        .faq-item.active .faq-resposta {
+            padding: 0 20px 20px;
+            max-height: 500px;
+        }
+        
+        .faq-resposta p {
+            margin: 0;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .faq-resposta a {
+            color: var(--azul-claro);
+            text-decoration: none;
+        }
+        
+        .faq-resposta a:hover {
+            text-decoration: underline;
+        }
+        
+        .faq-busca {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .faq-busca input {
+            width: 100%;
+            padding: 15px 20px;
+            padding-left: 50px;
+            border: 1px solid #ddd;
+            border-radius: 30px;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+        
+        .faq-busca input:focus {
+            border-color: var(--azul-claro);
+        }
+        
+        .faq-busca i {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #999;
+        }
+        
+        .sem-resultados {
+            text-align: center;
+            padding: 40px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            color: #666;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header class="header-principal">
+        <div class="container header-container">
+            <div class="logo-container">
+                <a href="index.html" class="logo"><img src="img/logo.png" alt="finança.com logo"></a>
+                <div class="slogan">INVESTIGAÇÃO, perícia e rastreamento financeiro</div>
+            </div>
+            <nav class="menu-principal">
+                <button class="menu-hamburguer" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="menu-items">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="aplicacoes.html">Aplicações</a></li>
+                    <li><a href="analise.html">Análise de Mercado</a></li>
+                    <li><a href="ferramentas.html">Calculadoras</a></li>
+                    <li><a href="educacao.html">Educação Financeira</a></li>
+                </ul>
+            </nav>
+            <div class="modo-iniciante-toggle">
+                <label class="switch">
+                    <input type="checkbox" id="toggle-modo-iniciante">
+                    <span class="slider round"></span>
+                </label>
+                <span class="label-modo-iniciante">Modo Iniciante</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="faq-header">
+        <div class="container">
+            <h1>Perguntas Frequentes</h1>
+            <p>Encontre respostas para as dúvidas mais comuns sobre o finança.com e investimentos.</p>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="faq-busca">
+            <i class="fas fa-search"></i>
+            <input type="text" id="faq-busca-input" placeholder="Buscar perguntas...">
+        </div>
+        
+        <div class="faq-categorias">
+            <div class="faq-categoria active" data-categoria="todos">
+                <i class="fas fa-list"></i>
+                <h3>Todos</h3>
+            </div>
+            <div class="faq-categoria" data-categoria="plataforma">
+                <i class="fas fa-laptop"></i>
+                <h3>Plataforma</h3>
+            </div>
+            <div class="faq-categoria" data-categoria="investimentos">
+                <i class="fas fa-chart-line"></i>
+                <h3>Investimentos</h3>
+            </div>
+            <div class="faq-categoria" data-categoria="conta">
+                <i class="fas fa-user"></i>
+                <h3>Conta</h3>
+            </div>
+            <div class="faq-categoria" data-categoria="seguranca">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Segurança</h3>
+            </div>
+        </div>
+        
+        <div id="faq-lista">
+            <!-- Será preenchido via JavaScript -->
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">finança<span>.com</span></div>
+                    <p>Sua plataforma completa para análise de investimentos e aplicações financeiras.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Navegação</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="aplicacoes.html">Aplicações</a></li>
+                        <li><a href="analise.html">Análise de Mercado</a></li>
+                        <li><a href="ferramentas.html">Calculadoras</a></li>
+                        <li><a href="educacao.html">Educação Financeira</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="glossario.html">Glossário Financeiro</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="privacidade.html">Política de Privacidade</a></li>
+                        <li><a href="termos.html">Termos de Uso</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contato</h4>
+                    <ul class="contato-info">
+                        <li><i class="fas fa-envelope"></i> contato@financa.com</li>
+                        <li><i class="fas fa-phone"></i> (11) 1234-5678</li>
+                        <li><i class="fas fa-map-marker-alt"></i> São Paulo, SP - Brasil</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 finança.com. Todos os direitos reservados.</p>
+                <p class="disclaimer">As informações contidas neste site são apenas para fins educacionais e não constituem recomendação de investimento.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dados das perguntas frequentes
+            const perguntas = [
+                {
+                    pergunta: "Como o finança.com obtém dados do mercado em tempo real?",
+                    resposta: "O finança.com utiliza APIs de provedores financeiros confiáveis para obter dados do mercado em tempo real. Nossos sistemas se conectam diretamente às principais bolsas de valores e fontes de dados financeiros, garantindo que você tenha acesso às informações mais atualizadas para tomar suas decisões de investimento.",
+                    categoria: "plataforma"
+                },
+                {
+                    pergunta: "Os alertas de investimento são personalizáveis?",
+                    resposta: "Sim, todos os alertas de investimento do finança.com são personalizáveis. Você pode definir seus próprios critérios de alerta com base em variação de preço, volume, indicadores técnicos e muito mais. Além disso, nosso sistema de inteligência artificial aprende com suas preferências para oferecer recomendações cada vez mais precisas.",
+                    categoria: "plataforma"
+                },
+                {
+                    pergunta: "O que é o Modo Iniciante?",
+                    resposta: "O Modo Iniciante é uma funcionalidade exclusiva do finança.com que simplifica a interface e adiciona explicações detalhadas sobre termos financeiros e conceitos de investimento. Quando ativado, você verá ícones de informação ao lado de termos técnicos que, ao passar o mouse, exibem explicações simples e didáticas.",
+                    categoria: "plataforma"
+                },
+                {
+                    pergunta: "Como faço para começar a investir?",
+                    resposta: "Para começar a investir, recomendamos seguir estes passos: 1) Organize suas finanças e crie uma reserva de emergência; 2) Faça o teste de perfil de investidor para entender seu perfil de risco; 3) Estude os tipos de investimentos disponíveis; 4) Defina seus objetivos financeiros; 5) Diversifique seus investimentos de acordo com seu perfil. Você pode encontrar mais informações detalhadas na nossa seção de <a href='educacao.html'>Educação Financeira</a>.",
+                    categoria: "investimentos"
+                },
+                {
+                    pergunta: "Qual a diferença entre renda fixa e renda variável?",
+                    resposta: "Renda fixa são investimentos onde você sabe previamente a rentabilidade ou as regras de remuneração, como CDBs, Tesouro Direto e LCIs. Geralmente têm menor risco e retornos mais previsíveis. Já a renda variável inclui investimentos cujo retorno não é conhecido previamente, como ações e fundos imobiliários. Estes tendem a ter maior potencial de retorno, mas também maior risco e volatilidade.",
+                    categoria: "investimentos"
+                },
+                {
+                    pergunta: "Como funciona a tributação de investimentos?",
+                    resposta: "A tributação varia conforme o tipo de investimento. Renda fixa e fundos são tributados pelo Imposto de Renda com alíquotas regressivas (de 22,5% a 15%) conforme o prazo. Ações têm alíquota fixa de 15% sobre o lucro em operações comuns e 20% em day trade. Alguns investimentos como LCI, LCA e Poupança são isentos de IR para pessoa física. Recomendamos consultar nosso <a href='educacao.html#tributacao'>guia completo de tributação</a> para mais detalhes.",
+                    categoria: "investimentos"
+                },
+                {
+                    pergunta: "Preciso criar uma conta para usar o finança.com?",
+                    resposta: "Não, o finança.com oferece acesso gratuito a diversas funcionalidades sem necessidade de criar conta, como consulta de índices, calculadoras financeiras e conteúdo educativo. No entanto, para personalizar alertas, salvar simulações e acessar recursos avançados, recomendamos criar uma conta gratuita.",
+                    categoria: "conta"
+                },
+                {
+                    pergunta: "Como posso recuperar minha senha?",
+                    resposta: "Para recuperar sua senha, clique em 'Entrar' no canto superior direito da página, depois em 'Esqueci minha senha'. Informe o e-mail cadastrado e você receberá instruções para criar uma nova senha. Se não receber o e-mail, verifique sua pasta de spam ou entre em contato com nosso suporte.",
+                    categoria: "conta"
+                },
+                {
+                    pergunta: "O finança.com é seguro para uso?",
+                    resposta: "Sim, o finança.com utiliza tecnologias avançadas de segurança, incluindo criptografia SSL de 256 bits para todas as comunicações, autenticação em duas etapas e monitoramento contínuo contra ameaças. Seus dados pessoais são protegidos de acordo com a LGPD (Lei Geral de Proteção de Dados) e nunca são compartilhados com terceiros sem seu consentimento explícito.",
+                    categoria: "seguranca"
+                },
+                {
+                    pergunta: "Como o finança.com protege meus dados financeiros?",
+                    resposta: "Seus dados financeiros no finança.com são protegidos por múltiplas camadas de segurança. Utilizamos criptografia de ponta a ponta, servidores com certificação de segurança internacional e políticas rigorosas de acesso a dados. Além disso, você pode optar por não armazenar informações sensíveis em nossa plataforma e ainda assim utilizar a maioria das funcionalidades.",
+                    categoria: "seguranca"
+                },
+                {
+                    pergunta: "As calculadoras financeiras são precisas?",
+                    resposta: "Sim, nossas calculadoras financeiras utilizam fórmulas matemáticas e financeiras padrão do mercado e são constantemente atualizadas com as taxas e índices mais recentes. No entanto, é importante lembrar que simulações de investimentos futuros são baseadas em projeções e cenários que podem não se concretizar exatamente como previsto.",
+                    categoria: "plataforma"
+                },
+                {
+                    pergunta: "O finança.com oferece recomendações de investimento?",
+                    resposta: "O finança.com fornece alertas e análises baseados em dados de mercado e indicadores técnicos, mas não oferece recomendações personalizadas de investimento. As informações disponibilizadas são para fins educacionais e informativos. Recomendamos sempre consultar um assessor de investimentos certificado antes de tomar decisões financeiras importantes.",
+                    categoria: "investimentos"
+                }
+            ];
+            
+            // Função para renderizar perguntas
+            function renderizarPerguntas(filtroCategoria = 'todos', termoBusca = '') {
+                const faqLista = document.getElementById('faq-lista');
+                faqLista.innerHTML = '';
+                
+                // Filtrar perguntas por categoria e termo de busca
+                let perguntasFiltradas = perguntas;
+                
+                if (filtroCategoria !== 'todos') {
+                    perguntasFiltradas = perguntasFiltradas.filter(p => p.categoria === filtroCategoria);
+                }
+                
+                if (termoBusca) {
+                    const termo = termoBusca.toLowerCase();
+                    perguntasFiltradas = perguntasFiltradas.filter(p => 
+                        p.pergunta.toLowerCase().includes(termo) || 
+                        p.resposta.toLowerCase().includes(termo)
+                    );
+                }
+                
+                // Verificar se há resultados
+                if (perguntasFiltradas.length === 0) {
+                    const semResultados = document.createElement('div');
+                    semResultados.className = 'sem-resultados';
+                    semResultados.innerHTML = `
+                        <i class="fas fa-search" style="font-size: 3rem; color: #ddd; margin-bottom: 20px;"></i>
+                        <h3>Nenhum resultado encontrado</h3>
+                        <p>Tente usar termos diferentes ou selecione outra categoria.</p>
+                    `;
+                    faqLista.appendChild(semResultados);
+                    return;
+                }
+                
+                // Renderizar perguntas filtradas
+                perguntasFiltradas.forEach((item, index) => {
+                    const faqItem = document.createElement('div');
+                    faqItem.className = 'faq-item';
+                    faqItem.innerHTML = `
+                        <div class="faq-pergunta">
+                            <span>${item.pergunta}</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                        <div class="faq-resposta">
+                            <p>${item.resposta}</p>
+                        </div>
+                    `;
+                    
+                    // Adicionar evento de clique para expandir/recolher
+                    const perguntaElement = faqItem.querySelector('.faq-pergunta');
+                    perguntaElement.addEventListener('click', () => {
+                        faqItem.classList.toggle('active');
+                    });
+                    
+                    faqLista.appendChild(faqItem);
+                });
+            }
+            
+            // Configurar filtros de categoria
+            const categoriaButtons = document.querySelectorAll('.faq-categoria');
+            categoriaButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remover classe active de todos os botões
+                    categoriaButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Adicionar classe active ao botão clicado
+                    this.classList.add('active');
+                    
+                    // Obter termo de busca atual
+                    const termoBusca = document.getElementById('faq-busca-input').value;
+                    
+                    // Renderizar perguntas com filtro selecionado
+                    renderizarPerguntas(this.getAttribute('data-categoria'), termoBusca);
+                });
+            });
+            
+            // Configurar busca
+            const buscaInput = document.getElementById('faq-busca-input');
+            buscaInput.addEventListener('input', function() {
+                // Obter categoria atual
+                const categoriaAtiva = document.querySelector('.faq-categoria.active');
+                const categoria = categoriaAtiva ? categoriaAtiva.getAttribute('data-categoria') : 'todos';
+                
+                // Renderizar perguntas com termo de busca
+                renderizarPerguntas(categoria, this.value);
+            });
+            
+            // Renderizar perguntas iniciais
+            renderizarPerguntas();
+        });
+    </script>
+</body>
+</html>

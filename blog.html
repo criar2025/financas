@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - finança.com</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+        .blog-header {
+            background-color: #f5f8fa;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        .blog-header h1 {
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .blog-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .blog-posts {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .blog-post {
+            background-color: var(--branco);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--sombra-suave);
+        }
+        
+        .post-imagem {
+            height: 250px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1.5rem;
+        }
+        
+        .post-imagem i {
+            margin-right: 10px;
+        }
+        
+        .post-conteudo {
+            padding: 30px;
+        }
+        
+        .post-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .post-categoria {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: var(--azul-claro-transparente);
+            color: var(--azul-medio);
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+        
+        .post-data {
+            display: flex;
+            align-items: center;
+        }
+        
+        .post-data i {
+            margin-right: 5px;
+        }
+        
+        .post-titulo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .post-resumo {
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #444;
+        }
+        
+        .post-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+        
+        .post-autor {
+            display: flex;
+            align-items: center;
+        }
+        
+        .autor-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #eee;
+            margin-right: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+        }
+        
+        .autor-nome {
+            font-weight: 600;
+            color: var(--azul-escuro);
+        }
+        
+        .post-link {
+            color: var(--azul-medio);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+        }
+        
+        .post-link i {
+            margin-left: 5px;
+            transition: transform 0.3s ease;
+        }
+        
+        .post-link:hover i {
+            transform: translateX(3px);
+        }
+        
+        .blog-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .sidebar-widget {
+            background-color: var(--branco);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--sombra-suave);
+            padding: 20px;
+        }
+        
+        .widget-titulo {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--azul-escuro);
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .categorias-lista {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .categorias-item {
+            margin-bottom: 10px;
+        }
+        
+        .categorias-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            color: #444;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .categorias-link:hover {
+            color: var(--azul-medio);
+        }
+        
+        .categorias-contador {
+            background-color: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .posts-populares-lista {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .posts-populares-item {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .posts-populares-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .post-popular-imagem {
+            width: 80px;
+            height: 60px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            margin-right: 15px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 1rem;
+        }
+        
+        .post-popular-conteudo {
+            flex-grow: 1;
+        }
+        
+        .post-popular-titulo {
+            font-weight: 600;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: var(--azul-escuro);
+        }
+        
+        .post-popular-data {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .tags-lista {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .tag-link {
+            display: inline-block;
+            padding: 5px 10px;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .tag-link:hover {
+            background-color: var(--azul-claro-transparente);
+            color: var(--azul-medio);
+        }
+        
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .newsletter-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        .paginacao {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .paginacao-lista {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .paginacao-item {
+            margin: 0 5px;
+        }
+        
+        .paginacao-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            background-color: var(--branco);
+            color: #444;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .paginacao-link:hover {
+            background-color: var(--azul-claro-transparente);
+            color: var(--azul-medio);
+        }
+        
+        .paginacao-link.active {
+            background-color: var(--azul-medio);
+            color: var(--branco);
+        }
+        
+        @media (max-width: 992px) {
+            .blog-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .blog-sidebar {
+                order: -1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-principal">
+        <div class="container header-container">
+            <div class="logo-container">
+                <a href="index.html" class="logo"><img src="img/logo.png" alt="finança.com logo"></a>
+                <div class="slogan">INVESTIGAÇÃO, perícia e rastreamento financeiro</div>
+            </div>
+            <nav class="menu-principal">
+                <button class="menu-hamburguer" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="menu-items">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="aplicacoes.html">Aplicações</a></li>
+                    <li><a href="analise.html">Análise de Mercado</a></li>
+                    <li><a href="ferramentas.html">Calculadoras</a></li>
+                    <li><a href="educacao.html">Educação Financeira</a></li>
+                </ul>
+            </nav>
+            <div class="modo-iniciante-toggle">
+                <label class="switch">
+                    <input type="checkbox" id="toggle-modo-iniciante">
+                    <span class="slider round"></span>
+                </label>
+                <span class="label-modo-iniciante">Modo Iniciante</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="blog-header">
+        <div class="container">
+            <h1>Blog Financeiro</h1>
+            <p>Artigos, análises e dicas para ajudar você a tomar melhores decisões financeiras.</p>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="blog-container">
+            <div class="blog-posts">
+                <article class="blog-post">
+                    <div class="post-imagem">
+                        <i class="fas fa-chart-line"></i> Investimentos
+                    </div>
+                    <div class="post-conteudo">
+                        <div class="post-meta">
+                            <span class="post-categoria">Investimentos</span>
+                            <span class="post-data"><i class="far fa-calendar-alt"></i> 01 de junho de 2025</span>
+                        </div>
+                        <h2 class="post-titulo">Como começar a investir com pouco dinheiro</h2>
+                        <div class="post-resumo">
+                            <p>Muitas pessoas acreditam que precisam de grandes quantias para começar a investir, mas a verdade é que você pode iniciar sua jornada de investimentos com valores pequenos. Neste artigo, exploramos estratégias e opções de investimento acessíveis para quem está começando.</p>
+                            <p>Descubra como pequenos aportes regulares podem se transformar em um patrimônio significativo ao longo do tempo, graças ao poder dos juros compostos e da consistência.</p>
+                        </div>
+                        <div class="post-footer">
+                            <div class="post-autor">
+                                <div class="autor-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <span class="autor-nome">Ana Silva</span>
+                            </div>
+                            <a href="artigo-investir-pouco.html" class="post-link">
+                                Ler artigo completo <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="blog-post">
+                    <div class="post-imagem">
+                        <i class="fas fa-piggy-bank"></i> Economia
+                    </div>
+                    <div class="post-conteudo">
+                        <div class="post-meta">
+                            <span class="post-categoria">Economia</span>
+                            <span class="post-data"><i class="far fa-calendar-alt"></i> 28 de maio de 2025</span>
+                        </div>
+                        <h2 class="post-titulo">Dicas para economizar no dia a dia</h2>
+                        <div class="post-resumo">
+                            <p>Economizar dinheiro não significa necessariamente abrir mão de qualidade de vida. Com pequenas mudanças de hábitos e algumas estratégias inteligentes, é possível reduzir gastos e aumentar sua capacidade de poupar.</p>
+                            <p>Neste artigo, compartilhamos dicas práticas para economizar em diferentes áreas do seu orçamento, desde alimentação e transporte até lazer e compras online.</p>
+                        </div>
+                        <div class="post-footer">
+                            <div class="post-autor">
+                                <div class="autor-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <span class="autor-nome">Carlos Mendes</span>
+                            </div>
+                            <a href="artigo-economizar.html" class="post-link">
+                                Ler artigo completo <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="blog-post">
+                    <div class="post-imagem">
+                        <i class="fas fa-tasks"></i> Planejamento
+                    </div>
+                    <div class="post-conteudo">
+                        <div class="post-meta">
+                            <span class="post-categoria">Planejamento</span>
+                            <span class="post-data"><i class="far fa-calendar-alt"></i> 20 de maio de 2025</span>
+                        </div>
+                        <h2 class="post-titulo">Orçamento familiar: como organizar suas finanças</h2>
+                        <div class="post-resumo">
+                            <p>Um orçamento familiar bem estruturado é a base para uma vida financeira saudável. Ele permite visualizar para onde seu dinheiro está indo, identificar gastos desnecessários e direcionar recursos para o que realmente importa.</p>
+                            <p>Neste guia completo, apresentamos um passo a passo para criar e manter um orçamento eficiente, além de ferramentas e aplicativos que podem facilitar esse processo.</p>
+                        </div>
+                        <div class="post-footer">
+                            <div class="post-autor">
+                                <div class="autor-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <span class="autor-nome">Juliana Costa</span>
+                            </div>
+                            <a href="artigo-orcamento.html" class="post-link">
+                                Ler artigo completo <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="blog-post">
+                    <div class="post-imagem">
+                        <i class="fas fa-landmark"></i> Renda Fixa
+                    </div>
+                    <div class="post-conteudo">
+                        <div class="post-meta">
+                            <span class="post-categoria">Renda Fixa</span>
+                            <span class="post-data"><i class="far fa-calendar-alt"></i> 15 de maio de 2025</span>
+                        </div>
+                        <h2 class="post-titulo">Tesouro Direto: guia completo para iniciantes</h2>
+                        <div class="post-resumo">
+                            <p>O Tesouro Direto é uma excelente porta de entrada para o mundo dos investimentos, oferecendo segurança, rentabilidade competitiva e acessibilidade. Mas para muitos iniciantes, os diferentes tipos de títulos e suas características podem parecer confusos.</p>
+                            <p>Neste guia, explicamos de forma simples como funciona o Tesouro Direto, quais são os tipos de títulos disponíveis e como escolher o mais adequado para seus objetivos.</p>
+                        </div>
+                        <div class="post-footer">
+                            <div class="post-autor">
+                                <div class="autor-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <span class="autor-nome">Ricardo Almeida</span>
+                            </div>
+                            <a href="artigo-tesouro.html" class="post-link">
+                                Ler artigo completo <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                </article>
+
+                <div class="paginacao">
+                    <ul class="paginacao-lista">
+                        <li class="paginacao-item">
+                            <a href="#" class="paginacao-link active">1</a>
+                        </li>
+                        <li class="paginacao-item">
+                            <a href="#" class="paginacao-link">2</a>
+                        </li>
+                        <li class="paginacao-item">
+                            <a href="#" class="paginacao-link">3</a>
+                        </li>
+                        <li class="paginacao-item">
+                            <a href="#" class="paginacao-link">
+                                <i class="fas fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="blog-sidebar">
+                <div class="sidebar-widget">
+                    <h3 class="widget-titulo">Categorias</h3>
+                    <ul class="categorias-lista">
+                        <li class="categorias-item">
+                            <a href="#" class="categorias-link">
+                                Investimentos
+                                <span class="categorias-contador">12</span>
+                            </a>
+                        </li>
+                        <li class="categorias-item">
+                            <a href="#" class="categorias-link">
+                                Economia
+                                <span class="categorias-contador">8</span>
+                            </a>
+                        </li>
+                        <li class="categorias-item">
+                            <a href="#" class="categorias-link">
+                                Planejamento
+                                <span class="categorias-contador">6</span>
+                            </a>
+                        </li>
+                        <li class="categorias-item">
+                            <a href="#" class="categorias-link">
+                                Renda Fixa
+                                <span class="categorias-contador">5</span>
+                            </a>
+                        </li>
+                        <li class="categorias-item">
+                            <a href="#" class="categorias-link">
+                                Renda Variável
+                                <span class="categorias-contador">4</span>
+                            </a>
+                        </li>
+                        <li class="categorias-item">
+                            <a href="#" class="categorias-link">
+                                Educação Financeira
+                                <span class="categorias-contador">7</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3 class="widget-titulo">Posts Populares</h3>
+                    <ul class="posts-populares-lista">
+                        <li class="posts-populares-item">
+                            <div class="post-popular-imagem">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="post-popular-conteudo">
+                                <div class="post-popular-titulo">
+                                    <a href="artigo-investir-pouco.html">Como começar a investir com pouco dinheiro</a>
+                                </div>
+                                <div class="post-popular-data">01 de junho de 2025</div>
+                            </div>
+                        </li>
+                        <li class="posts-populares-item">
+                            <div class="post-popular-imagem">
+                                <i class="fas fa-landmark"></i>
+                            </div>
+                            <div class="post-popular-conteudo">
+                                <div class="post-popular-titulo">
+                                    <a href="artigo-tesouro.html">Tesouro Direto: guia completo para iniciantes</a>
+                                </div>
+                                <div class="post-popular-data">15 de maio de 2025</div>
+                            </div>
+                        </li>
+                        <li class="posts-populares-item">
+                            <div class="post-popular-imagem">
+                                <i class="fas fa-percentage"></i>
+                            </div>
+                            <div class="post-popular-conteudo">
+                                <div class="post-popular-titulo">
+                                    <a href="artigo-selic.html">Como a taxa Selic afeta seus investimentos</a>
+                                </div>
+                                <div class="post-popular-data">10 de maio de 2025</div>
+                            </div>
+                        </li>
+                        <li class="posts-populares-item">
+                            <div class="post-popular-imagem">
+                                <i class="fas fa-piggy-bank"></i>
+                            </div>
+                            <div class="post-popular-conteudo">
+                                <div class="post-popular-titulo">
+                                    <a href="artigo-economizar.html">Dicas para economizar no dia a dia</a>
+                                </div>
+                                <div class="post-popular-data">28 de maio de 2025</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3 class="widget-titulo">Tags</h3>
+                    <div class="tags-lista">
+                        <a href="#" class="tag-link">Investimentos</a>
+                        <a href="#" class="tag-link">Economia</a>
+                        <a href="#" class="tag-link">Tesouro Direto</a>
+                        <a href="#" class="tag-link">Renda Fixa</a>
+                        <a href="#" class="tag-link">Ações</a>
+                        <a href="#" class="tag-link">Poupança</a>
+                        <a href="#" class="tag-link">Juros</a>
+                        <a href="#" class="tag-link">Inflação</a>
+                        <a href="#" class="tag-link">Orçamento</a>
+                        <a href="#" class="tag-link">Aposentadoria</a>
+                        <a href="#" class="tag-link">Educação Financeira</a>
+                        <a href="#" class="tag-link">Dicas</a>
+                    </div>
+                </div>
+
+                <div class="sidebar-widget">
+                    <h3 class="widget-titulo">Newsletter</h3>
+                    <p>Receba nossos artigos e dicas financeiras diretamente no seu e-mail.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Seu e-mail">
+                        <button type="submit" class="btn btn-primary">Inscrever-se</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>finança.com</h3>
+                    <p>Análise e investimentos financeiros com dados em tempo real.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="aplicacoes.html">Aplicações</a></li>
+                        <li><a href="analise.html">Análise de Mercado</a></li>
+                        <li><a href="ferramentas.html">Calculadoras</a></li>
+                        <li><a href="educacao.html">Educação Financeira</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Recursos</h3>
+                    <ul class="footer-links">
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="glossario.html">Glossário Financeiro</a></li>
+                        <li><a href="faq.html">Perguntas Frequentes</a></li>
+                        <li><a href="privacidade.html">Política de Privacidade</a></li>
+                        <li><a href="termos.html">Termos de Uso</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i> contato@financa.com</li>
+                        <li><i class="fas fa-phone"></i> (11) 4002-8922</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000 - São Paulo</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 finança.com - Todos os direitos reservados. Desenvolvido por Harrison Costa.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/alertas.js"></script>
+    <script src="js/prospeccao.js"></script>
+    <script src="js/api-real-time.js"></script>
+</body>
+</html>

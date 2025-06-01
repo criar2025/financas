@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organize suas Finanças - finança.com</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+        .organize-header {
+            background-color: #f5f8fa;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        .organize-header h1 {
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .conteudo-container {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra-suave);
+            margin-bottom: 40px;
+        }
+        
+        .passo-titulo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .passo-numero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--azul-medio);
+            color: var(--branco);
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+        
+        .passo-texto {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--azul-escuro);
+        }
+        
+        .passo-descricao {
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .dica-box {
+            background-color: rgba(46, 134, 222, 0.05);
+            border-left: 4px solid var(--azul-medio);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .dica-titulo {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--azul-escuro);
+        }
+        
+        .dica-titulo i {
+            margin-right: 10px;
+            color: var(--azul-medio);
+        }
+        
+        .ferramenta-box {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .ferramenta-titulo {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .ferramenta-descricao {
+            margin-bottom: 20px;
+        }
+        
+        .tabela-orcamento {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        .tabela-orcamento th {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        .tabela-orcamento td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tabela-orcamento tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .tabela-orcamento tr:hover {
+            background-color: #f0f7ff;
+        }
+        
+        .tabela-orcamento input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .tabela-orcamento .total {
+            font-weight: 700;
+        }
+        
+        .passos-navegacao {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--sombra-suave);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card-header {
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .card-title {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: var(--azul-escuro);
+        }
+        
+        .card-subtitle {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .card-body {
+            padding: 20px;
+        }
+        
+        .card-footer {
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .progresso-container {
+            margin-bottom: 30px;
+        }
+        
+        .progresso-titulo {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .progresso-barra {
+            height: 8px;
+            background-color: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progresso-preenchimento {
+            height: 100%;
+            background-color: var(--azul-medio);
+            width: 33%;
+        }
+        
+        @media (max-width: 768px) {
+            .passos-navegacao {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .passos-navegacao .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-principal">
+        <div class="container header-container">
+            <div class="logo-container">
+                <a href="index.html" class="logo"><img src="img/logo.png" alt="finança.com logo"></a>
+                <div class="slogan">INVESTIGAÇÃO, perícia e rastreamento financeiro</div>
+            </div>
+            <nav class="menu-principal">
+                <button class="menu-hamburguer" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="menu-items">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="aplicacoes.html">Aplicações</a></li>
+                    <li><a href="analise.html">Análise de Mercado</a></li>
+                    <li><a href="ferramentas.html">Calculadoras</a></li>
+                    <li><a href="educacao.html" class="active">Educação Financeira</a></li>
+                </ul>
+            </nav>
+            <div class="modo-iniciante-toggle">
+                <label class="switch">
+                    <input type="checkbox" id="toggle-modo-iniciante">
+                    <span class="slider round"></span>
+                </label>
+                <span class="label-modo-iniciante">Modo Iniciante</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="organize-header">
+        <div class="container">
+            <h1>Organize suas Finanças</h1>
+            <p>Antes de investir, organize seu orçamento, quite dívidas caras e monte uma reserva de emergência equivalente a 6 meses de despesas.</p>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="progresso-container">
+            <div class="progresso-titulo">
+                <span>Passo 1 de 3</span>
+                <span>Organize suas finanças</span>
+            </div>
+            <div class="progresso-barra">
+                <div class="progresso-preenchimento"></div>
+            </div>
+        </div>
+
+        <div class="conteudo-container">
+            <div class="passo-titulo">
+                <div class="passo-numero">1</div>
+                <div class="passo-texto">Faça um diagnóstico financeiro</div>
+            </div>
+            <div class="passo-descricao">
+                <p>O primeiro passo para organizar suas finanças é entender exatamente onde você está. Isso significa fazer um diagnóstico completo da sua situação financeira atual, incluindo renda, despesas, dívidas e patrimônio.</p>
+                <p>Este diagnóstico servirá como ponto de partida para todas as suas decisões financeiras futuras e permitirá que você identifique problemas e oportunidades de melhoria.</p>
+            </div>
+
+            <div class="dica-box">
+                <div class="dica-titulo">
+                    <i class="fas fa-lightbulb"></i>
+                    Dica importante
+                </div>
+                <p>Seja absolutamente honesto neste processo. Incluir todas as despesas, mesmo aquelas pequenas ou ocasionais, é essencial para ter uma visão realista da sua situação financeira.</p>
+            </div>
+
+            <div class="ferramenta-box">
+                <div class="ferramenta-titulo">Planilha de Orçamento Mensal</div>
+                <div class="ferramenta-descricao">
+                    <p>Use a tabela abaixo para registrar todas as suas receitas e despesas mensais. Isso ajudará a identificar para onde seu dinheiro está indo e onde é possível economizar.</p>
+                </div>
+
+                <table class="tabela-orcamento">
+                    <thead>
+                        <tr>
+                            <th>Categoria</th>
+                            <th>Valor (R$)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2"><strong>RECEITAS</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Salário</td>
+                            <td><input type="number" id="salario" placeholder="0,00"></td>
+                        </tr>
+                        <tr>
+                            <td>Renda extra</td>
+                            <td><input type="number" id="renda-extra" placeholder="0,00"></td>
+                        </tr>
+                        <tr>
+                            <td>Outras receitas</td>
+                            <td><input type="number" id="outras-receitas" placeholder="0,00"></td>
+                        </tr>
+                        <tr class="total">
+                            <td>Total de Receitas</td>
+                            <td id="total-receitas">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>DESPESAS FIXAS</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Moradia (aluguel/financiamento)</td>
+                            <td><input type="number" id="moradia" placeholder="0,00"></td>
+                        </tr>
+                        <tr>
+                            <td>Contas (água, luz, internet, etc.)</td>
+                            <td><input type="number" id="contas" placeholder="0,00"></td>
+                        </tr>
+                        <tr>
+                            <td>Alimentação</td>
+                            <td><input type="number" id="alimentacao" placeholder="0,00"></td>
+                        </tr>
+                        <tr>
+                            <td>Transporte</td>
+                            <td><input type="number" id="transporte" placeholder="0,00"></td>
+                        </tr>
+                        <tr>
+                            <td>Saúde (plano, medicamentos)</td>
+                            <td><input type="number" id="saude" placeholder="0,00"></td>
+                        </tr>
+                        <tr>
+                            <td>Educação</td>
+                            <td><input type="number" id="educacao" placeholder="0,00"></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><strong>DESPESAS VARIÁVEIS</strong></td>
+                        </tr>
+                        <tr>
+                            <td>Lazer</td>
+                            <td><input type="number" id="lazer" placeholder="0,00"></td>
+                        </tr>
+                        <tr>
+                            <td>Compras</td>
+                            <td><input type="number" id="compras" placeholder="0,00"></td>
+                        </tr>
+                        <tr>
+                            <td>Outras despesas</td>
+                            <td><input type="number" id="outras-despesas" placeholder="0,00"></td>
+                        </tr>
+                        <tr class="total">
+                            <td>Total de Despesas</td>
+                            <td id="total-despesas">R$ 0,00</td>
+                        </tr>
+                        <tr class="total">
+                            <td>Saldo Mensal</td>
+                            <td id="saldo-mensal">R$ 0,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="passo-titulo">
+                <div class="passo-numero">2</div>
+                <div class="passo-texto">Quite suas dívidas caras</div>
+            </div>
+            <div class="passo-descricao">
+                <p>Antes de começar a investir, é fundamental quitar dívidas com juros altos, como cartão de crédito, cheque especial e empréstimos pessoais. Os juros dessas dívidas são geralmente muito superiores ao retorno que você obteria em investimentos, especialmente os de baixo risco.</p>
+                <p>Priorize o pagamento das dívidas mais caras primeiro, enquanto mantém o pagamento mínimo das demais. Esta estratégia, conhecida como "método da avalanche", economiza mais dinheiro em juros no longo prazo.</p>
+            </div>
+
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Método da Avalanche</div>
+                        <div class="card-subtitle">Economize mais em juros</div>
+                    </div>
+                    <div class="card-body">
+                        <p>Priorize o pagamento das dívidas com as maiores taxas de juros primeiro, independentemente do valor. Depois de quitar a dívida mais cara, direcione esse valor para a próxima mais cara, e assim por diante.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Método da Bola de Neve</div>
+                        <div class="card-subtitle">Ganhe motivação rápida</div>
+                    </div>
+                    <div class="card-body">
+                        <p>Comece pagando as dívidas de menor valor primeiro, independentemente da taxa de juros. Isso proporciona vitórias rápidas e motivação para continuar o processo de quitação de dívidas.</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Negociação de Dívidas</div>
+                        <div class="card-subtitle">Reduza o valor total</div>
+                    </div>
+                    <div class="card-body">
+                        <p>Entre em contato com credores para negociar condições melhores, como redução de juros, descontos para pagamento à vista ou parcelamento em condições mais favoráveis.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dica-box">
+                <div class="dica-titulo">
+                    <i class="fas fa-lightbulb"></i>
+                    Dica importante
+                </div>
+                <p>Evite contrair novas dívidas enquanto está pagando as antigas. Corte o uso do cartão de crédito se necessário e crie um fundo para despesas inesperadas para evitar recorrer a empréstimos.</p>
+            </div>
+
+            <div class="passo-titulo">
+                <div class="passo-numero">3</div>
+                <div class="passo-texto">Monte sua reserva de emergência</div>
+            </div>
+            <div class="passo-descricao">
+                <p>Uma reserva de emergência é um fundo destinado a cobrir despesas inesperadas ou períodos sem renda, como desemprego ou problemas de saúde. O ideal é que essa reserva cubra de 3 a 6 meses de suas despesas mensais essenciais.</p>
+                <p>Este fundo deve ser mantido em investimentos de alta liquidez e baixo risco, como Tesouro Selic, CDBs com liquidez diária ou fundos DI. O objetivo não é obter alto rendimento, mas ter o dinheiro disponível quando precisar.</p>
+            </div>
+
+            <div class="ferramenta-box">
+                <div class="ferramenta-titulo">Calculadora de Reserva de Emergência</div>
+                <div class="ferramenta-descricao">
+                    <p>Use a calculadora abaixo para determinar o valor ideal da sua reserva de emergência:</p>
+                </div>
+
+                <table class="tabela-orcamento">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Valor (R$)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Total de despesas mensais essenciais</td>
+                            <td><input type="number" id="despesas-essenciais" placeholder="0,00"></td>
+                        </tr>
+                        <tr>
+                            <td>Número de meses desejado (3-6)</td>
+                            <td><input type="number" id="meses-reserva" placeholder="6" min="3" max="12"></td>
+                        </tr>
+                        <tr class="total">
+                            <td>Reserva de Emergência Necessária</td>
+                            <td id="total-reserva">R$ 0,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card-container">
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Tesouro Selic</div>
+                        <div class="card-subtitle">Segurança do governo federal</div>
+                    </div>
+                    <div class="card-body">
+                        <p>Título público com liquidez diária após 30 dias, rentabilidade atrelada à taxa Selic e baixíssimo risco. Ideal para reserva de emergência.</p>
+                    </div>
+                    <div class="card-footer">
+                        <span>Rentabilidade atual: 10.85% a.a.</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">CDB com Liquidez Diária</div>
+                        <div class="card-subtitle">Garantia do FGC</div>
+                    </div>
+                    <div class="card-body">
+                        <p>Certificados de Depósito Bancário com resgate a qualquer momento, garantia do FGC até R$ 250 mil e rentabilidade competitiva.</p>
+                    </div>
+                    <div class="card-footer">
+                        <span>Rentabilidade média: 100% do CDI</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">Fundos DI</div>
+                        <div class="card-subtitle">Gestão profissional</div>
+                    </div>
+                    <div class="card-body">
+                        <p>Fundos de investimento que aplicam em títulos pós-fixados, com liquidez diária e baixa volatilidade. Opção prática para quem prefere gestão profissional.</p>
+                    </div>
+                    <div class="card-footer">
+                        <span>Rentabilidade média: 95-98% do CDI</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dica-box">
+                <div class="dica-titulo">
+                    <i class="fas fa-lightbulb"></i>
+                    Dica importante
+                </div>
+                <p>Não misture sua reserva de emergência com outros objetivos financeiros. Este dinheiro deve estar sempre disponível e não deve ser usado para investimentos de maior risco ou para compras planejadas.</p>
+            </div>
+
+            <div class="passos-navegacao">
+                <a href="educacao.html" class="btn btn-secondary">Voltar para Educação Financeira</a>
+                <a href="defina-objetivos.html" class="btn btn-primary">Próximo Passo: Defina seus Objetivos</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>finança.com</h3>
+                    <p>Análise e investimentos financeiros com dados em tempo real.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="aplicacoes.html">Aplicações</a></li>
+                        <li><a href="analise.html">Análise de Mercado</a></li>
+                        <li><a href="ferramentas.html">Calculadoras</a></li>
+                        <li><a href="educacao.html">Educação Financeira</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Recursos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Glossário Financeiro</a></li>
+                        <li><a href="#">Perguntas Frequentes</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i> contato@financa.com</li>
+                        <li><i class="fas fa-phone"></i> (11) 4002-8922</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000 - São Paulo</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 finança.com - Todos os direitos reservados. Desenvolvido por Harrison Costa.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/alertas.js"></script>
+    <script src="js/prospeccao.js"></script>
+    <script src="js/api-real-time.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Calculadora de orçamento
+            const camposReceita = ['salario', 'renda-extra', 'outras-receitas'];
+            const camposDespesa = ['moradia', 'contas', 'alimentacao', 'transporte', 'saude', 'educacao', 'lazer', 'compras', 'outras-despesas'];
+            
+            function calcularOrcamento() {
+                let totalReceitas = 0;
+                let totalDespesas = 0;
+                
+                // Calcular receitas
+                camposReceita.forEach(campo => {
+                    const valor = parseFloat(document.getElementById(campo).value) || 0;
+                    totalReceitas += valor;
+                });
+                
+                // Calcular despesas
+                camposDespesa.forEach(campo => {
+                    const valor = parseFloat(document.getElementById(campo).value) || 0;
+                    totalDespesas += valor;
+                });
+                
+                // Atualizar totais
+                document.getElementById('total-receitas').textContent = `R$ ${totalReceitas.toFixed(2)}`;
+                document.getElementById('total-despesas').textContent = `R$ ${totalDespesas.toFixed(2)}`;
+                document.getElementById('saldo-mensal').textContent = `R$ ${(totalReceitas - totalDespesas).toFixed(2)}`;
+                
+                // Atualizar cor do saldo
+                const saldoElement = document.getElementById('saldo-mensal');
+                if (totalReceitas - totalDespesas < 0) {
+                    saldoElement.style.color = 'var(--vermelho-suave)';
+                } else {
+                    saldoElement.style.color = 'var(--verde-suave)';
+                }
+            }
+            
+            // Adicionar event listeners para todos os campos
+            camposReceita.concat(camposDespesa).forEach(campo => {
+                document.getElementById(campo).addEventListener('input', calcularOrcamento);
+            });
+            
+            // Calculadora de reserva de emergência
+            function calcularReserva() {
+                const despesasEssenciais = parseFloat(document.getElementById('despesas-essenciais').value) || 0;
+                const mesesReserva = parseInt(document.getElementById('meses-reserva').value) || 6;
+                
+                const totalReserva = despesasEssenciais * mesesReserva;
+                document.getElementById('total-reserva').textContent = `R$ ${totalReserva.toFixed(2)}`;
+            }
+            
+            document.getElementById('despesas-essenciais').addEventListener('input', calcularReserva);
+            document.getElementById('meses-reserva').addEventListener('input', calcularReserva);
+        });
+    </script>
+</body>
+</html>

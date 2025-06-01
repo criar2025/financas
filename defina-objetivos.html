@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Defina seus Objetivos - finança.com</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+        .objetivos-header {
+            background-color: #f5f8fa;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        .objetivos-header h1 {
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .conteudo-container {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: var(--sombra-suave);
+            margin-bottom: 40px;
+        }
+        
+        .passo-titulo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .passo-numero {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: var(--azul-medio);
+            color: var(--branco);
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-right: 15px;
+        }
+        
+        .passo-texto {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--azul-escuro);
+        }
+        
+        .passo-descricao {
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .dica-box {
+            background-color: rgba(46, 134, 222, 0.05);
+            border-left: 4px solid var(--azul-medio);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .dica-titulo {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--azul-escuro);
+        }
+        
+        .dica-titulo i {
+            margin-right: 10px;
+            color: var(--azul-medio);
+        }
+        
+        .objetivos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .objetivo-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--sombra-suave);
+            border: 1px solid #eee;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .objetivo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .objetivo-header {
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            background-color: #f9f9f9;
+        }
+        
+        .objetivo-titulo {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--azul-escuro);
+        }
+        
+        .objetivo-prazo {
+            font-size: 0.9rem;
+            color: #666;
+            display: flex;
+            align-items: center;
+        }
+        
+        .objetivo-prazo i {
+            margin-right: 5px;
+            color: var(--azul-medio);
+        }
+        
+        .objetivo-body {
+            padding: 20px;
+        }
+        
+        .objetivo-form {
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .objetivo-footer {
+            padding: 15px 20px;
+            background-color: #f9f9f9;
+            border-top: 1px solid #f0f0f0;
+            text-align: center;
+        }
+        
+        .objetivo-footer .btn {
+            width: 100%;
+        }
+        
+        .objetivo-curto {
+            border-top: 4px solid #3498db;
+        }
+        
+        .objetivo-medio {
+            border-top: 4px solid #f1c40f;
+        }
+        
+        .objetivo-longo {
+            border-top: 4px solid #2ecc71;
+        }
+        
+        .resultado-objetivo {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .resultado-objetivo.active {
+            display: block;
+        }
+        
+        .resultado-valor {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+        }
+        
+        .resultado-info {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .estrategia-container {
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
+        
+        .estrategia-titulo {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--azul-escuro);
+        }
+        
+        .estrategia-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+        
+        .estrategia-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--sombra-suave);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .estrategia-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .estrategia-header {
+            padding: 20px;
+            border-bottom: 1px solid #f0f0f0;
+            background: linear-gradient(135deg, var(--azul-escuro) 0%, var(--azul-medio) 100%);
+            color: var(--branco);
+        }
+        
+        .estrategia-titulo-card {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .estrategia-subtitulo {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .estrategia-body {
+            padding: 20px;
+        }
+        
+        .estrategia-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .estrategia-item:last-child {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            border-bottom: none;
+        }
+        
+        .estrategia-item-titulo {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--azul-escuro);
+        }
+        
+        .progresso-container {
+            margin-bottom: 30px;
+        }
+        
+        .progresso-titulo {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .progresso-barra {
+            height: 8px;
+            background-color: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progresso-preenchimento {
+            height: 100%;
+            background-color: var(--azul-medio);
+            width: 66%;
+        }
+        
+        .passos-navegacao {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .objetivos-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .estrategia-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .passos-navegacao {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .passos-navegacao .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-principal">
+        <div class="container header-container">
+            <div class="logo-container">
+                <a href="index.html" class="logo"><img src="img/logo.png" alt="finança.com logo"></a>
+                <div class="slogan">INVESTIGAÇÃO, perícia e rastreamento financeiro</div>
+            </div>
+            <nav class="menu-principal">
+                <button class="menu-hamburguer" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="menu-items">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="aplicacoes.html">Aplicações</a></li>
+                    <li><a href="analise.html">Análise de Mercado</a></li>
+                    <li><a href="ferramentas.html">Calculadoras</a></li>
+                    <li><a href="educacao.html" class="active">Educação Financeira</a></li>
+                </ul>
+            </nav>
+            <div class="modo-iniciante-toggle">
+                <label class="switch">
+                    <input type="checkbox" id="toggle-modo-iniciante">
+                    <span class="slider round"></span>
+                </label>
+                <span class="label-modo-iniciante">Modo Iniciante</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="objetivos-header">
+        <div class="container">
+            <h1>Defina seus Objetivos</h1>
+            <p>Estabeleça metas claras de curto, médio e longo prazo. Cada objetivo terá uma estratégia de investimento diferente.</p>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="progresso-container">
+            <div class="progresso-titulo">
+                <span>Passo 2 de 3</span>
+                <span>Defina seus objetivos</span>
+            </div>
+            <div class="progresso-barra">
+                <div class="progresso-preenchimento"></div>
+            </div>
+        </div>
+
+        <div class="conteudo-container">
+            <div class="passo-titulo">
+                <div class="passo-numero">1</div>
+                <div class="passo-texto">Por que definir objetivos financeiros?</div>
+            </div>
+            <div class="passo-descricao">
+                <p>Definir objetivos financeiros claros é essencial para direcionar seus investimentos de forma eficiente. Sem objetivos bem definidos, é fácil perder o foco, tomar decisões impulsivas ou escolher investimentos inadequados para suas necessidades.</p>
+                <p>Objetivos bem estruturados ajudam a determinar quanto você precisa poupar, qual rentabilidade buscar e quais produtos financeiros são mais adequados para cada finalidade. Além disso, metas claras aumentam sua motivação e disciplina para seguir o plano estabelecido.</p>
+            </div>
+
+            <div class="dica-box">
+                <div class="dica-titulo">
+                    <i class="fas fa-lightbulb"></i>
+                    Dica importante
+                </div>
+                <p>Utilize a metodologia SMART para definir seus objetivos: Específicos, Mensuráveis, Atingíveis, Relevantes e com Tempo determinado. Por exemplo, em vez de "juntar dinheiro para uma casa", defina "poupar R$ 100.000 para entrada de um apartamento de 2 quartos em 5 anos".</p>
+            </div>
+
+            <div class="passo-titulo">
+                <div class="passo-numero">2</div>
+                <div class="passo-texto">Estabeleça objetivos por prazo</div>
+            </div>
+            <div class="passo-descricao">
+                <p>É importante classificar seus objetivos de acordo com o prazo para realização, pois isso determinará a estratégia de investimento mais adequada para cada um. Geralmente, dividimos os objetivos em três categorias:</p>
+                <ul>
+                    <li><strong>Curto prazo:</strong> até 2 anos (ex: viagem, compra de eletrônicos)</li>
+                    <li><strong>Médio prazo:</strong> de 2 a 5 anos (ex: compra de carro, pós-graduação)</li>
+                    <li><strong>Longo prazo:</strong> acima de 5 anos (ex: aposentadoria, compra de imóvel)</li>
+                </ul>
+            </div>
+
+            <div class="objetivos-grid">
+                <div class="objetivo-card objetivo-curto">
+                    <div class="objetivo-header">
+                        <div class="objetivo-titulo">Objetivo de Curto Prazo</div>
+                        <div class="objetivo-prazo">
+                            <i class="fas fa-clock"></i>
+                            Até 2 anos
+                        </div>
+                    </div>
+                    <div class="objetivo-body">
+                        <div class="objetivo-form">
+                            <div class="form-group">
+                                <label for="objetivo-curto-nome">Nome do objetivo</label>
+                                <input type="text" id="objetivo-curto-nome" placeholder="Ex: Viagem para Europa">
+                            </div>
+                            <div class="form-group">
+                                <label for="objetivo-curto-valor">Valor necessário (R$)</label>
+                                <input type="number" id="objetivo-curto-valor" placeholder="Ex: 15000">
+                            </div>
+                            <div class="form-group">
+                                <label for="objetivo-curto-prazo">Prazo (meses)</label>
+                                <input type="number" id="objetivo-curto-prazo" placeholder="Ex: 18" max="24">
+                            </div>
+                            <div class="form-group">
+                                <label for="objetivo-curto-inicial">Valor inicial (R$)</label>
+                                <input type="number" id="objetivo-curto-inicial" placeholder="Ex: 2000">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="calcular-curto">Calcular</button>
+                        <div class="resultado-objetivo" id="resultado-curto">
+                            <div class="resultado-valor">R$ 722,22 por mês</div>
+                            <div class="resultado-info">
+                                <p>Para atingir seu objetivo de <strong>R$ 15.000,00</strong> em <strong>18 meses</strong>, você precisará poupar <strong>R$ 722,22</strong> por mês, considerando seu valor inicial de <strong>R$ 2.000,00</strong> e uma rentabilidade média de <strong>10,85% a.a.</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="objetivo-footer">
+                        <p>Investimentos recomendados: CDB, Tesouro Selic, Fundos DI</p>
+                    </div>
+                </div>
+
+                <div class="objetivo-card objetivo-medio">
+                    <div class="objetivo-header">
+                        <div class="objetivo-titulo">Objetivo de Médio Prazo</div>
+                        <div class="objetivo-prazo">
+                            <i class="fas fa-clock"></i>
+                            2 a 5 anos
+                        </div>
+                    </div>
+                    <div class="objetivo-body">
+                        <div class="objetivo-form">
+                            <div class="form-group">
+                                <label for="objetivo-medio-nome">Nome do objetivo</label>
+                                <input type="text" id="objetivo-medio-nome" placeholder="Ex: Compra de carro">
+                            </div>
+                            <div class="form-group">
+                                <label for="objetivo-medio-valor">Valor necessário (R$)</label>
+                                <input type="number" id="objetivo-medio-valor" placeholder="Ex: 60000">
+                            </div>
+                            <div class="form-group">
+                                <label for="objetivo-medio-prazo">Prazo (meses)</label>
+                                <input type="number" id="objetivo-medio-prazo" placeholder="Ex: 36" min="25" max="60">
+                            </div>
+                            <div class="form-group">
+                                <label for="objetivo-medio-inicial">Valor inicial (R$)</label>
+                                <input type="number" id="objetivo-medio-inicial" placeholder="Ex: 10000">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="calcular-medio">Calcular</button>
+                        <div class="resultado-objetivo" id="resultado-medio">
+                            <div class="resultado-valor">R$ 1.305,56 por mês</div>
+                            <div class="resultado-info">
+                                <p>Para atingir seu objetivo de <strong>R$ 60.000,00</strong> em <strong>36 meses</strong>, você precisará poupar <strong>R$ 1.305,56</strong> por mês, considerando seu valor inicial de <strong>R$ 10.000,00</strong> e uma rentabilidade média de <strong>11,50% a.a.</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="objetivo-footer">
+                        <p>Investimentos recomendados: Tesouro IPCA+, CDBs, LCIs, LCAs</p>
+                    </div>
+                </div>
+
+                <div class="objetivo-card objetivo-longo">
+                    <div class="objetivo-header">
+                        <div class="objetivo-titulo">Objetivo de Longo Prazo</div>
+                        <div class="objetivo-prazo">
+                            <i class="fas fa-clock"></i>
+                            Acima de 5 anos
+                        </div>
+                    </div>
+                    <div class="objetivo-body">
+                        <div class="objetivo-form">
+                            <div class="form-group">
+                                <label for="objetivo-longo-nome">Nome do objetivo</label>
+                                <input type="text" id="objetivo-longo-nome" placeholder="Ex: Aposentadoria">
+                            </div>
+                            <div class="form-group">
+                                <label for="objetivo-longo-valor">Valor necessário (R$)</label>
+                                <input type="number" id="objetivo-longo-valor" placeholder="Ex: 1000000">
+                            </div>
+                            <div class="form-group">
+                                <label for="objetivo-longo-prazo">Prazo (anos)</label>
+                                <input type="number" id="objetivo-longo-prazo" placeholder="Ex: 30" min="6" max="40">
+                            </div>
+                            <div class="form-group">
+                                <label for="objetivo-longo-inicial">Valor inicial (R$)</label>
+                                <input type="number" id="objetivo-longo-inicial" placeholder="Ex: 50000">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" id="calcular-longo">Calcular</button>
+                        <div class="resultado-objetivo" id="resultado-longo">
+                            <div class="resultado-valor">R$ 486,11 por mês</div>
+                            <div class="resultado-info">
+                                <p>Para atingir seu objetivo de <strong>R$ 1.000.000,00</strong> em <strong>30 anos</strong>, você precisará poupar <strong>R$ 486,11</strong> por mês, considerando seu valor inicial de <strong>R$ 50.000,00</strong> e uma rentabilidade média de <strong>12,50% a.a.</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="objetivo-footer">
+                        <p>Investimentos recomendados: Ações, FIIs, ETFs, Previdência Privada</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="estrategia-container">
+                <div class="estrategia-titulo">Estratégias de Investimento por Prazo</div>
+                <div class="estrategia-grid">
+                    <div class="estrategia-card">
+                        <div class="estrategia-header">
+                            <div class="estrategia-titulo-card">Curto Prazo</div>
+                            <div class="estrategia-subtitulo">Até 2 anos</div>
+                        </div>
+                        <div class="estrategia-body">
+                            <div class="estrategia-item">
+                                <div class="estrategia-item-titulo">Prioridade</div>
+                                <p>Segurança e liquidez</p>
+                            </div>
+                            <div class="estrategia-item">
+                                <div class="estrategia-item-titulo">Investimentos Recomendados</div>
+                                <p>Tesouro Selic, CDBs com liquidez diária, Fundos DI</p>
+                            </div>
+                            <div class="estrategia-item">
+                                <div class="estrategia-item-titulo">Rentabilidade Esperada</div>
+                                <p>Próxima à taxa Selic (atualmente 10,85% a.a.)</p>
+                            </div>
+                            <div class="estrategia-item">
+                                <div class="estrategia-item-titulo">Riscos</div>
+                                <p>Baixíssimo risco de perda de capital</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="estrategia-card">
+                        <div class="estrategia-header">
+                            <div class="estrategia-titulo-card">Médio Prazo</div>
+                            <div class="estrategia-subtitulo">2 a 5 anos</div>
+                        </div>
+                        <div class="estrategia-body">
+                            <div class="estrategia-item">
+                                <div class="estrategia-item-titulo">Prioridade</div>
+                                <p>Equilíbrio entre rentabilidade e segurança</p>
+                            </div>
+                            <div class="estrategia-item">
+                                <div class="estrategia-item-titulo">Investimentos Recomendados</div>
+                                <p>Tesouro IPCA+, CDBs, LCIs, LCAs, Fundos Multimercado</p>
+                            </div>
+                            <div class="estrategia-item">
+                                <div class="estrategia-item-titulo">Rentabilidade Esperada</div>
+                                <p>IPCA + 5% a 6% a.a. (atualmente cerca de 11,50% a.a.)</p>
+                            </div>
+                            <div class="estrategia-item">
+                                <div class="estrategia-item-titulo">Riscos</div>
+                                <p>Baixo a médio, com alguma volatilidade no curto prazo</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="estrategia-card">
+                        <div class="estrategia-header">
+                            <div class="estrategia-titulo-card">Longo Prazo</div>
+                            <div class="estrategia-subtitulo">Acima de 5 anos</div>
+                        </div>
+                        <div class="estrategia-body">
+                            <div class="estrategia-item">
+                                <div class="estrategia-item-titulo">Prioridade</div>
+                                <p>Rentabilidade e crescimento do capital</p>
+                            </div>
+                            <div class="estrategia-item">
+                                <div class="estrategia-item-titulo">Investimentos Recomendados</div>
+                                <p>Ações, ETFs, Fundos de Ações, FIIs, Previdência Privada</p>
+                            </div>
+                            <div class="estrategia-item">
+                                <div class="estrategia-item-titulo">Rentabilidade Esperada</div>
+                                <p>IPCA + 7% a 10% a.a. (atualmente cerca de 12,50% a.a.)</p>
+                            </div>
+                            <div class="estrategia-item">
+                                <div class="estrategia-item-titulo">Riscos</div>
+                                <p>Médio a alto, com volatilidade significativa no curto prazo</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dica-box">
+                <div class="dica-titulo">
+                    <i class="fas fa-lightbulb"></i>
+                    Dica importante
+                </div>
+                <p>Revise seus objetivos periodicamente (a cada 6 meses ou 1 ano) e ajuste sua estratégia conforme necessário. Mudanças na sua vida pessoal, profissional ou no cenário econômico podem exigir adaptações no seu plano financeiro.</p>
+            </div>
+
+            <div class="passos-navegacao">
+                <a href="organize-financas.html" class="btn btn-secondary">Anterior: Organize suas Finanças</a>
+                <a href="perfil-investidor.html" class="btn btn-primary">Próximo: Conheça seu Perfil</a>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>finança.com</h3>
+                    <p>Análise e investimentos financeiros com dados em tempo real.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="aplicacoes.html">Aplicações</a></li>
+                        <li><a href="analise.html">Análise de Mercado</a></li>
+                        <li><a href="ferramentas.html">Calculadoras</a></li>
+                        <li><a href="educacao.html">Educação Financeira</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Recursos</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Glossário Financeiro</a></li>
+                        <li><a href="#">Perguntas Frequentes</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i> contato@financa.com</li>
+                        <li><i class="fas fa-phone"></i> (11) 4002-8922</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000 - São Paulo</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 finança.com - Todos os direitos reservados. Desenvolvido por Harrison Costa.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/alertas.js"></script>
+    <script src="js/prospeccao.js"></script>
+    <script src="js/api-real-time.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Calculadora de objetivo de curto prazo
+            document.getElementById('calcular-curto').addEventListener('click', function() {
+                const valor = parseFloat(document.getElementById('objetivo-curto-valor').value) || 15000;
+                const prazo = parseInt(document.getElementById('objetivo-curto-prazo').value) || 18;
+                const inicial = parseFloat(document.getElementById('objetivo-curto-inicial').value) || 2000;
+                const taxa = 10.85 / 100; // Taxa Selic atual
+                
+                calcularObjetivo('curto', valor, prazo, inicial, taxa);
+            });
+            
+            // Calculadora de objetivo de médio prazo
+            document.getElementById('calcular-medio').addEventListener('click', function() {
+                const valor = parseFloat(document.getElementById('objetivo-medio-valor').value) || 60000;
+                const prazo = parseInt(document.getElementById('objetivo-medio-prazo').value) || 36;
+                const inicial = parseFloat(document.getElementById('objetivo-medio-inicial').value) || 10000;
+                const taxa = 11.50 / 100; // Taxa média para médio prazo
+                
+                calcularObjetivo('medio', valor, prazo, inicial, taxa);
+            });
+            
+            // Calculadora de objetivo de longo prazo
+            document.getElementById('calcular-longo').addEventListener('click', function() {
+                const valor = parseFloat(document.getElementById('objetivo-longo-valor').value) || 1000000;
+                const prazo = parseInt(document.getElementById('objetivo-longo-prazo').value) || 30;
+                const inicial = parseFloat(document.getElementById('objetivo-longo-inicial').value) || 50000;
+                const taxa = 12.50 / 100; // Taxa média para longo prazo
+                
+                // Converter anos para meses para o cálculo
+                calcularObjetivo('longo', valor, prazo * 12, inicial, taxa);
+            });
+            
+            function calcularObjetivo(tipo, valor, prazo, inicial, taxaAnual) {
+                // Converter taxa anual para mensal
+                const taxaMensal = Math.pow(1 + taxaAnual, 1/12) - 1;
+                
+                // Calcular aporte mensal necessário
+                // Fórmula: M = (VF - VI * (1 + i)^n) / (((1 + i)^n - 1) / i)
+                // Onde: M = aporte mensal, VF = valor final, VI = valor inicial, i = taxa mensal, n = prazo em meses
+                
+                const fatorJuros = Math.pow(1 + taxaMensal, prazo);
+                const valorFuturoInicial = inicial * fatorJuros;
+                const fatorAcumulacao = (fatorJuros - 1) / taxaMensal;
+                
+                let aporteMensal = (valor - valorFuturoInicial) / fatorAcumulacao;
+                
+                // Arredondar para duas casas decimais
+                aporteMensal = Math.max(0, Math.round(aporteMensal * 100) / 100);
+                
+                // Atualizar resultado
+                const resultadoElement = document.getElementById(`resultado-${tipo}`);
+                const valorElement = resultadoElement.querySelector('.resultado-valor');
+                const infoElement = resultadoElement.querySelector('.resultado-info');
+                
+                valorElement.textContent = `R$ ${aporteMensal.toFixed(2)} por mês`;
+                
+                let prazoTexto;
+                if (tipo === 'longo') {
+                    prazoTexto = `${prazo / 12} anos`;
+                } else {
+                    prazoTexto = `${prazo} meses`;
+                }
+                
+                infoElement.innerHTML = `
+                    <p>Para atingir seu objetivo de <strong>R$ ${valor.toFixed(2)}</strong> em <strong>${prazoTexto}</strong>, 
+                    você precisará poupar <strong>R$ ${aporteMensal.toFixed(2)}</strong> por mês, 
+                    considerando seu valor inicial de <strong>R$ ${inicial.toFixed(2)}</strong> 
+                    e uma rentabilidade média de <strong>${(taxaAnual * 100).toFixed(2)}% a.a.</strong></p>
+                `;
+                
+                resultadoElement.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>

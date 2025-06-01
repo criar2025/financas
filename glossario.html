@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossário Financeiro - finança.com</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+        .glossario-header {
+            background-color: #f5f8fa;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        .glossario-header h1 {
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .glossario-filtro {
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .glossario-filtro button {
+            background-color: var(--branco);
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .glossario-filtro button:hover,
+        .glossario-filtro button.active {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border-color: var(--azul-claro);
+        }
+        
+        .glossario-letra {
+            margin-bottom: 40px;
+        }
+        
+        .glossario-letra-titulo {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--azul-escuro);
+            border-bottom: 2px solid var(--azul-claro);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .glossario-termos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .glossario-termo {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra-suave);
+            transition: transform 0.3s ease;
+        }
+        
+        .glossario-termo:hover {
+            transform: translateY(-5px);
+        }
+        
+        .glossario-termo h3 {
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        
+        .glossario-termo p {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .glossario-termo-categoria {
+            display: inline-block;
+            font-size: 0.8rem;
+            background-color: #f0f7ff;
+            color: var(--azul-claro);
+            padding: 3px 8px;
+            border-radius: 12px;
+            margin-top: 10px;
+        }
+        
+        .sem-termos {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 30px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            color: #666;
+        }
+        
+        .glossario-indice {
+            position: sticky;
+            top: 20px;
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: var(--sombra-suave);
+            margin-bottom: 30px;
+        }
+        
+        .glossario-indice h3 {
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .glossario-indice-letras {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .glossario-indice-letra {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f8fa;
+            border-radius: 50%;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .glossario-indice-letra:hover,
+        .glossario-indice-letra.active {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+        }
+        
+        .glossario-indice-letra.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        @media (max-width: 768px) {
+            .glossario-termos {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-principal">
+        <div class="container header-container">
+            <div class="logo-container">
+                <a href="index.html" class="logo"><img src="img/logo.png" alt="finança.com logo"></a>
+                <div class="slogan">INVESTIGAÇÃO, perícia e rastreamento financeiro</div>
+            </div>
+            <nav class="menu-principal">
+                <button class="menu-hamburguer" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="menu-items">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="aplicacoes.html">Aplicações</a></li>
+                    <li><a href="analise.html">Análise de Mercado</a></li>
+                    <li><a href="ferramentas.html">Calculadoras</a></li>
+                    <li><a href="educacao.html">Educação Financeira</a></li>
+                </ul>
+            </nav>
+            <div class="modo-iniciante-toggle">
+                <label class="switch">
+                    <input type="checkbox" id="toggle-modo-iniciante">
+                    <span class="slider round"></span>
+                </label>
+                <span class="label-modo-iniciante">Modo Iniciante</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="glossario-header">
+        <div class="container">
+            <h1>Glossário Financeiro</h1>
+            <p>Entenda os principais termos e conceitos do mercado financeiro e de investimentos.</p>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="glossario-indice">
+            <h3>Índice</h3>
+            <div class="glossario-indice-letras" id="glossario-indice">
+                <!-- Será preenchido via JavaScript -->
+            </div>
+        </div>
+        
+        <div class="glossario-filtro" id="glossario-filtro">
+            <button class="active" data-categoria="todos">Todos</button>
+            <button data-categoria="investimentos">Investimentos</button>
+            <button data-categoria="mercado">Mercado</button>
+            <button data-categoria="tributacao">Tributação</button>
+            <button data-categoria="indicadores">Indicadores</button>
+            <button data-categoria="renda-fixa">Renda Fixa</button>
+            <button data-categoria="renda-variavel">Renda Variável</button>
+        </div>
+        
+        <div id="glossario-conteudo">
+            <!-- Será preenchido via JavaScript -->
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">finança<span>.com</span></div>
+                    <p>Sua plataforma completa para análise de investimentos e aplicações financeiras.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Navegação</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="aplicacoes.html">Aplicações</a></li>
+                        <li><a href="analise.html">Análise de Mercado</a></li>
+                        <li><a href="ferramentas.html">Calculadoras</a></li>
+                        <li><a href="educacao.html">Educação Financeira</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="glossario.html">Glossário Financeiro</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="privacidade.html">Política de Privacidade</a></li>
+                        <li><a href="termos.html">Termos de Uso</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contato</h4>
+                    <ul class="contato-info">
+                        <li><i class="fas fa-envelope"></i> contato@financa.com</li>
+                        <li><i class="fas fa-phone"></i> (11) 1234-5678</li>
+                        <li><i class="fas fa-map-marker-alt"></i> São Paulo, SP - Brasil</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 finança.com. Todos os direitos reservados.</p>
+                <p class="disclaimer">As informações contidas neste site são apenas para fins educacionais e não constituem recomendação de investimento.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dados do glossário
+            const termos = [
+                {
+                    termo: "Ação",
+                    definicao: "Título negociável que representa a menor parcela do capital social de uma empresa de capital aberto. O detentor de uma ação é sócio da empresa, participando dos resultados.",
+                    categoria: "renda-variavel"
+                },
+                {
+                    termo: "Benchmark",
+                    definicao: "Índice de referência utilizado para comparar a rentabilidade de investimentos. Exemplos: CDI para renda fixa, Ibovespa para ações.",
+                    categoria: "indicadores"
+                },
+                {
+                    termo: "CDB",
+                    definicao: "Certificado de Depósito Bancário. Título de renda fixa emitido por bancos como forma de captação de recursos.",
+                    categoria: "renda-fixa"
+                },
+                {
+                    termo: "CDI",
+                    definicao: "Certificado de Depósito Interbancário. Taxa que serve como referência para a rentabilidade de diversos investimentos de renda fixa.",
+                    categoria: "indicadores"
+                },
+                {
+                    termo: "Debênture",
+                    definicao: "Título de dívida emitido por empresas não-financeiras para captação de recursos de médio e longo prazo.",
+                    categoria: "renda-fixa"
+                },
+                {
+                    termo: "ETF",
+                    definicao: "Exchange Traded Fund. Fundo negociado em bolsa que busca replicar o desempenho de um índice de referência.",
+                    categoria: "renda-variavel"
+                },
+                {
+                    termo: "FGC",
+                    definicao: "Fundo Garantidor de Créditos. Entidade que protege depositantes e investidores no âmbito do sistema financeiro nacional até o valor de R$ 250 mil por CPF/CNPJ.",
+                    categoria: "mercado"
+                },
+                {
+                    termo: "Home Broker",
+                    definicao: "Plataforma digital oferecida por corretoras para que investidores possam negociar ativos financeiros pela internet.",
+                    categoria: "mercado"
+                },
+                {
+                    termo: "IPCA",
+                    definicao: "Índice Nacional de Preços ao Consumidor Amplo. Principal indicador de inflação do Brasil, calculado pelo IBGE.",
+                    categoria: "indicadores"
+                },
+                {
+                    termo: "LCA",
+                    definicao: "Letra de Crédito do Agronegócio. Título de renda fixa emitido por instituições financeiras para financiar o setor agrícola.",
+                    categoria: "renda-fixa"
+                },
+                {
+                    termo: "LCI",
+                    definicao: "Letra de Crédito Imobiliário. Título de renda fixa emitido por instituições financeiras para financiar o setor imobiliário.",
+                    categoria: "renda-fixa"
+                },
+                {
+                    termo: "Liquidez",
+                    definicao: "Facilidade e rapidez com que um ativo pode ser convertido em dinheiro sem perda significativa de valor.",
+                    categoria: "mercado"
+                },
+                {
+                    termo: "Marcação a Mercado",
+                    definicao: "Método de avaliação de ativos financeiros pelo preço de mercado atual, não pelo valor de aquisição.",
+                    categoria: "mercado"
+                },
+                {
+                    termo: "Previdência Privada",
+                    definicao: "Plano de investimento de longo prazo voltado para a aposentadoria, com benefícios tributários específicos.",
+                    categoria: "investimentos"
+                },
+                {
+                    termo: "Rentabilidade",
+                    definicao: "Retorno obtido em um investimento em determinado período, geralmente expresso em percentual.",
+                    categoria: "investimentos"
+                },
+                {
+                    termo: "Selic",
+                    definicao: "Sistema Especial de Liquidação e Custódia. Taxa básica de juros da economia brasileira, definida pelo Banco Central.",
+                    categoria: "indicadores"
+                },
+                {
+                    termo: "Tesouro Direto",
+                    definicao: "Programa do governo federal que permite a pessoas físicas comprarem títulos públicos pela internet.",
+                    categoria: "renda-fixa"
+                },
+                {
+                    termo: "Volatilidade",
+                    definicao: "Medida de variação do preço de um ativo financeiro em determinado período. Quanto maior a volatilidade, maior o risco.",
+                    categoria: "mercado"
+                }
+            ];
+            
+            // Organizar termos por letra inicial
+            function organizarTermosPorLetra() {
+                const termosPorLetra = {};
+                const alfabeto = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                
+                // Inicializar objeto com todas as letras
+                for (let i = 0; i < alfabeto.length; i++) {
+                    termosPorLetra[alfabeto[i]] = [];
+                }
+                
+                // Distribuir termos por letra inicial
+                termos.forEach(termo => {
+                    const letraInicial = termo.termo.charAt(0).toUpperCase();
+                    if (termosPorLetra[letraInicial]) {
+                        termosPorLetra[letraInicial].push(termo);
+                    }
+                });
+                
+                return termosPorLetra;
+            }
+            
+            // Renderizar glossário
+            function renderizarGlossario(filtroCategoria = 'todos') {
+                const termosPorLetra = organizarTermosPorLetra();
+                const glossarioConteudo = document.getElementById('glossario-conteudo');
+                const glossarioIndice = document.getElementById('glossario-indice');
+                
+                // Limpar conteúdo anterior
+                glossarioConteudo.innerHTML = '';
+                glossarioIndice.innerHTML = '';
+                
+                // Renderizar índice
+                for (const letra in termosPorLetra) {
+                    const termosFiltrados = filtroCategoria === 'todos' 
+                        ? termosPorLetra[letra] 
+                        : termosPorLetra[letra].filter(termo => termo.categoria === filtroCategoria);
+                    
+                    const letraElement = document.createElement('div');
+                    letraElement.className = `glossario-indice-letra ${termosFiltrados.length === 0 ? 'disabled' : ''}`;
+                    letraElement.textContent = letra;
+                    
+                    if (termosFiltrados.length > 0) {
+                        letraElement.addEventListener('click', () => {
+                            document.getElementById(`letra-${letra}`).scrollIntoView({ behavior: 'smooth' });
+                        });
+                    }
+                    
+                    glossarioIndice.appendChild(letraElement);
+                }
+                
+                // Renderizar termos por letra
+                for (const letra in termosPorLetra) {
+                    const termosFiltrados = filtroCategoria === 'todos' 
+                        ? termosPorLetra[letra] 
+                        : termosPorLetra[letra].filter(termo => termo.categoria === filtroCategoria);
+                    
+                    if (termosFiltrados.length === 0) continue;
+                    
+                    const letraSection = document.createElement('div');
+                    letraSection.className = 'glossario-letra';
+                    letraSection.id = `letra-${letra}`;
+                    
+                    const letraTitulo = document.createElement('h2');
+                    letraTitulo.className = 'glossario-letra-titulo';
+                    letraTitulo.textContent = letra;
+                    
+                    const termosGrid = document.createElement('div');
+                    termosGrid.className = 'glossario-termos';
+                    
+                    termosFiltrados.forEach(termo => {
+                        const termoElement = document.createElement('div');
+                        termoElement.className = 'glossario-termo';
+                        
+                        const termoTitulo = document.createElement('h3');
+                        termoTitulo.textContent = termo.termo;
+                        
+                        const termoDefinicao = document.createElement('p');
+                        termoDefinicao.textContent = termo.definicao;
+                        
+                        const termoCategoria = document.createElement('span');
+                        termoCategoria.className = 'glossario-termo-categoria';
+                        termoCategoria.textContent = formatarCategoria(termo.categoria);
+                        
+                        termoElement.appendChild(termoTitulo);
+                        termoElement.appendChild(termoDefinicao);
+                        termoElement.appendChild(termoCategoria);
+                        
+                        termosGrid.appendChild(termoElement);
+                    });
+                    
+                    letraSection.appendChild(letraTitulo);
+                    letraSection.appendChild(termosGrid);
+                    
+                    glossarioConteudo.appendChild(letraSection);
+                }
+                
+                // Verificar se há termos para exibir
+                if (glossarioConteudo.children.length === 0) {
+                    const semTermos = document.createElement('div');
+                    semTermos.className = 'sem-termos';
+                    semTermos.textContent = 'Nenhum termo encontrado para esta categoria.';
+                    glossarioConteudo.appendChild(semTermos);
+                }
+            }
+            
+            // Formatar nome da categoria
+            function formatarCategoria(categoria) {
+                const formatacao = {
+                    'investimentos': 'Investimentos',
+                    'mercado': 'Mercado',
+                    'tributacao': 'Tributação',
+                    'indicadores': 'Indicadores',
+                    'renda-fixa': 'Renda Fixa',
+                    'renda-variavel': 'Renda Variável'
+                };
+                
+                return formatacao[categoria] || categoria;
+            }
+            
+            // Configurar filtros
+            const filtroButtons = document.querySelectorAll('#glossario-filtro button');
+            filtroButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remover classe active de todos os botões
+                    filtroButtons.forEach(btn => btn.classList.remove('active'));
+                    
+                    // Adicionar classe active ao botão clicado
+                    this.classList.add('active');
+                    
+                    // Renderizar glossário com filtro selecionado
+                    renderizarGlossario(this.getAttribute('data-categoria'));
+                });
+            });
+            
+            // Renderizar glossário inicial
+            renderizarGlossario();
+        });
+    </script>
+</body>
+</html>

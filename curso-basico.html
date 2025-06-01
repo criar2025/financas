@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso Básico de Finanças - finança.com</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <style>
+        .curso-header {
+            background-color: #f5f8fa;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        .curso-header h1 {
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .curso-container {
+            margin-bottom: 50px;
+        }
+        
+        .modulos-container {
+            display: flex;
+            margin-bottom: 40px;
+        }
+        
+        .modulos-sidebar {
+            width: 280px;
+            flex-shrink: 0;
+            background-color: var(--branco);
+            border-radius: 10px;
+            box-shadow: var(--sombra-suave);
+            padding: 20px;
+            margin-right: 30px;
+            align-self: flex-start;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .modulos-titulo {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: var(--azul-escuro);
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .modulos-lista {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .modulo-item {
+            margin-bottom: 10px;
+        }
+        
+        .modulo-link {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            border-radius: 5px;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .modulo-link:hover {
+            background-color: #f5f8fa;
+            color: var(--azul-escuro);
+        }
+        
+        .modulo-link.active {
+            background-color: var(--azul-claro-transparente);
+            color: var(--azul-escuro);
+            font-weight: 600;
+        }
+        
+        .modulo-link i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .modulo-numero {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            background-color: #eee;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 24px;
+            font-size: 0.9rem;
+            margin-right: 10px;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+        
+        .modulo-link:hover .modulo-numero,
+        .modulo-link.active .modulo-numero {
+            background-color: var(--azul-medio);
+            color: var(--branco);
+        }
+        
+        .modulo-status {
+            margin-left: auto;
+            font-size: 0.8rem;
+            padding: 3px 8px;
+            border-radius: 10px;
+            background-color: #eee;
+            color: #666;
+        }
+        
+        .modulo-status.completo {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        
+        .modulo-status.em-progresso {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        
+        .modulo-status.bloqueado {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        
+        .conteudo-container {
+            flex-grow: 1;
+            background-color: var(--branco);
+            border-radius: 10px;
+            box-shadow: var(--sombra-suave);
+            padding: 30px;
+        }
+        
+        .conteudo-header {
+            margin-bottom: 30px;
+        }
+        
+        .conteudo-titulo {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--azul-escuro);
+        }
+        
+        .conteudo-subtitulo {
+            color: #666;
+            font-size: 1.1rem;
+        }
+        
+        .conteudo-body {
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .conteudo-body h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin: 30px 0 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .conteudo-body h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin: 25px 0 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .conteudo-body p {
+            margin-bottom: 20px;
+        }
+        
+        .conteudo-body ul,
+        .conteudo-body ol {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+        
+        .conteudo-body li {
+            margin-bottom: 10px;
+        }
+        
+        .destaque-box {
+            background-color: #f5f8fa;
+            border-left: 4px solid var(--azul-medio);
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .destaque-titulo {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--azul-escuro);
+            display: flex;
+            align-items: center;
+        }
+        
+        .destaque-titulo i {
+            margin-right: 10px;
+            color: var(--azul-medio);
+        }
+        
+        .exemplo-box {
+            background-color: #f9f9f9;
+            border: 1px solid #eee;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        
+        .exemplo-titulo {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--azul-escuro);
+        }
+        
+        .codigo-box {
+            background-color: #f8f9fa;
+            border: 1px solid #eee;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+        
+        .exercicio-box {
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        
+        .exercicio-titulo {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #856404;
+            display: flex;
+            align-items: center;
+        }
+        
+        .exercicio-titulo i {
+            margin-right: 10px;
+        }
+        
+        .navegacao-modulos {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+        
+        .progresso-container {
+            margin-bottom: 30px;
+        }
+        
+        .progresso-titulo {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .progresso-barra {
+            height: 8px;
+            background-color: #eee;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progresso-preenchimento {
+            height: 100%;
+            background-color: var(--azul-medio);
+            width: 20%;
+        }
+        
+        @media (max-width: 992px) {
+            .modulos-container {
+                flex-direction: column;
+            }
+            
+            .modulos-sidebar {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 30px;
+                position: static;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-principal">
+        <div class="container header-container">
+            <div class="logo-container">
+                <a href="index.html" class="logo"><img src="img/logo.png" alt="finança.com logo"></a>
+                <div class="slogan">INVESTIGAÇÃO, perícia e rastreamento financeiro</div>
+            </div>
+            <nav class="menu-principal">
+                <button class="menu-hamburguer" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="menu-items">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="aplicacoes.html">Aplicações</a></li>
+                    <li><a href="analise.html">Análise de Mercado</a></li>
+                    <li><a href="ferramentas.html">Calculadoras</a></li>
+                    <li><a href="educacao.html" class="active">Educação Financeira</a></li>
+                </ul>
+            </nav>
+            <div class="modo-iniciante-toggle">
+                <label class="switch">
+                    <input type="checkbox" id="toggle-modo-iniciante">
+                    <span class="slider round"></span>
+                </label>
+                <span class="label-modo-iniciante">Modo Iniciante</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="curso-header">
+        <div class="container">
+            <h1>Curso Básico de Finanças</h1>
+            <p>Aprenda os fundamentos de finanças pessoais e investimentos em um curso interativo e prático.</p>
+        </div>
+    </section>
+
+    <section class="container curso-container">
+        <div class="progresso-container">
+            <div class="progresso-titulo">
+                <span>Seu progresso</span>
+                <span>20% concluído</span>
+            </div>
+            <div class="progresso-barra">
+                <div class="progresso-preenchimento"></div>
+            </div>
+        </div>
+
+        <div class="modulos-container">
+            <div class="modulos-sidebar">
+                <div class="modulos-titulo">Módulos do Curso</div>
+                <ul class="modulos-lista">
+                    <li class="modulo-item">
+                        <a href="#modulo1" class="modulo-link active">
+                            <span class="modulo-numero">1</span>
+                            Fundamentos Financeiros
+                            <span class="modulo-status em-progresso">Em progresso</span>
+                        </a>
+                    </li>
+                    <li class="modulo-item">
+                        <a href="#modulo2" class="modulo-link">
+                            <span class="modulo-numero">2</span>
+                            Orçamento e Planejamento
+                            <span class="modulo-status">Não iniciado</span>
+                        </a>
+                    </li>
+                    <li class="modulo-item">
+                        <a href="#modulo3" class="modulo-link">
+                            <span class="modulo-numero">3</span>
+                            Dívidas e Crédito
+                            <span class="modulo-status bloqueado">Bloqueado</span>
+                        </a>
+                    </li>
+                    <li class="modulo-item">
+                        <a href="#modulo4" class="modulo-link">
+                            <span class="modulo-numero">4</span>
+                            Reserva de Emergência
+                            <span class="modulo-status bloqueado">Bloqueado</span>
+                        </a>
+                    </li>
+                    <li class="modulo-item">
+                        <a href="#modulo5" class="modulo-link">
+                            <span class="modulo-numero">5</span>
+                            Introdução aos Investimentos
+                            <span class="modulo-status bloqueado">Bloqueado</span>
+                        </a>
+                    </li>
+                    <li class="modulo-item">
+                        <a href="#modulo6" class="modulo-link">
+                            <span class="modulo-numero">6</span>
+                            Renda Fixa
+                            <span class="modulo-status bloqueado">Bloqueado</span>
+                        </a>
+                    </li>
+                    <li class="modulo-item">
+                        <a href="#modulo7" class="modulo-link">
+                            <span class="modulo-numero">7</span>
+                            Renda Variável
+                            <span class="modulo-status bloqueado">Bloqueado</span>
+                        </a>
+                    </li>
+                    <li class="modulo-item">
+                        <a href="#modulo8" class="modulo-link">
+                            <span class="modulo-numero">8</span>
+                            Planejamento para Aposentadoria
+                            <span class="modulo-status bloqueado">Bloqueado</span>
+                        </a>
+                    </li>
+                    <li class="modulo-item">
+                        <a href="#modulo9" class="modulo-link">
+                            <span class="modulo-numero">9</span>
+                            Impostos e Declarações
+                            <span class="modulo-status bloqueado">Bloqueado</span>
+                        </a>
+                    </li>
+                    <li class="modulo-item">
+                        <a href="#modulo10" class="modulo-link">
+                            <span class="modulo-numero">10</span>
+                            Projeto Final
+                            <span class="modulo-status bloqueado">Bloqueado</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="conteudo-container">
+                <div class="conteudo-header">
+                    <div class="conteudo-titulo">Módulo 1: Fundamentos Financeiros</div>
+                    <div class="conteudo-subtitulo">Entendendo os conceitos básicos para uma vida financeira saudável</div>
+                </div>
+
+                <div class="conteudo-body">
+                    <p>Bem-vindo ao primeiro módulo do nosso Curso Básico de Finanças! Neste módulo, vamos explorar os conceitos fundamentais que servirão como base para toda a sua jornada de educação financeira.</p>
+
+                    <h2>1.1 O que é Educação Financeira?</h2>
+                    <p>Educação financeira é o processo de desenvolvimento de conhecimentos e habilidades que permitem tomar decisões financeiras informadas e eficazes. Não se trata apenas de aprender a economizar dinheiro, mas de compreender como o dinheiro funciona e como utilizá-lo de forma inteligente para alcançar seus objetivos.</p>
+
+                    <div class="destaque-box">
+                        <div class="destaque-titulo">
+                            <i class="fas fa-lightbulb"></i>
+                            Por que a educação financeira é importante?
+                        </div>
+                        <p>A educação financeira é essencial porque:</p>
+                        <ul>
+                            <li>Ajuda a tomar decisões financeiras mais conscientes</li>
+                            <li>Reduz o estresse relacionado a dinheiro</li>
+                            <li>Permite planejar e alcançar objetivos de curto e longo prazo</li>
+                            <li>Proporciona maior segurança e independência financeira</li>
+                            <li>Ajuda a evitar armadilhas como dívidas excessivas e golpes financeiros</li>
+                        </ul>
+                    </div>
+
+                    <h2>1.2 Conceitos Básicos de Finanças</h2>
+                    <p>Antes de avançarmos para estratégias mais complexas, é importante compreender alguns conceitos fundamentais:</p>
+
+                    <h3>Receitas e Despesas</h3>
+                    <p><strong>Receitas</strong> são todas as entradas de dinheiro, como salário, rendimentos de investimentos, aluguéis recebidos, etc. <strong>Despesas</strong> são todas as saídas de dinheiro, como contas, alimentação, transporte, lazer, etc.</p>
+
+                    <h3>Ativos e Passivos</h3>
+                    <p><strong>Ativos</strong> são bens ou direitos que geram dinheiro para você (ex: investimentos, imóveis alugados). <strong>Passivos</strong> são obrigações ou bens que tiram dinheiro do seu bolso (ex: dívidas, carro para uso pessoal).</p>
+
+                    <h3>Juros Simples e Compostos</h3>
+                    <p><strong>Juros simples</strong> são calculados apenas sobre o valor principal. <strong>Juros compostos</strong> são calculados sobre o valor principal mais os juros acumulados anteriormente, gerando o efeito de "juros sobre juros".</p>
+
+                    <div class="exemplo-box">
+                        <div class="exemplo-titulo">Exemplo de Juros Compostos</div>
+                        <p>Imagine que você investe R$ 1.000 a uma taxa de 10% ao ano:</p>
+                        <ul>
+                            <li>Após 1 ano: R$ 1.000 + 10% = R$ 1.100</li>
+                            <li>Após 2 anos: R$ 1.100 + 10% de R$ 1.100 = R$ 1.210</li>
+                            <li>Após 3 anos: R$ 1.210 + 10% de R$ 1.210 = R$ 1.331</li>
+                        </ul>
+                        <p>Perceba que o valor dos juros aumenta a cada ano, pois são calculados sobre um montante cada vez maior.</p>
+                    </div>
+
+                    <h3>Inflação</h3>
+                    <p>A <strong>inflação</strong> é o aumento generalizado e contínuo dos preços de bens e serviços. Ela reduz o poder de compra do dinheiro ao longo do tempo. Por isso, seus investimentos precisam render acima da inflação para que você não perca poder de compra.</p>
+
+                    <h3>Liquidez</h3>
+                    <p>A <strong>liquidez</strong> refere-se à facilidade com que um ativo pode ser convertido em dinheiro sem perda significativa de valor. Dinheiro em conta corrente tem alta liquidez, enquanto um imóvel tem baixa liquidez.</p>
+
+                    <h2>1.3 Saúde Financeira</h2>
+                    <p>Saúde financeira é um estado em que você:</p>
+                    <ul>
+                        <li>Tem controle sobre suas finanças do dia a dia</li>
+                        <li>Consegue absorver choques financeiros (como despesas inesperadas)</li>
+                        <li>Está no caminho para atingir seus objetivos financeiros</li>
+                        <li>Tem liberdade para fazer escolhas que melhoram sua qualidade de vida</li>
+                    </ul>
+
+                    <div class="destaque-box">
+                        <div class="destaque-titulo">
+                            <i class="fas fa-lightbulb"></i>
+                            Sinais de boa saúde financeira
+                        </div>
+                        <ul>
+                            <li>Gastar menos do que ganha</li>
+                            <li>Ter uma reserva de emergência</li>
+                            <li>Estar livre de dívidas de alto custo (como cartão de crédito)</li>
+                            <li>Investir regularmente para o futuro</li>
+                            <li>Ter seguros adequados para proteger-se contra riscos</li>
+                        </ul>
+                    </div>
+
+                    <h2>1.4 Mentalidade Financeira</h2>
+                    <p>Sua relação com o dinheiro é fortemente influenciada por sua mentalidade financeira, que inclui crenças, valores e atitudes em relação ao dinheiro. Muitas vezes, essas crenças são formadas na infância e podem ser limitantes.</p>
+
+                    <p>Algumas mentalidades financeiras comuns:</p>
+                    <ul>
+                        <li><strong>Mentalidade de escassez:</strong> "Nunca há dinheiro suficiente"</li>
+                        <li><strong>Mentalidade de consumo:</strong> "Dinheiro é para gastar e aproveitar agora"</li>
+                        <li><strong>Mentalidade de abundância:</strong> "Há oportunidades suficientes para prosperar"</li>
+                        <li><strong>Mentalidade de investidor:</strong> "Dinheiro é uma ferramenta para gerar mais dinheiro"</li>
+                    </ul>
+
+                    <p>Desenvolver uma mentalidade financeira saudável é tão importante quanto aprender técnicas de gestão financeira.</p>
+
+                    <div class="exercicio-box">
+                        <div class="exercicio-titulo">
+                            <i class="fas fa-pencil-alt"></i>
+                            Exercício Prático
+                        </div>
+                        <p>Reflita sobre suas crenças em relação ao dinheiro respondendo às seguintes perguntas:</p>
+                        <ol>
+                            <li>Quais mensagens sobre dinheiro você recebeu na infância?</li>
+                            <li>Como essas mensagens influenciam suas decisões financeiras hoje?</li>
+                            <li>Você tende a pensar em termos de escassez ou abundância quando se trata de dinheiro?</li>
+                            <li>Quais crenças limitantes sobre dinheiro você gostaria de mudar?</li>
+                        </ol>
+                        <p>Anote suas respostas em um caderno e revise-as periodicamente ao longo do curso.</p>
+                    </div>
+
+                    <h2>1.5 Estabelecendo Objetivos Financeiros</h2>
+                    <p>Objetivos financeiros claros são essenciais para direcionar suas decisões financeiras. Eles devem ser:</p>
+                    <ul>
+                        <li><strong>Específicos:</strong> Defina exatamente o que quer alcançar</li>
+                        <li><strong>Mensuráveis:</strong> Estabeleça valores e prazos concretos</li>
+                        <li><strong>Atingíveis:</strong> Sejam realistas considerando sua situação atual</li>
+                        <li><strong>Relevantes:</strong> Estejam alinhados com seus valores e prioridades</li>
+                        <li><strong>Temporais:</strong> Tenham prazos definidos</li>
+                    </ul>
+
+                    <p>Classifique seus objetivos por prazo:</p>
+                    <ul>
+                        <li><strong>Curto prazo:</strong> até 1-2 anos (ex: viagem, compra de eletrônicos)</li>
+                        <li><strong>Médio prazo:</strong> 2-5 anos (ex: entrada para um carro, pós-graduação)</li>
+                        <li><strong>Longo prazo:</strong> mais de 5 anos (ex: aposentadoria, compra de imóvel)</li>
+                    </ul>
+
+                    <div class="exercicio-box">
+                        <div class="exercicio-titulo">
+                            <i class="fas fa-pencil-alt"></i>
+                            Exercício Prático
+                        </div>
+                        <p>Defina pelo menos um objetivo financeiro para cada prazo (curto, médio e longo), seguindo os critérios SMART:</p>
+                        <div class="codigo-box">
+                            Exemplo:<br>
+                            Curto prazo: Economizar R$ 5.000 para uma viagem em 12 meses.<br>
+                            Médio prazo: Juntar R$ 20.000 para a entrada de um carro em 3 anos.<br>
+                            Longo prazo: Acumular R$ 1.000.000 para aposentadoria em 30 anos.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="navegacao-modulos">
+                    <button class="btn btn-secondary" disabled>Módulo anterior</button>
+                    <button class="btn btn-primary">Próximo módulo</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-column">
+                    <h3>finança.com</h3>
+                    <p>Análise e investimentos financeiros com dados em tempo real.</p>
+                    <div class="footer-social">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Links Rápidos</h3>
+                    <ul class="footer-links">
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="aplicacoes.html">Aplicações</a></li>
+                        <li><a href="analise.html">Análise de Mercado</a></li>
+                        <li><a href="ferramentas.html">Calculadoras</a></li>
+                        <li><a href="educacao.html">Educação Financeira</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Recursos</h3>
+                    <ul class="footer-links">
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="glossario.html">Glossário Financeiro</a></li>
+                        <li><a href="faq.html">Perguntas Frequentes</a></li>
+                        <li><a href="privacidade.html">Política de Privacidade</a></li>
+                        <li><a href="termos.html">Termos de Uso</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contato</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i> contato@financa.com</li>
+                        <li><i class="fas fa-phone"></i> (11) 4002-8922</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Paulista, 1000 - São Paulo</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 finança.com - Todos os direitos reservados. Desenvolvido por Harrison Costa.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/alertas.js"></script>
+    <script src="js/prospeccao.js"></script>
+    <script src="js/api-real-time.js"></script>
+</body>
+</html>
