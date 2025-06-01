@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicações - finança.com</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .aplicacoes-header {
+            background-color: #f5f8fa;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        .aplicacoes-header h1 {
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .filtros-avancados {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--sombra-suave);
+        }
+        
+        .filtros-titulo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .filtros-titulo h2 {
+            margin-bottom: 0;
+            font-size: 1.5rem;
+        }
+        
+        .filtros-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        
+        .filtro-grupo {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .filtro-grupo label {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .filtro-grupo select,
+        .filtro-grupo input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .filtro-grupo .range-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .filtro-grupo .range-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .filtros-acoes {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 20px;
+            gap: 10px;
+        }
+        
+        .tabela-aplicacoes {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        
+        .tabela-aplicacoes th {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 12px 15px;
+            text-align: left;
+        }
+        
+        .tabela-aplicacoes td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tabela-aplicacoes tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .tabela-aplicacoes tr:hover {
+            background-color: #f0f7ff;
+        }
+        
+        .risco-indicador {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .risco-baixo {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--verde-suave);
+        }
+        
+        .risco-medio {
+            background-color: rgba(241, 196, 15, 0.2);
+            color: var(--amarelo);
+        }
+        
+        .risco-alto {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--vermelho-suave);
+        }
+        
+        .recomendacao-indicador {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .recomendacao-indicador i {
+            font-size: 1rem;
+        }
+        
+        .recomendacao-verde i {
+            color: var(--verde-suave);
+        }
+        
+        .recomendacao-vermelha i {
+            color: var(--vermelho-suave);
+        }
+        
+        .recomendacao-neutra i {
+            color: #999;
+        }
+        
+        .acoes-botoes {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .btn-acao {
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        .btn-detalhes {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+        }
+        
+        .btn-comparar {
+            background-color: transparent;
+            border: 1px solid var(--azul-claro);
+            color: var(--azul-claro);
+        }
+        
+        .paginacao {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 5px;
+        }
+        
+        .paginacao-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            background-color: var(--branco);
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .paginacao-item.active {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border-color: var(--azul-claro);
+        }
+        
+        .paginacao-item:hover:not(.active) {
+            background-color: #f5f5f5;
+        }
+        
+        @media (max-width: 1024px) {
+            .filtros-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .filtros-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .tabela-aplicacoes {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-principal">
+        <div class="container header-container">
+            <div class="logo-container">
+                <a href="index.html" class="logo"><img src="img/logo.png" alt="finança.com logo"></a>
+                <div class="slogan">INVESTIGAÇÃO, perícia e rastreamento financeiro</div>
+            </div>
+            <nav class="menu-principal">
+                <button class="menu-hamburguer" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="menu-items">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="aplicacoes.html" class="active">Aplicações</a></li>
+                    <li><a href="analise.html">Análise de Mercado</a></li>
+                    <li><a href="ferramentas.html">Calculadoras</a></li>
+                    <li><a href="educacao.html">Educação Financeira</a></li>
+                </ul>
+            </nav>
+            <div class="modo-iniciante-toggle">
+                <label class="switch">
+                    <input type="checkbox" id="toggle-modo-iniciante">
+                    <span class="slider round"></span>
+                </label>
+                <span class="label-modo-iniciante">Modo Iniciante</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="aplicacoes-header">
+        <div class="container">
+            <h1>Aplicações Financeiras</h1>
+            <p>Compare e analise as melhores opções de investimento do Banco do Brasil e do mercado financeiro.</p>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="filtros-avancados">
+            <div class="filtros-titulo">
+                <h2>Filtros Avançados</h2>
+                <button class="btn btn-secondary" id="limpar-filtros">Limpar Filtros</button>
+            </div>
+            <div class="filtros-grid">
+                <div class="filtro-grupo">
+                    <label for="filtro-tipo">Tipo de Aplicação</label>
+                    <select id="filtro-tipo">
+                        <option value="todos">Todos os tipos</option>
+                        <option value="renda-fixa">Renda Fixa</option>
+                        <option value="renda-variavel">Renda Variável</option>
+                        <option value="fundos">Fundos de Investimento</option>
+                        <option value="previdencia">Previdência</option>
+                    </select>
+                </div>
+                <div class="filtro-grupo">
+                    <label for="filtro-risco">Nível de Risco</label>
+                    <select id="filtro-risco">
+                        <option value="todos">Todos os níveis</option>
+                        <option value="baixo">Baixo</option>
+                        <option value="medio">Médio</option>
+                        <option value="alto">Alto</option>
+                    </select>
+                </div>
+                <div class="filtro-grupo">
+                    <label for="filtro-valor">Valor Mínimo</label>
+                    <select id="filtro-valor">
+                        <option value="todos">Qualquer valor</option>
+                        <option value="ate-100">Até R$ 100</option>
+                        <option value="100-500">R$ 100 a R$ 500</option>
+                        <option value="500-1000">R$ 500 a R$ 1.000</option>
+                        <option value="acima-1000">Acima de R$ 1.000</option>
+                    </select>
+                </div>
+                <div class="filtro-grupo">
+                    <label for="filtro-liquidez">Liquidez</label>
+                    <select id="filtro-liquidez">
+                        <option value="todos">Todas as opções</option>
+                        <option value="diaria">Diária</option>
+                        <option value="d+1">D+1</option>
+                        <option value="d+3">D+3</option>
+                        <option value="d+30">D+30</option>
+                        <option value="vencimento">No vencimento</option>
+                    </select>
+                </div>
+                <div class="filtro-grupo">
+                    <label for="filtro-rentabilidade">Rentabilidade Mínima</label>
+                    <div class="range-container">
+                        <input type="range" id="filtro-rentabilidade" min="0" max="20" step="0.5" value="0">
+                        <div class="range-values">
+                            <span>0%</span>
+                            <span id="rentabilidade-valor">0%</span>
+                            <span>20%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="filtro-grupo">
+                    <label for="filtro-prazo">Prazo</label>
+                    <select id="filtro-prazo">
+                        <option value="todos">Todos os prazos</option>
+                        <option value="curto">Curto (até 1 ano)</option>
+                        <option value="medio">Médio (1 a 3 anos)</option>
+                        <option value="longo">Longo (mais de 3 anos)</option>
+                    </select>
+                </div>
+                <div class="filtro-grupo">
+                    <label for="filtro-banco">Instituição</label>
+                    <select id="filtro-banco">
+                        <option value="todos">Todas</option>
+                        <option value="bb" selected>Banco do Brasil</option>
+                        <option value="outros">Outras instituições</option>
+                    </select>
+                </div>
+                <div class="filtro-grupo">
+                    <label for="filtro-recomendacao">Recomendação</label>
+                    <select id="filtro-recomendacao">
+                        <option value="todos">Todas</option>
+                        <option value="recomendado">Recomendado</option>
+                        <option value="neutro">Neutro</option>
+                        <option value="nao-recomendado">Não Recomendado</option>
+                    </select>
+                </div>
+            </div>
+            <div class="filtros-acoes">
+                <button class="btn btn-secondary">Salvar Filtros</button>
+                <button class="btn btn-primary" id="aplicar-filtros">Aplicar Filtros</button>
+            </div>
+        </div>
+
+        <table class="tabela-aplicacoes">
+            <thead>
+                <tr>
+                    <th>Nome da Aplicação</th>
+                    <th>Tipo</th>
+                    <th>Rentabilidade</th>
+                    <th>Valor Mínimo</th>
+                    <th>Liquidez</th>
+                    <th>Risco</th>
+                    <th>Recomendação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="tabela-aplicacoes-body">
+                <!-- Conteúdo será preenchido dinamicamente -->
+            </tbody>
+        </table>
+
+        <div class="paginacao">
+            <div class="paginacao-item"><i class="fas fa-chevron-left"></i></div>
+            <div class="paginacao-item active">1</div>
+            <div class="paginacao-item">2</div>
+            <div class="paginacao-item">3</div>
+            <div class="paginacao-item"><i class="fas fa-chevron-right"></i></div>
+        </div>
+    </section>
+
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/alertas.js"></script>
+    <script src="js/prospeccao.js"></script>
+    <script src="js/api-real-time.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Dados de aplicações (simulados)
+            const aplicacoes = [
+                {
+                    nome: "CDB Banco do Brasil",
+                    tipo: "renda-fixa",
+                    rentabilidade: "110% do CDI",
+                    rentabilidadeValor: 11.83,
+                    valorMinimo: 0.01,
+                    liquidez: "Diária",
+                    risco: "baixo",
+                    recomendacao: "recomendado",
+                    id: "cdb"
+                },
+                {
+                    nome: "LCA Banco do Brasil",
+                    tipo: "renda-fixa",
+                    rentabilidade: "95% do CDI",
+                    rentabilidadeValor: 10.24,
+                    valorMinimo: 100.00,
+                    liquidez: "Vencimento",
+                    risco: "baixo",
+                    recomendacao: "neutro",
+                    id: "lca"
+                },
+                {
+                    nome: "LCI Banco do Brasil",
+                    tipo: "renda-fixa",
+                    rentabilidade: "93% do CDI",
+                    rentabilidadeValor: 10.02,
+                    valorMinimo: 100.00,
+                    liquidez: "Vencimento",
+                    risco: "baixo",
+                    recomendacao: "neutro",
+                    id: "lci"
+                },
+                {
+                    nome: "Tesouro IPCA+",
+                    tipo: "renda-fixa",
+                    rentabilidade: "IPCA + 5,5% a.a.",
+                    rentabilidadeValor: 10.50,
+                    valorMinimo: 30.00,
+                    liquidez: "Diária",
+                    risco: "baixo",
+                    recomendacao: "recomendado",
+                    id: "tesouro"
+                },
+                {
+                    nome: "Tesouro Selic",
+                    tipo: "renda-fixa",
+                    rentabilidade: "100% Selic",
+                    rentabilidadeValor: 10.75,
+                    valorMinimo: 30.00,
+                    liquidez: "Diária",
+                    risco: "baixo",
+                    recomendacao: "neutro",
+                    id: "tesouro-selic"
+                },
+                {
+                    nome: "Tesouro Prefixado",
+                    tipo: "renda-fixa",
+                    rentabilidade: "10,25% a.a.",
+                    rentabilidadeValor: 10.25,
+                    valorMinimo: 30.00,
+                    liquidez: "Diária",
+                    risco: "medio",
+                    recomendacao: "neutro",
+                    id: "tesouro-pre"
+                },
+                {
+                    nome: "Fundo de Ações BB",
+                    tipo: "renda-variavel",
+                    rentabilidade: "15,2% (12 meses)",
+                    rentabilidadeValor: 15.20,
+                    valorMinimo: 200.00,
+                    liquidez: "D+3",
+                    risco: "alto",
+                    recomendacao: "nao-recomendado",
+                    id: "fundo-acoes"
+                },
+                {
+                    nome: "Fundo Multimercado BB",
+                    tipo: "fundos",
+                    rentabilidade: "12,5% (12 meses)",
+                    rentabilidadeValor: 12.50,
+                    valorMinimo: 500.00,
+                    liquidez: "D+1",
+                    risco: "medio",
+                    recomendacao: "neutro",
+                    id: "fundo-multi"
+                },
+                {
+                    nome: "Fundo Imobiliário BB",
+                    tipo: "fundos",
+                    rentabilidade: "8,7% (12 meses)",
+                    rentabilidadeValor: 8.70,
+                    valorMinimo: 1000.00,
+                    liquidez: "D+3",
+                    risco: "medio",
+                    recomendacao: "neutro",
+                    id: "fundo-imob"
+                },
+                {
+                    nome: "Poupança",
+                    tipo: "renda-fixa",
+                    rentabilidade: "6,17% a.a.",
+                    rentabilidadeValor: 6.17,
+                    valorMinimo: 0.01,
+                    liquidez: "Diária",
+                    risco: "baixo",
+                    recomendacao: "nao-recomendado",
+                    id: "poupanca"
+                },
+                {
+                    nome: "Previdência PGBL BB",
+                    tipo: "previdencia",
+                    rentabilidade: "9,8% (12 meses)",
+                    rentabilidadeValor: 9.80,
+                    valorMinimo: 50.00,
+                    liquidez: "D+30",
+                    risco: "medio",
+                    recomendacao: "neutro",
+                    id: "pgbl"
+                },
+                {
+                    nome: "Previdência VGBL BB",
+                    tipo: "previdencia",
+                    rentabilidade: "9,5% (12 meses)",
+                    rentabilidadeValor: 9.50,
+                    valorMinimo: 50.00,
+                    liquidez: "D+30",
+                    risco: "medio",
+                    recomendacao: "neutro",
+                    id: "vgbl"
+                }
+            ];
+
+            // Função para renderizar a tabela
+            function renderizarTabela(dados) {
+                const tbody = document.getElementById('tabela-aplicacoes-body');
+                tbody.innerHTML = '';
+                
+                dados.forEach(aplicacao => {
+                    const tr = document.createElement('tr');
+                    
+                    // Formatar valor mínimo
+                    const valorFormatado = aplicacao.valorMinimo.toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    });
+                    
+                    // Definir ícone e classe para recomendação
+                    let recomendacaoIcone = '';
+                    let recomendacaoClasse = '';
+                    
+                    switch(aplicacao.recomendacao) {
+                        case 'recomendado':
+                            recomendacaoIcone = '<i class="fas fa-thumbs-up"></i>';
+                            recomendacaoClasse = 'recomendacao-verde';
+                            break;
+                        case 'nao-recomendado':
+                            recomendacaoIcone = '<i class="fas fa-thumbs-down"></i>';
+                            recomendacaoClasse = 'recomendacao-vermelha';
+                            break;
+                        default:
+                            recomendacaoIcone = '<i class="fas fa-minus"></i>';
+                            recomendacaoClasse = 'recomendacao-neutra';
+                    }
+                    
+                    tr.innerHTML = `
+                        <td>${aplicacao.nome}</td>
+                        <td>${formatarTipo(aplicacao.tipo)}</td>
+                        <td>${aplicacao.rentabilidade}</td>
+                        <td>${valorFormatado}</td>
+                        <td>${aplicacao.liquidez}</td>
+                        <td><span class="risco-indicador risco-${aplicacao.risco}">${formatarRisco(aplicacao.risco)}</span></td>
+                        <td><div class="recomendacao-indicador ${recomendacaoClasse}">${recomendacaoIcone} ${formatarRecomendacao(aplicacao.recomendacao)}</div></td>
+                        <td>
+                            <div class="acoes-botoes">
+                                <button class="btn-acao btn-detalhes" data-id="${aplicacao.id}">Detalhes</button>
+                                <button class="btn-acao btn-comparar" data-id="${aplicacao.id}">Comparar</button>
+                            </div>
+                        </td>
+                    `;
+                    
+                    tbody.appendChild(tr);
+                });
+                
+                // Adicionar eventos aos botões
+                document.querySelectorAll('.btn-detalhes').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        alert(`Detalhes da aplicação ${id} serão exibidos em uma modal.`);
+                    });
+                });
+                
+                document.querySelectorAll('.btn-comparar').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const id = this.getAttribute('data-id');
+                        alert(`Aplicação ${id} adicionada à comparação.`);
+                    });
+                });
+            }
+            
+            // Funções auxiliares para formatação
+            function formatarTipo(tipo) {
+                const tipos = {
+                    'renda-fixa': 'Renda Fixa',
+                    'renda-variavel': 'Renda Variável',
+                    'fundos': 'Fundos de Investimento',
+                    'previdencia': 'Previdência'
+                };
+                
+                return tipos[tipo] || tipo;
+            }
+            
+            function formatarRisco(risco) {
+                const riscos = {
+                    'baixo': 'Baixo',
+                    'medio': 'Médio',
+                    'alto': 'Alto'
+                };
+                
+                return riscos[risco] || risco;
+            }
+            
+            function formatarRecomendacao(recomendacao) {
+                const recomendacoes = {
+                    'recomendado': 'Recomendado',
+                    'neutro': 'Neutro',
+                    'nao-recomendado': 'Não Recomendado'
+                };
+                
+                return recomendacoes[recomendacao] || recomendacao;
+            }
+            
+            // Função para filtrar aplicações
+            function filtrarAplicacoes() {
+                const tipo = document.getElementById('filtro-tipo').value;
+                const risco = document.getElementById('filtro-risco').value;
+                const valor = document.getElementById('filtro-valor').value;
+                const liquidez = document.getElementById('filtro-liquidez').value;
+                const rentabilidade = parseFloat(document.getElementById('filtro-rentabilidade').value);
+                const prazo = document.getElementById('filtro-prazo').value;
+                const banco = document.getElementById('filtro-banco').value;
+                const recomendacao = document.getElementById('filtro-recomendacao').value;
+                
+                // Aplicar filtros
+                let aplicacoesFiltradas = aplicacoes.filter(aplicacao => {
+                    // Filtro de tipo
+                    if (tipo !== 'todos' && aplicacao.tipo !== tipo) return false;
+                    
+                    // Filtro de risco
+                    if (risco !== 'todos' && aplicacao.risco !== risco) return false;
+                    
+                    // Filtro de valor mínimo
+                    if (valor !== 'todos') {
+                        const valorMin = aplicacao.valorMinimo;
+                        
+                        switch(valor) {
+                            case 'ate-100':
+                                if (valorMin > 100) return false;
+                                break;
+                            case '100-500':
+                                if (valorMin < 100 || valorMin > 500) return false;
+                                break;
+                            case '500-1000':
+                                if (valorMin < 500 || valorMin > 1000) return false;
+                                break;
+                            case 'acima-1000':
+                                if (valorMin < 1000) return false;
+                                break;
+                        }
+                    }
+                    
+                    // Filtro de liquidez
+                    if (liquidez !== 'todos') {
+                        const liquidezMap = {
+                            'diaria': 'Diária',
+                            'd+1': 'D+1',
+                            'd+3': 'D+3',
+                            'd+30': 'D+30',
+                            'vencimento': 'Vencimento'
+                        };
+                        
+                        if (aplicacao.liquidez !== liquidezMap[liquidez]) return false;
+                    }
+                    
+                    // Filtro de rentabilidade
+                    if (rentabilidade > 0 && aplicacao.rentabilidadeValor < rentabilidade) return false;
+                    
+                    // Filtro de recomendação
+                    if (recomendacao !== 'todos' && aplicacao.recomendacao !== recomendacao) return false;
+                    
+                    // Filtro de banco (simplificado)
+                    if (banco === 'bb' && !aplicacao.nome.includes('BB') && !aplicacao.nome.includes('Banco do Brasil')) return false;
+                    
+                    return true;
+                });
+                
+                // Renderizar tabela filtrada
+                renderizarTabela(aplicacoesFiltradas);
+                
+                // Atualizar contador de resultados
+                document.querySelector('.filtros-titulo h2').textContent = `Filtros Avançados (${aplicacoesFiltradas.length} resultados)`;
+            }
+            
+            // Inicializar tabela com todos os dados
+            renderizarTabela(aplicacoes);
+            
+            // Configurar eventos
+            document.getElementById('aplicar-filtros').addEventListener('click', filtrarAplicacoes);
+            
+            document.getElementById('limpar-filtros').addEventListener('click', function() {
+                // Resetar todos os filtros
+                document.getElementById('filtro-tipo').value = 'todos';
+                document.getElementById('filtro-risco').value = 'todos';
+                document.getElementById('filtro-valor').value = 'todos';
+                document.getElementById('filtro-liquidez').value = 'todos';
+                document.getElementById('filtro-rentabilidade').value = 0;
+                document.getElementById('rentabilidade-valor').textContent = '0%';
+                document.getElementById('filtro-prazo').value = 'todos';
+                document.getElementById('filtro-banco').value = 'todos';
+                document.getElementById('filtro-recomendacao').value = 'todos';
+                
+                // Renderizar tabela completa
+                renderizarTabela(aplicacoes);
+                
+                // Atualizar contador de resultados
+                document.querySelector('.filtros-titulo h2').textContent = `Filtros Avançados (${aplicacoes.length} resultados)`;
+            });
+            
+            // Configurar slider de rentabilidade
+            const sliderRentabilidade = document.getElementById('filtro-rentabilidade');
+            const valorRentabilidade = document.getElementById('rentabilidade-valor');
+            
+            sliderRentabilidade.addEventListener('input', function() {
+                valorRentabilidade.textContent = this.value + '%';
+            });
+            
+            // Atualizar recomendações em tempo real
+            function atualizarRecomendacoes() {
+                // Simular busca de dados em tempo real
+                buscarDadosTempoRealAprimorado().then(() => {
+                    // Atualizar recomendações com base nos dados mais recentes
+                    const ibovespaVariacao = parseFloat(document.getElementById('ibovespa-variacao').textContent);
+                    const dolarVariacao = parseFloat(document.getElementById('dolar-variacao').textContent);
+                    
+                    // Atualizar recomendações com base nos dados
+                    aplicacoes.forEach(aplicacao => {
+                        if (aplicacao.id === 'fundo-acoes') {
+                            if (ibovespaVariacao > 1.0) {
+                                aplicacao.recomendacao = 'recomendado';
+                            } else if (ibovespaVariacao < -1.0) {
+                                aplicacao.recomendacao = 'nao-recomendado';
+                            } else {
+                                aplicacao.recomendacao = 'neutro';
+                            }
+                        }
+                        
+                        if (aplicacao.id === 'tesouro') {
+                            if (dolarVariacao < -0.5) {
+                                aplicacao.recomendacao = 'recomendado';
+                            } else {
+                                aplicacao.recomendacao = 'neutro';
+                            }
+                        }
+                    });
+                    
+                    // Re-renderizar tabela com dados atualizados
+                    filtrarAplicacoes();
+                });
+            }
+            
+            // Atualizar recomendações a cada 30 segundos
+            setInterval(atualizarRecomendacoes, 30000);
+            
+            // Inicializar com primeira atualização
+            atualizarRecomendacoes();
+        });
+    </script>
+</body>
+</html>

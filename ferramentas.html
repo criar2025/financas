@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadoras - finança.com</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .ferramentas-header {
+            background-color: #f5f8fa;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        .ferramentas-header h1 {
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .calculadoras-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .calculadora-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--sombra-suave);
+        }
+        
+        .calculadora-header {
+            background: linear-gradient(135deg, var(--azul-claro), var(--rosa-claro));
+            color: var(--branco);
+            padding: 20px;
+            position: relative;
+        }
+        
+        .calculadora-header h2 {
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+        }
+        
+        .calculadora-header p {
+            margin-bottom: 0;
+            opacity: 0.9;
+        }
+        
+        .calculadora-icone {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            opacity: 0.5;
+        }
+        
+        .calculadora-body {
+            padding: 20px;
+        }
+        
+        .calculadora-form {
+            margin-bottom: 20px;
+        }
+        
+        .form-grupo {
+            margin-bottom: 15px;
+        }
+        
+        .form-grupo label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        
+        .form-grupo input,
+        .form-grupo select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .form-grupo .range-container {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .form-grupo .range-values {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .form-acoes {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .calculadora-resultado {
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .resultado-titulo {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: var(--azul-escuro);
+        }
+        
+        .resultado-valor {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--azul-claro);
+            margin-bottom: 10px;
+        }
+        
+        .resultado-detalhes {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .resultado-grafico {
+            height: 200px;
+            margin-top: 20px;
+        }
+        
+        .calculadora-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 20px;
+        }
+        
+        .calculadora-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .calculadora-tab.active {
+            border-bottom-color: var(--azul-claro);
+            font-weight: 600;
+        }
+        
+        .calculadora-conteudo {
+            display: none;
+        }
+        
+        .calculadora-conteudo.active {
+            display: block;
+        }
+        
+        .tabela-comparativa {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .tabela-comparativa th {
+            background-color: var(--azul-escuro);
+            color: var(--branco);
+            padding: 10px;
+            text-align: left;
+        }
+        
+        .tabela-comparativa td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .tabela-comparativa tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        
+        .tabela-comparativa tr:hover {
+            background-color: #f0f7ff;
+        }
+        
+        .melhor-opcao {
+            background-color: rgba(46, 204, 113, 0.1) !important;
+        }
+        
+        .melhor-opcao td:first-child {
+            position: relative;
+        }
+        
+        .melhor-opcao td:first-child::before {
+            content: "✓";
+            color: var(--verde-suave);
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        @media (max-width: 1024px) {
+            .calculadoras-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-principal">
+        <div class="container header-container">
+            <div class="logo-container">
+                <a href="index.html" class="logo"><img src="img/logo.png" alt="finança.com logo"></a>
+                <div class="slogan">INVESTIGAÇÃO, perícia e rastreamento financeiro</div>
+            </div>
+            <nav class="menu-principal">
+                <button class="menu-hamburguer" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="menu-items">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="aplicacoes.html">Aplicações</a></li>
+                    <li><a href="analise.html">Análise de Mercado</a></li>
+                    <li><a href="ferramentas.html" class="active">Calculadoras</a></li>
+                    <li><a href="educacao.html">Educação Financeira</a></li>
+                </ul>
+            </nav>
+            <div class="modo-iniciante-toggle">
+                <label class="switch">
+                    <input type="checkbox" id="toggle-modo-iniciante">
+                    <span class="slider round"></span>
+                </label>
+                <span class="label-modo-iniciante">Modo Iniciante</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="ferramentas-header">
+        <div class="container">
+            <h1>Calculadoras Financeiras</h1>
+            <p>Ferramentas para simular investimentos, comparar aplicações e planejar seu futuro financeiro.</p>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="calculadoras-grid">
+            <div class="calculadora-card">
+                <div class="calculadora-header">
+                    <h2>Simulador de Investimentos</h2>
+                    <p>Calcule o rendimento de seus investimentos ao longo do tempo</p>
+                    <div class="calculadora-icone">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                <div class="calculadora-body">
+                    <div class="calculadora-form">
+                        <div class="form-grupo">
+                            <label for="valor-inicial">Valor inicial (R$)</label>
+                            <input type="number" id="valor-inicial" value="1000" min="0" step="100">
+                        </div>
+                        <div class="form-grupo">
+                            <label for="aporte-mensal">Aporte mensal (R$)</label>
+                            <input type="number" id="aporte-mensal" value="200" min="0" step="50">
+                        </div>
+                        <div class="form-grupo">
+                            <label for="taxa-juros">Taxa de juros anual (%)</label>
+                            <input type="number" id="taxa-juros" value="10.5" min="0" max="50" step="0.1">
+                        </div>
+                        <div class="form-grupo">
+                            <label for="periodo">Período (anos)</label>
+                            <div class="range-container">
+                                <input type="range" id="periodo" min="1" max="30" value="10" step="1">
+                                <div class="range-values">
+                                    <span>1 ano</span>
+                                    <span id="periodo-valor">10 anos</span>
+                                    <span>30 anos</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-acoes">
+                            <button class="btn btn-secondary" id="limpar-simulador">Limpar</button>
+                            <button class="btn btn-primary" id="calcular-simulador">Calcular</button>
+                        </div>
+                    </div>
+                    
+                    <div class="calculadora-resultado" id="resultado-simulador">
+                        <div class="resultado-titulo">Resultado da simulação</div>
+                        <div class="resultado-valor" id="valor-total">R$ 46.585,24</div>
+                        <div class="resultado-detalhes">
+                            <div>Valor investido: <span id="valor-investido">R$ 25.000,00</span></div>
+                            <div>Rendimento: <span id="valor-rendimento">R$ 21.585,24</span></div>
+                        </div>
+                        <div class="resultado-grafico">
+                            <canvas id="grafico-simulador"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="calculadora-card">
+                <div class="calculadora-header">
+                    <h2>Comparador de Investimentos</h2>
+                    <p>Compare diferentes opções de investimento lado a lado</p>
+                    <div class="calculadora-icone">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                </div>
+                <div class="calculadora-body">
+                    <div class="calculadora-tabs">
+                        <div class="calculadora-tab active" data-tab="renda-fixa">Renda Fixa</div>
+                        <div class="calculadora-tab" data-tab="renda-variavel">Renda Variável</div>
+                    </div>
+                    
+                    <div class="calculadora-conteudo active" id="tab-renda-fixa">
+                        <div class="calculadora-form">
+                            <div class="form-grupo">
+                                <label for="valor-comparacao">Valor a investir (R$)</label>
+                                <input type="number" id="valor-comparacao" value="5000" min="0" step="1000">
+                            </div>
+                            <div class="form-grupo">
+                                <label for="periodo-comparacao">Período (meses)</label>
+                                <select id="periodo-comparacao">
+                                    <option value="6">6 meses</option>
+                                    <option value="12" selected>12 meses</option>
+                                    <option value="24">24 meses</option>
+                                    <option value="36">36 meses</option>
+                                    <option value="60">60 meses</option>
+                                </select>
+                            </div>
+                            <div class="form-acoes">
+                                <button class="btn btn-secondary" id="limpar-comparacao">Limpar</button>
+                                <button class="btn btn-primary" id="calcular-comparacao">Comparar</button>
+                            </div>
+                        </div>
+                        
+                        <table class="tabela-comparativa" id="tabela-comparacao">
+                            <thead>
+                                <tr>
+                                    <th>Investimento</th>
+                                    <th>Rendimento</th>
+                                    <th>Valor Final</th>
+                                    <th>Imposto</th>
+                                    <th>Líquido</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="melhor-opcao">
+                                    <td>CDB (110% CDI)</td>
+                                    <td>11,83% a.a.</td>
+                                    <td>R$ 5.591,50</td>
+                                    <td>R$ 133,58</td>
+                                    <td>R$ 5.457,92</td>
+                                </tr>
+                                <tr>
+                                    <td>LCA (95% CDI)</td>
+                                    <td>10,21% a.a.</td>
+                                    <td>R$ 5.510,50</td>
+                                    <td>R$ 0,00</td>
+                                    <td>R$ 5.510,50</td>
+                                </tr>
+                                <tr>
+                                    <td>Tesouro Selic</td>
+                                    <td>10,75% a.a.</td>
+                                    <td>R$ 5.537,50</td>
+                                    <td>R$ 121,88</td>
+                                    <td>R$ 5.415,63</td>
+                                </tr>
+                                <tr>
+                                    <td>Poupança</td>
+                                    <td>6,17% a.a.</td>
+                                    <td>R$ 5.308,50</td>
+                                    <td>R$ 0,00</td>
+                                    <td>R$ 5.308,50</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="calculadora-conteudo" id="tab-renda-variavel">
+                        <div class="calculadora-form">
+                            <div class="form-grupo">
+                                <label for="valor-comparacao-rv">Valor a investir (R$)</label>
+                                <input type="number" id="valor-comparacao-rv" value="5000" min="0" step="1000">
+                            </div>
+                            <div class="form-grupo">
+                                <label for="periodo-comparacao-rv">Período (meses)</label>
+                                <select id="periodo-comparacao-rv">
+                                    <option value="6">6 meses</option>
+                                    <option value="12" selected>12 meses</option>
+                                    <option value="24">24 meses</option>
+                                    <option value="36">36 meses</option>
+                                    <option value="60">60 meses</option>
+                                </select>
+                            </div>
+                            <div class="form-acoes">
+                                <button class="btn btn-secondary" id="limpar-comparacao-rv">Limpar</button>
+                                <button class="btn btn-primary" id="calcular-comparacao-rv">Comparar</button>
+                            </div>
+                        </div>
+                        
+                        <table class="tabela-comparativa" id="tabela-comparacao-rv">
+                            <thead>
+                                <tr>
+                                    <th>Investimento</th>
+                                    <th>Rendimento</th>
+                                    <th>Valor Final</th>
+                                    <th>Imposto</th>
+                                    <th>Líquido</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Fundo de Ações BB</td>
+                                    <td>15,20% a.a.</td>
+                                    <td>R$ 5.760,00</td>
+                                    <td>R$ 171,00</td>
+                                    <td>R$ 5.589,00</td>
+                                </tr>
+                                <tr class="melhor-opcao">
+                                    <td>ETF BOVA11</td>
+                                    <td>18,50% a.a.</td>
+                                    <td>R$ 5.925,00</td>
+                                    <td>R$ 208,13</td>
+                                    <td>R$ 5.716,88</td>
+                                </tr>
+                                <tr>
+                                    <td>Ações BBAS3</td>
+                                    <td>12,30% a.a.</td>
+                                    <td>R$ 5.615,00</td>
+                                    <td>R$ 138,38</td>
+                                    <td>R$ 5.476,63</td>
+                                </tr>
+                                <tr>
+                                    <td>Fundo Imobiliário</td>
+                                    <td>8,70% a.a.</td>
+                                    <td>R$ 5.435,00</td>
+                                    <td>R$ 0,00</td>
+                                    <td>R$ 5.435,00</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="calculadora-card">
+                <div class="calculadora-header">
+                    <h2>Calculadora de Juros Compostos</h2>
+                    <p>Veja o poder dos juros compostos ao longo do tempo</p>
+                    <div class="calculadora-icone">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                </div>
+                <div class="calculadora-body">
+                    <div class="calculadora-form">
+                        <div class="form-grupo">
+                            <label for="capital-inicial">Capital inicial (R$)</label>
+                            <input type="number" id="capital-inicial" value="1000" min="0" step="100">
+                        </div>
+                        <div class="form-grupo">
+                            <label for="taxa-juros-compostos">Taxa de juros (% ao ano)</label>
+                            <input type="number" id="taxa-juros-compostos" value="10.5" min="0" max="100" step="0.1">
+                        </div>
+                        <div class="form-grupo">
+                            <label for="periodo-juros">Período (anos)</label>
+                            <input type="number" id="periodo-juros" value="10" min="1" max="50" step="1">
+                        </div>
+                        <div class="form-grupo">
+                            <label for="aporte-adicional">Aporte adicional (R$)</label>
+                            <input type="number" id="aporte-adicional" value="0" min="0" step="100">
+                        </div>
+                        <div class="form-grupo">
+                            <label for="frequencia-aporte">Frequência do aporte</label>
+                            <select id="frequencia-aporte">
+                                <option value="mensal">Mensal</option>
+                                <option value="trimestral">Trimestral</option>
+                                <option value="semestral">Semestral</option>
+                                <option value="anual">Anual</option>
+                            </select>
+                        </div>
+                        <div class="form-acoes">
+                            <button class="btn btn-secondary" id="limpar-juros">Limpar</button>
+                            <button class="btn btn-primary" id="calcular-juros">Calcular</button>
+                        </div>
+                    </div>
+                    
+                    <div class="calculadora-resultado" id="resultado-juros">
+                        <div class="resultado-titulo">Resultado</div>
+                        <div class="resultado-valor" id="montante-final">R$ 2.707,04</div>
+                        <div class="resultado-detalhes">
+                            <div>Capital inicial: <span id="capital-inicial-resultado">R$ 1.000,00</span></div>
+                            <div>Juros acumulados: <span id="juros-acumulados">R$ 1.707,04</span></div>
+                        </div>
+                        <div class="resultado-grafico">
+                            <canvas id="grafico-juros"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="calculadora-card">
+                <div class="calculadora-header">
+                    <h2>Calculadora de Aposentadoria</h2>
+                    <p>Planeje sua independência financeira</p>
+                    <div class="calculadora-icone">
+                        <i class="fas fa-umbrella-beach"></i>
+                    </div>
+                </div>
+                <div class="calculadora-body">
+                    <div class="calculadora-form">
+                        <div class="form-grupo">
+                            <label for="idade-atual">Idade atual</label>
+                            <input type="number" id="idade-atual" value="30" min="18" max="70" step="1">
+                        </div>
+                        <div class="form-grupo">
+                            <label for="idade-aposentadoria">Idade desejada para aposentadoria</label>
+                            <input type="number" id="idade-aposentadoria" value="65" min="45" max="80" step="1">
+                        </div>
+                        <div class="form-grupo">
+                            <label for="renda-mensal">Renda mensal desejada na aposentadoria (R$)</label>
+                            <input type="number" id="renda-mensal" value="5000" min="1000" step="500">
+                        </div>
+                        <div class="form-grupo">
+                            <label for="patrimonio-atual">Patrimônio atual (R$)</label>
+                            <input type="number" id="patrimonio-atual" value="50000" min="0" step="10000">
+                        </div>
+                        <div class="form-grupo">
+                            <label for="rentabilidade-esperada">Rentabilidade esperada (% ao ano)</label>
+                            <input type="number" id="rentabilidade-esperada" value="8" min="1" max="15" step="0.5">
+                        </div>
+                        <div class="form-acoes">
+                            <button class="btn btn-secondary" id="limpar-aposentadoria">Limpar</button>
+                            <button class="btn btn-primary" id="calcular-aposentadoria">Calcular</button>
+                        </div>
+                    </div>
+                    
+                    <div class="calculadora-resultado" id="resultado-aposentadoria">
+                        <div class="resultado-titulo">Resultado</div>
+                        <div class="resultado-valor" id="patrimonio-necessario">R$ 1.500.000,00</div>
+                        <div class="resultado-detalhes">
+                            <div>Aporte mensal necessário: <span id="aporte-mensal-aposentadoria">R$ 1.250,00</span></div>
+                            <div>Anos até a aposentadoria: <span id="anos-aposentadoria">35</span></div>
+                        </div>
+                        <div class="resultado-grafico">
+                            <canvas id="grafico-aposentadoria"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/alertas.js"></script>
+    <script src="js/prospeccao.js"></script>
+    <script src="js/api-real-time.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar calculadoras
+            inicializarSimuladorInvestimentos();
+            inicializarComparadorInvestimentos();
+            inicializarCalculadoraJuros();
+            inicializarCalculadoraAposentadoria();
+            
+            // Configurar eventos de interface
+            configurarEventos();
+            
+            // Buscar dados atualizados de mercado
+            buscarDadosTempoRealAprimorado().then(atualizarCalculadoras);
+        });
+        
+        // Função para inicializar simulador de investimentos
+        function inicializarSimuladorInvestimentos() {
+            const graficoSimulador = new Chart(document.getElementById('grafico-simulador'), {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 11}, (_, i) => i),
+                    datasets: [
+                        {
+                            label: 'Valor Total',
+                            data: [1000, 3580, 6353, 9335, 12542, 15992, 19704, 23698, 28000, 32635, 37630],
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Valor Investido',
+                            data: [1000, 3400, 5800, 8200, 10600, 13000, 15400, 17800, 20200, 22600, 25000],
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': R$ ' + context.raw.toLocaleString('pt-BR', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    });
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R$ ' + value.toLocaleString('pt-BR', {
+                                        minimumFractionDigits: 0,
+                                        maximumFractionDigits: 0
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Configurar slider de período
+            const periodoSlider = document.getElementById('periodo');
+            const periodoValor = document.getElementById('periodo-valor');
+            
+            periodoSlider.addEventListener('input', function() {
+                periodoValor.textContent = this.value + (this.value == 1 ? ' ano' : ' anos');
+            });
+            
+            // Configurar botão de cálculo
+            document.getElementById('calcular-simulador').addEventListener('click', function() {
+                calcularSimulador(graficoSimulador);
+            });
+            
+            // Configurar botão de limpar
+            document.getElementById('limpar-simulador').addEventListener('click', function() {
+                document.getElementById('valor-inicial').value = 1000;
+                document.getElementById('aporte-mensal').value = 200;
+                document.getElementById('taxa-juros').value = 10.5;
+                document.getElementById('periodo').value = 10;
+                periodoValor.textContent = '10 anos';
+                
+                calcularSimulador(graficoSimulador);
+            });
+        }
+        
+        // Função para calcular simulador de investimentos
+        function calcularSimulador(grafico) {
+            const valorInicial = parseFloat(document.getElementById('valor-inicial').value) || 0;
+            const aporteMensal = parseFloat(document.getElementById('aporte-mensal').value) || 0;
+            const taxaJuros = parseFloat(document.getElementById('taxa-juros').value) || 0;
+            const periodo = parseInt(document.getElementById('periodo').value) || 0;
+            
+            // Calcular evolução do investimento
+            const valoresTotal = [valorInicial];
+            const valoresInvestido = [valorInicial];
+            const labels = [0];
+            
+            let valorTotal = valorInicial;
+            let valorInvestido = valorInicial;
+            
+            for (let i = 1; i <= periodo; i++) {
+                valorInvestido += aporteMensal * 12;
+                valorTotal = valorTotal * (1 + taxaJuros / 100) + aporteMensal * 12;
+                
+                valoresTotal.push(valorTotal);
+                valoresInvestido.push(valorInvestido);
+                labels.push(i);
+            }
+            
+            // Atualizar gráfico
+            grafico.data.labels = labels;
+            grafico.data.datasets[0].data = valoresTotal;
+            grafico.data.datasets[1].data = valoresInvestido;
+            grafico.update();
+            
+            // Atualizar resultados
+            document.getElementById('valor-total').textContent = 'R$ ' + valorTotal.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            document.getElementById('valor-investido').textContent = 'R$ ' + valorInvestido.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            const rendimento = valorTotal - valorInvestido;
+            document.getElementById('valor-rendimento').textContent = 'R$ ' + rendimento.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+        
+        // Função para inicializar comparador de investimentos
+        function inicializarComparadorInvestimentos() {
+            // Configurar tabs
+            document.querySelectorAll('.calculadora-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remover classe active de todas as tabs
+                    document.querySelectorAll('.calculadora-tab').forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    
+                    // Adicionar classe active à tab clicada
+                    this.classList.add('active');
+                    
+                    // Esconder todos os conteúdos
+                    document.querySelectorAll('.calculadora-conteudo').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    
+                    // Mostrar conteúdo correspondente
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(`tab-${tabId}`).classList.add('active');
+                });
+            });
+            
+            // Configurar botões de cálculo
+            document.getElementById('calcular-comparacao').addEventListener('click', function() {
+                calcularComparacao('renda-fixa');
+            });
+            
+            document.getElementById('calcular-comparacao-rv').addEventListener('click', function() {
+                calcularComparacao('renda-variavel');
+            });
+            
+            // Configurar botões de limpar
+            document.getElementById('limpar-comparacao').addEventListener('click', function() {
+                document.getElementById('valor-comparacao').value = 5000;
+                document.getElementById('periodo-comparacao').value = 12;
+                calcularComparacao('renda-fixa');
+            });
+            
+            document.getElementById('limpar-comparacao-rv').addEventListener('click', function() {
+                document.getElementById('valor-comparacao-rv').value = 5000;
+                document.getElementById('periodo-comparacao-rv').value = 12;
+                calcularComparacao('renda-variavel');
+            });
+        }
+        
+        // Função para calcular comparação de investimentos
+        function calcularComparacao(tipo) {
+            // Obter valores do formulário
+            const valorSufixo = tipo === 'renda-fixa' ? '' : '-rv';
+            const valor = parseFloat(document.getElementById(`valor-comparacao${valorSufixo}`).value) || 5000;
+            const periodo = parseInt(document.getElementById(`periodo-comparacao${valorSufixo}`).value) || 12;
+            
+            // Taxas de rentabilidade atualizadas (podem ser atualizadas com dados reais)
+            const taxas = {
+                'renda-fixa': {
+                    'CDB (110% CDI)': 11.83,
+                    'LCA (95% CDI)': 10.21,
+                    'Tesouro Selic': 10.75,
+                    'Poupança': 6.17
+                },
+                'renda-variavel': {
+                    'Fundo de Ações BB': 15.20,
+                    'ETF BOVA11': 18.50,
+                    'Ações BBAS3': 12.30,
+                    'Fundo Imobiliário': 8.70
+                }
+            };
+            
+            // Alíquotas de imposto
+            const aliquotas = {
+                'CDB (110% CDI)': 0.15,
+                'LCA (95% CDI)': 0,
+                'Tesouro Selic': 0.15,
+                'Poupança': 0,
+                'Fundo de Ações BB': 0.15,
+                'ETF BOVA11': 0.15,
+                'Ações BBAS3': 0.15,
+                'Fundo Imobiliário': 0
+            };
+            
+            // Calcular rendimentos
+            const resultados = [];
+            let melhorOpcao = null;
+            let maiorValorLiquido = 0;
+            
+            Object.entries(taxas[tipo]).forEach(([nome, taxa]) => {
+                // Calcular valor final
+                const taxaMensal = Math.pow(1 + taxa / 100, 1/12) - 1;
+                const valorFinal = valor * Math.pow(1 + taxaMensal, periodo);
+                const rendimento = valorFinal - valor;
+                const imposto = rendimento * aliquotas[nome];
+                const valorLiquido = valorFinal - imposto;
+                
+                resultados.push({
+                    nome,
+                    taxa,
+                    valorFinal,
+                    imposto,
+                    valorLiquido
+                });
+                
+                // Verificar se é a melhor opção
+                if (valorLiquido > maiorValorLiquido) {
+                    maiorValorLiquido = valorLiquido;
+                    melhorOpcao = nome;
+                }
+            });
+            
+            // Atualizar tabela
+            const tbody = document.querySelector(`#tabela-comparacao${valorSufixo} tbody`);
+            tbody.innerHTML = '';
+            
+            resultados.forEach(resultado => {
+                const tr = document.createElement('tr');
+                if (resultado.nome === melhorOpcao) {
+                    tr.className = 'melhor-opcao';
+                }
+                
+                tr.innerHTML = `
+                    <td>${resultado.nome}</td>
+                    <td>${resultado.taxa.toFixed(2)}% a.a.</td>
+                    <td>R$ ${resultado.valorFinal.toLocaleString('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })}</td>
+                    <td>R$ ${resultado.imposto.toLocaleString('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })}</td>
+                    <td>R$ ${resultado.valorLiquido.toLocaleString('pt-BR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    })}</td>
+                `;
+                
+                tbody.appendChild(tr);
+            });
+        }
+        
+        // Função para inicializar calculadora de juros compostos
+        function inicializarCalculadoraJuros() {
+            const graficoJuros = new Chart(document.getElementById('grafico-juros'), {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 11}, (_, i) => i),
+                    datasets: [
+                        {
+                            label: 'Montante',
+                            data: [1000, 1105, 1221, 1349, 1491, 1647, 1820, 2011, 2222, 2455, 2707],
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Capital',
+                            data: [1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000],
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': R$ ' + context.raw.toLocaleString('pt-BR', {
+                                        minimumFractionDigits: 2,
+                                        maximumFractionDigits: 2
+                                    });
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R$ ' + value.toLocaleString('pt-BR', {
+                                        minimumFractionDigits: 0,
+                                        maximumFractionDigits: 0
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Configurar botão de cálculo
+            document.getElementById('calcular-juros').addEventListener('click', function() {
+                calcularJurosCompostos(graficoJuros);
+            });
+            
+            // Configurar botão de limpar
+            document.getElementById('limpar-juros').addEventListener('click', function() {
+                document.getElementById('capital-inicial').value = 1000;
+                document.getElementById('taxa-juros-compostos').value = 10.5;
+                document.getElementById('periodo-juros').value = 10;
+                document.getElementById('aporte-adicional').value = 0;
+                document.getElementById('frequencia-aporte').value = 'mensal';
+                
+                calcularJurosCompostos(graficoJuros);
+            });
+        }
+        
+        // Função para calcular juros compostos
+        function calcularJurosCompostos(grafico) {
+            const capitalInicial = parseFloat(document.getElementById('capital-inicial').value) || 0;
+            const taxaJuros = parseFloat(document.getElementById('taxa-juros-compostos').value) || 0;
+            const periodo = parseInt(document.getElementById('periodo-juros').value) || 0;
+            const aporteAdicional = parseFloat(document.getElementById('aporte-adicional').value) || 0;
+            const frequenciaAporte = document.getElementById('frequencia-aporte').value;
+            
+            // Converter taxa anual para a frequência correta
+            const taxaMensal = Math.pow(1 + taxaJuros / 100, 1/12) - 1;
+            
+            // Definir frequência de aporte em meses
+            let mesesPorAporte;
+            switch(frequenciaAporte) {
+                case 'mensal':
+                    mesesPorAporte = 1;
+                    break;
+                case 'trimestral':
+                    mesesPorAporte = 3;
+                    break;
+                case 'semestral':
+                    mesesPorAporte = 6;
+                    break;
+                case 'anual':
+                    mesesPorAporte = 12;
+                    break;
+                default:
+                    mesesPorAporte = 1;
+            }
+            
+            // Calcular evolução do montante
+            const montantes = [capitalInicial];
+            const capitais = [capitalInicial];
+            const labels = [0];
+            
+            let montante = capitalInicial;
+            let capital = capitalInicial;
+            
+            for (let ano = 1; ano <= periodo; ano++) {
+                for (let mes = 1; mes <= 12; mes++) {
+                    // Adicionar aporte se for o mês correto
+                    if (aporteAdicional > 0 && mes % mesesPorAporte === 0) {
+                        montante += aporteAdicional;
+                        capital += aporteAdicional;
+                    }
+                    
+                    // Aplicar juros mensais
+                    montante *= (1 + taxaMensal);
+                }
+                
+                montantes.push(montante);
+                capitais.push(capital);
+                labels.push(ano);
+            }
+            
+            // Atualizar gráfico
+            grafico.data.labels = labels;
+            grafico.data.datasets[0].data = montantes;
+            grafico.data.datasets[1].data = capitais;
+            grafico.update();
+            
+            // Atualizar resultados
+            document.getElementById('montante-final').textContent = 'R$ ' + montante.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            document.getElementById('capital-inicial-resultado').textContent = 'R$ ' + capital.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            const juros = montante - capital;
+            document.getElementById('juros-acumulados').textContent = 'R$ ' + juros.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+        }
+        
+        // Função para inicializar calculadora de aposentadoria
+        function inicializarCalculadoraAposentadoria() {
+            const graficoAposentadoria = new Chart(document.getElementById('grafico-aposentadoria'), {
+                type: 'line',
+                data: {
+                    labels: ['Hoje', '5 anos', '10 anos', '15 anos', '20 anos', '25 anos', '30 anos', '35 anos'],
+                    datasets: [
+                        {
+                            label: 'Patrimônio Acumulado',
+                            data: [50000, 200000, 400000, 650000, 900000, 1150000, 1350000, 1500000],
+                            borderColor: '#3498db',
+                            backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                            borderWidth: 2,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Meta',
+                            data: [0, 214285, 428571, 642857, 857142, 1071428, 1285714, 1500000],
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0,
+                            borderDash: [5, 5]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': R$ ' + context.raw.toLocaleString('pt-BR', {
+                                        minimumFractionDigits: 0,
+                                        maximumFractionDigits: 0
+                                    });
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R$ ' + value.toLocaleString('pt-BR', {
+                                        minimumFractionDigits: 0,
+                                        maximumFractionDigits: 0
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Configurar botão de cálculo
+            document.getElementById('calcular-aposentadoria').addEventListener('click', function() {
+                calcularAposentadoria(graficoAposentadoria);
+            });
+            
+            // Configurar botão de limpar
+            document.getElementById('limpar-aposentadoria').addEventListener('click', function() {
+                document.getElementById('idade-atual').value = 30;
+                document.getElementById('idade-aposentadoria').value = 65;
+                document.getElementById('renda-mensal').value = 5000;
+                document.getElementById('patrimonio-atual').value = 50000;
+                document.getElementById('rentabilidade-esperada').value = 8;
+                
+                calcularAposentadoria(graficoAposentadoria);
+            });
+        }
+        
+        // Função para calcular aposentadoria
+        function calcularAposentadoria(grafico) {
+            const idadeAtual = parseInt(document.getElementById('idade-atual').value) || 30;
+            const idadeAposentadoria = parseInt(document.getElementById('idade-aposentadoria').value) || 65;
+            const rendaMensal = parseFloat(document.getElementById('renda-mensal').value) || 5000;
+            const patrimonioAtual = parseFloat(document.getElementById('patrimonio-atual').value) || 50000;
+            const rentabilidadeEsperada = parseFloat(document.getElementById('rentabilidade-esperada').value) || 8;
+            
+            // Calcular anos até a aposentadoria
+            const anosAteAposentadoria = idadeAposentadoria - idadeAtual;
+            
+            // Calcular patrimônio necessário (regra dos 4%)
+            const patrimonioNecessario = rendaMensal * 12 / 0.04;
+            
+            // Calcular aporte mensal necessário
+            const taxaMensal = Math.pow(1 + rentabilidadeEsperada / 100, 1/12) - 1;
+            const meses = anosAteAposentadoria * 12;
+            
+            // Fórmula para calcular aporte mensal necessário
+            // P = (F - P0 * (1 + r)^n) / (((1 + r)^n - 1) / r)
+            // Onde:
+            // P = aporte mensal
+            // F = patrimônio necessário
+            // P0 = patrimônio atual
+            // r = taxa mensal
+            // n = número de meses
+            
+            const fatorJuros = Math.pow(1 + taxaMensal, meses);
+            const aporteMensal = (patrimonioNecessario - patrimonioAtual * fatorJuros) / ((fatorJuros - 1) / taxaMensal);
+            
+            // Calcular evolução do patrimônio
+            const patrimonios = [patrimonioAtual];
+            const metas = [0];
+            const labels = ['Hoje'];
+            
+            let patrimonio = patrimonioAtual;
+            
+            // Calcular pontos intermediários (a cada 5 anos)
+            for (let ano = 5; ano <= anosAteAposentadoria; ano += 5) {
+                const mesesPassados = ano * 12;
+                patrimonio = patrimonioAtual * Math.pow(1 + taxaMensal, mesesPassados) + 
+                             aporteMensal * ((Math.pow(1 + taxaMensal, mesesPassados) - 1) / taxaMensal);
+                
+                patrimonios.push(patrimonio);
+                metas.push(patrimonioNecessario * ano / anosAteAposentadoria);
+                labels.push(ano + ' anos');
+            }
+            
+            // Adicionar ponto final se não foi adicionado
+            if (anosAteAposentadoria % 5 !== 0) {
+                patrimonio = patrimonioNecessario;
+                patrimonios.push(patrimonio);
+                metas.push(patrimonioNecessario);
+                labels.push(anosAteAposentadoria + ' anos');
+            }
+            
+            // Atualizar gráfico
+            grafico.data.labels = labels;
+            grafico.data.datasets[0].data = patrimonios;
+            grafico.data.datasets[1].data = metas;
+            grafico.update();
+            
+            // Atualizar resultados
+            document.getElementById('patrimonio-necessario').textContent = 'R$ ' + patrimonioNecessario.toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            document.getElementById('aporte-mensal-aposentadoria').textContent = 'R$ ' + Math.max(0, aporteMensal).toLocaleString('pt-BR', {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+            
+            document.getElementById('anos-aposentadoria').textContent = anosAteAposentadoria;
+        }
+        
+        // Função para configurar eventos de interface
+        function configurarEventos() {
+            // Já configurado nas funções de inicialização
+        }
+        
+        // Função para atualizar calculadoras com dados de mercado
+        function atualizarCalculadoras(dados) {
+            if (!dados) return;
+            
+            // Atualizar taxa de juros no simulador de investimentos
+            const taxaCDI = dados.cdi ? dados.cdi.valor : 10.75;
+            document.getElementById('taxa-juros').value = taxaCDI;
+            
+            // Atualizar taxas no comparador de investimentos
+            calcularComparacao('renda-fixa');
+            calcularComparacao('renda-variavel');
+        }
+    </script>
+</body>
+</html>

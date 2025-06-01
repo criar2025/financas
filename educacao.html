@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Educação Financeira - finança.com</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .educacao-header {
+            background-color: #f5f8fa;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        .educacao-header h1 {
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .conteudo-grid {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .artigos-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        
+        .artigo-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--sombra-suave);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .artigo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .artigo-imagem {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .artigo-conteudo {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .artigo-categoria {
+            display: inline-block;
+            background-color: var(--azul-claro-transparente);
+            color: var(--azul-claro);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .artigo-titulo {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: var(--azul-escuro);
+        }
+        
+        .artigo-resumo {
+            color: #666;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        .artigo-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: #999;
+        }
+        
+        .artigo-autor {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .artigo-autor-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .sidebar-secao {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra-suave);
+        }
+        
+        .sidebar-titulo {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        
+        .topicos-lista {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .topico-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .topico-item:last-child {
+            border-bottom: none;
+        }
+        
+        .topico-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--azul-escuro);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .topico-link:hover {
+            color: var(--azul-claro);
+        }
+        
+        .topico-icone {
+            color: var(--azul-claro);
+            font-size: 0.9rem;
+        }
+        
+        .glossario-item {
+            margin-bottom: 10px;
+        }
+        
+        .glossario-termo {
+            font-weight: 600;
+            color: var(--azul-escuro);
+            margin-bottom: 3px;
+        }
+        
+        .glossario-definicao {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .cursos-lista {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .curso-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        
+        .curso-item:last-child {
+            border-bottom: none;
+        }
+        
+        .curso-icone {
+            width: 40px;
+            height: 40px;
+            border-radius: 5px;
+            background-color: var(--azul-claro-transparente);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--azul-claro);
+            font-size: 1.2rem;
+        }
+        
+        .curso-info {
+            flex-grow: 1;
+        }
+        
+        .curso-titulo {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .curso-meta {
+            font-size: 0.8rem;
+            color: #999;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .curso-meta span {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+        
+        .curso-meta i {
+            font-size: 0.9rem;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .newsletter-input {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .paginacao {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            gap: 5px;
+        }
+        
+        .paginacao-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 4px;
+            background-color: var(--branco);
+            border: 1px solid #ddd;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .paginacao-item.active {
+            background-color: var(--azul-claro);
+            color: var(--branco);
+            border-color: var(--azul-claro);
+        }
+        
+        .paginacao-item:hover:not(.active) {
+            background-color: #f5f5f5;
+        }
+        
+        .video-destaque {
+            margin-bottom: 40px;
+        }
+        
+        .video-container {
+            background-color: var(--branco);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--sombra-suave);
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+        
+        .video-info {
+            padding: 20px;
+        }
+        
+        .video-titulo {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: var(--azul-escuro);
+        }
+        
+        .video-descricao {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #999;
+        }
+        
+        .video-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        /* Estilos para os cartões de conhecimento */
+        .conhecimento-card {
+            background-color: #f9f7f2;
+            border: 1px solid #e0d9c5;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            position: relative;
+            font-family: 'Baskerville', serif;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .conhecimento-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #8a7e63, #c0b49d);
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .conhecimento-titulo {
+            font-size: 1.8rem;
+            color: #3a3426;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #d8ceb7;
+            padding-bottom: 10px;
+            text-align: center;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+        
+        .conhecimento-conteudo {
+            color: #4a4236;
+            font-size: 1.1rem;
+            line-height: 1.7;
+        }
+        
+        .conhecimento-footer {
+            margin-top: 20px;
+            font-style: italic;
+            color: #8a7e63;
+            text-align: right;
+            font-size: 0.9rem;
+        }
+        
+        .conhecimento-ornamento {
+            text-align: center;
+            margin: 15px 0;
+            color: #8a7e63;
+            font-size: 1.2rem;
+        }
+        
+        .conhecimento-interativo {
+            background-color: #f5f2ea;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 15px;
+            border-left: 4px solid #c0b49d;
+        }
+        
+        .conhecimento-interativo-titulo {
+            font-weight: 600;
+            color: #3a3426;
+            margin-bottom: 10px;
+        }
+        
+        /* Estilos para a seção de início rápido */
+        .inicio-rapido {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e4f1fb 100%);
+            border-radius: 10px;
+            padding: 30px;
+            margin-bottom: 40px;
+            box-shadow: var(--sombra-suave);
+        }
+        
+        .inicio-rapido-titulo {
+            font-size: 1.8rem;
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .inicio-rapido-subtitulo {
+            font-size: 1.2rem;
+            color: var(--azul-medio);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+        
+        .passos-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .passo-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            width: calc(33.333% - 20px);
+            min-width: 250px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .passo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+        }
+        
+        .passo-numero {
+            background-color: var(--azul-claro);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .passo-titulo {
+            font-size: 1.2rem;
+            color: var(--azul-escuro);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .passo-descricao {
+            color: #666;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        
+        .passo-link {
+            color: var(--azul-claro);
+            text-decoration: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .passo-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Estilos para a seção de ferramentas interativas */
+        .ferramentas-interativas {
+            margin-bottom: 40px;
+        }
+        
+        .ferramentas-titulo {
+            font-size: 1.5rem;
+            color: var(--azul-escuro);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .ferramentas-container {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .ferramenta-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 300px;
+            box-shadow: var(--sombra-suave);
+            transition: transform 0.3s ease;
+        }
+        
+        .ferramenta-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .ferramenta-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .ferramenta-icone {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            background-color: var(--azul-claro-transparente);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--azul-claro);
+            font-size: 1.5rem;
+        }
+        
+        .ferramenta-titulo {
+            font-size: 1.2rem;
+            color: var(--azul-escuro);
+            font-weight: 600;
+        }
+        
+        .ferramenta-descricao {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .ferramenta-btn {
+            display: inline-block;
+            background-color: var(--azul-claro);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        
+        .ferramenta-btn:hover {
+            background-color: var(--azul-medio);
+        }
+        
+        @media (max-width: 1024px) {
+            .conteudo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .artigos-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .passos-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .passo-card {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-principal">
+        <div class="container header-container">
+            <div class="logo-container">
+                <a href="index.html" class="logo"><img src="img/logo.png" alt="finança.com logo"></a>
+                <div class="slogan">INVESTIGAÇÃO, perícia e rastreamento financeiro</div>
+            </div>
+            <nav class="menu-principal">
+                <button class="menu-hamburguer" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="menu-items">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="aplicacoes.html">Aplicações</a></li>
+                    <li><a href="analise.html">Análise de Mercado</a></li>
+                    <li><a href="ferramentas.html">Calculadoras</a></li>
+                    <li><a href="educacao.html" class="active">Educação Financeira</a></li>
+                </ul>
+            </nav>
+            <div class="modo-iniciante-toggle">
+                <label class="switch">
+                    <input type="checkbox" id="toggle-modo-iniciante">
+                    <span class="slider round"></span>
+                </label>
+                <span class="label-modo-iniciante">Modo Iniciante</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="educacao-header">
+        <div class="container">
+            <h1>Investimentos para Iniciantes: Educação Financeira</h1>
+            <p>Aprenda a gerenciar seu dinheiro, investir com inteligência e construir um futuro financeiro sólido.</p>
+        </div>
+    </section>
+
+    <section class="container">
+        <!-- Seção de início rápido - Por Onde Começar -->
+        <div class="inicio-rapido">
+            <h2 class="inicio-rapido-titulo">Por Onde Começar</h2>
+            <p class="inicio-rapido-subtitulo">Três passos essenciais para iniciar sua jornada de investimentos</p>
+            
+            <div class="passos-container">
+                <div class="passo-card">
+                    <div class="passo-numero">1</div>
+                    <h3 class="passo-titulo">Organize suas finanças</h3>
+                    <p class="passo-descricao">Antes de investir, organize seu orçamento, quite dívidas caras e monte uma reserva de emergência equivalente a 6 meses de despesas.</p>
+                    <a href="#" class="passo-link">
+                        Saiba mais <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div class="passo-card">
+                    <div class="passo-numero">2</div>
+                    <h3 class="passo-titulo">Defina seus objetivos</h3>
+                    <p class="passo-descricao">Estabeleça metas claras de curto, médio e longo prazo. Cada objetivo terá uma estratégia de investimento diferente.</p>
+                    <a href="#" class="passo-link">
+                        Saiba mais <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                
+                <div class="passo-card">
+                    <div class="passo-numero">3</div>
+                    <h3 class="passo-titulo">Conheça seu perfil</h3>
+                    <p class="passo-descricao">Descubra se você tem perfil conservador, moderado ou arrojado para escolher investimentos adequados ao seu nível de tolerância a riscos.</p>
+                    <a href="#" class="passo-link">
+                        Faça o teste <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Cartão de conhecimento estilo vintage elegante -->
+        <div class="conhecimento-card">
+            <h3 class="conhecimento-titulo">Fundamentos da Educação Financeira</h3>
+            <div class="conhecimento-ornamento">❦</div>
+            <div class="conhecimento-conteudo">
+                <p>A educação financeira é o alicerce para uma vida próspera e equilibrada. Mais do que simplesmente acumular dinheiro, trata-se de desenvolver uma relação saudável com suas finanças, compreendendo como os recursos podem trabalhar a seu favor ao longo do tempo.</p>
+                <p>Os juros compostos, descritos por Einstein como "a oitava maravilha do mundo", são a força mais poderosa para quem investe regularmente e com paciência. Quanto mais cedo você começar, mais tempo esse mecanismo trabalhará a seu favor.</p>
+                <div class="conhecimento-interativo">
+                    <div class="conhecimento-interativo-titulo">Dados atualizados do mercado:</div>
+                    <div id="dados-mercado-conhecimento">
+                        <p>Taxa Selic atual: <strong id="taxa-selic-conhecimento">10.85% a.a.</strong></p>
+                        <p>Inflação IPCA (12 meses): <strong id="taxa-ipca-conhecimento">4.23% a.a.</strong></p>
+                        <p>Rendimento médio da poupança: <strong id="rendimento-poupanca-conhecimento">6.17% a.a.</strong></p>
+                    </div>
+                </div>
+            </div>
+            <div class="conhecimento-footer">
+                "O dinheiro é uma ferramenta. Usado corretamente, ele o levará na direção que você deseja." — Robert Kiyosaki
+            </div>
+        </div>
+        
+        <!-- Seção de ferramentas interativas -->
+        <div class="ferramentas-interativas">
+            <h2 class="ferramentas-titulo">Ferramentas para Aprendizado Interativo</h2>
+            
+            <div class="ferramentas-container">
+                <div class="ferramenta-card">
+                    <div class="ferramenta-header">
+                        <div class="ferramenta-icone">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h3 class="ferramenta-titulo">Simulador de Juros Compostos</h3>
+                    </div>
+                    <p class="ferramenta-descricao">Visualize o poder dos juros compostos e como pequenos investimentos regulares podem crescer significativamente ao longo do tempo.</p>
+                    <a href="ferramentas.html" class="ferramenta-btn">Acessar ferramenta</a>
+                </div>
+                
+                <div class="ferramenta-card">
+                    <div class="ferramenta-header">
+                        <div class="ferramenta-icone">
+                            <i class="fas fa-chart-pie"></i>
+                        </div>
+                        <h3 class="ferramenta-titulo">Teste de Perfil de Investidor</h3>
+                    </div>
+                    <p class="ferramenta-descricao">Descubra seu perfil de investidor (conservador, moderado ou arrojado) e receba recomendações personalizadas.</p>
+                    <a href="#" class="ferramenta-btn">Fazer o teste</a>
+                </div>
+                
+                <div class="ferramenta-card">
+                    <div class="ferramenta-header">
+                        <div class="ferramenta-icone">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="ferramenta-titulo">Curso Interativo Básico</h3>
+                    </div>
+                    <p class="ferramenta-descricao">Aprenda os conceitos fundamentais de finanças pessoais e investimentos em um curso passo a passo com exercícios práticos.</p>
+                    <a href="#" class="ferramenta-btn">Iniciar curso</a>
+                </div>
+                
+                <div class="ferramenta-card">
+                    <div class="ferramenta-header">
+                        <div class="ferramenta-icone">
+                            <i class="fas fa-balance-scale"></i>
+                        </div>
+                        <h3 class="ferramenta-titulo">Comparador de Investimentos</h3>
+                    </div>
+                    <p class="ferramenta-descricao">Compare diferentes tipos de investimentos lado a lado, considerando rentabilidade, risco, liquidez e tributação.</p>
+                    <a href="ferramentas.html" class="ferramenta-btn">Comparar agora</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Vídeo em destaque -->
+        <div class="video-destaque">
+            <div class="video-container">
+                <div class="video-wrapper">
+                    <!-- Placeholder para vídeo (seria substituído por um iframe real) -->
+                    <div style="background-color: #000; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: #fff;">
+                        <i class="fas fa-play-circle" style="font-size: 4rem;"></i>
+                    </div>
+                </div>
+                <div class="video-info">
+                    <h2 class="video-titulo">Investimentos para Iniciantes: Por Onde Começar</h2>
+                    <p class="video-descricao">Neste vídeo, explicamos os conceitos básicos de investimentos e mostramos o passo a passo para quem está começando a investir. Aprenda sobre renda fixa, renda variável e como montar sua primeira carteira de investimentos.</p>
+                    <div class="video-meta">
+                        <div class="video-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>Publicado em 01/06/2025</span>
+                        </div>
+                        <div class="video-meta-item">
+                            <i class="fas fa-eye"></i>
+                            <span>1.245 visualizações</span>
+                        </div>
+                        <div class="video-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>15:32 minutos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="conteudo-grid">
+            <div class="artigos-container" id="artigos-container">
+                <!-- Conteúdo será preenchido dinamicamente -->
+            </div>
+            
+            <div class="sidebar">
+                <div class="sidebar-secao">
+                    <h3 class="sidebar-titulo">Tópicos Populares</h3>
+                    <ul class="topicos-lista">
+                        <li class="topico-item">
+                            <a href="#" class="topico-link">
+                                <i class="fas fa-chart-line topico-icone"></i>
+                                <span>Investimentos Básicos</span>
+                            </a>
+                        </li>
+                        <li class="topico-item">
+                            <a href="#" class="topico-link">
+                                <i class="fas fa-piggy-bank topico-icone"></i>
+                                <span>Economia e Poupança</span>
+                            </a>
+                        </li>
+                        <li class="topico-item">
+                            <a href="#" class="topico-link">
+                                <i class="fas fa-hand-holding-usd topico-icone"></i>
+                                <span>Orçamento Familiar</span>
+                            </a>
+                        </li>
+                        <li class="topico-item">
+                            <a href="#" class="topico-link">
+                                <i class="fas fa-university topico-icone"></i>
+                                <span>Produtos Bancários</span>
+                            </a>
+                        </li>
+                        <li class="topico-item">
+                            <a href="#" class="topico-link">
+                                <i class="fas fa-file-invoice-dollar topico-icone"></i>
+                                <span>Impostos e Tributos</span>
+                            </a>
+                        </li>
+                        <li class="topico-item">
+                            <a href="#" class="topico-link">
+                                <i class="fas fa-umbrella topico-icone"></i>
+                                <span>Seguros e Previdência</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-secao">
+                    <h3 class="sidebar-titulo">Glossário Financeiro</h3>
+                    <div class="glossario-item">
+                        <div class="glossario-termo">CDI</div>
+                        <div class="glossario-definicao">Certificado de Depósito Interbancário, taxa de referência para investimentos de renda fixa.</div>
+                    </div>
+                    <div class="glossario-item">
+                        <div class="glossario-termo">Selic</div>
+                        <div class="glossario-definicao">Taxa básica de juros da economia brasileira, definida pelo Banco Central.</div>
+                    </div>
+                    <div class="glossario-item">
+                        <div class="glossario-termo">IPCA</div>
+                        <div class="glossario-definicao">Índice Nacional de Preços ao Consumidor Amplo, principal indicador de inflação no Brasil.</div>
+                    </div>
+                    <div class="glossario-item">
+                        <div class="glossario-termo">Tesouro Direto</div>
+                        <div class="glossario-definicao">Programa do governo que permite a compra de títulos públicos por pessoas físicas.</div>
+                    </div>
+                    <div class="glossario-item">
+                        <div class="glossario-termo">Liquidez</div>
+                        <div class="glossario-definicao">Facilidade com que um ativo pode ser convertido em dinheiro sem perda significativa de valor.</div>
+                    </div>
+                </div>
+                
+                <div class="sidebar-secao">
+                    <h3 class="sidebar-titulo">Cursos Recomendados</h3>
+                    <ul class="cursos-lista">
+                        <li class="curso-item">
+                            <div class="curso-icone">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <div class="curso-info">
+                                <div class="curso-titulo">Finanças Pessoais</div>
+                                <div class="curso-meta">
+                                    <span><i class="fas fa-book"></i> 8 aulas</span>
+                                    <span><i class="fas fa-clock"></i> 2h30min</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="curso-item">
+                            <div class="curso-icone">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <div class="curso-info">
+                                <div class="curso-titulo">Investimentos Básicos</div>
+                                <div class="curso-meta">
+                                    <span><i class="fas fa-book"></i> 12 aulas</span>
+                                    <span><i class="fas fa-clock"></i> 4h15min</span>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="curso-item">
+                            <div class="curso-icone">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <div class="curso-info">
+                                <div class="curso-titulo">Planejamento Financeiro</div>
+                                <div class="curso-meta">
+                                    <span><i class="fas fa-book"></i> 10 aulas</span>
+                                    <span><i class="fas fa-clock"></i> 3h45min</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-secao">
+                    <h3 class="sidebar-titulo">Newsletter</h3>
+                    <p>Receba dicas financeiras e novidades diretamente no seu e-mail.</p>
+                    <form class="newsletter-form">
+                        <input type="email" class="newsletter-input" placeholder="Seu e-mail">
+                        <button type="submit" class="btn btn-primary">Inscrever-se</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="paginacao">
+            <div class="paginacao-item"><i class="fas fa-chevron-left"></i></div>
+            <div class="paginacao-item active">1</div>
+            <div class="paginacao-item">2</div>
+            <div class="paginacao-item">3</div>
+            <div class="paginacao-item"><i class="fas fa-chevron-right"></i></div>
+        </div>
+    </section>
+
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/alertas.js"></script>
+    <script src="js/prospeccao.js"></script>
+    <script src="js/api-real-time.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carregar artigos
+            carregarArtigos();
+            
+            // Configurar eventos
+            configurarEventos();
+            
+            // Buscar dados atualizados de mercado para atualizar conteúdo
+            buscarDadosTempoRealAprimorado().then(atualizarConteudo);
+            
+            // Configurar atualização periódica
+            setInterval(() => {
+                buscarDadosTempoRealAprimorado().then(atualizarConteudo);
+            }, 60000); // Atualizar a cada minuto
+        });
+        
+        // Função para carregar artigos
+        function carregarArtigos() {
+            const artigos = [
+                {
+                    imagem: 'img/hero-finance.png',
+                    categoria: 'Investimentos',
+                    titulo: 'Como começar a investir com pouco dinheiro',
+                    resumo: 'Descubra estratégias para iniciar sua jornada de investimentos mesmo com pequenas quantias e construir um patrimônio ao longo do tempo.',
+                    autor: 'Harrison Costa',
+                    data: '01/06/2025',
+                    leitura: '5 min'
+                },
+                {
+                    imagem: 'img/hero-finance.png',
+                    categoria: 'Economia',
+                    titulo: 'Dicas para economizar no dia a dia',
+                    resumo: 'Pequenas mudanças de hábitos que podem fazer grande diferença no seu orçamento mensal e ajudar a poupar mais dinheiro.',
+                    autor: 'Harrison Costa',
+                    data: '30/05/2025',
+                    leitura: '4 min'
+                },
+                {
+                    imagem: 'img/hero-finance.png',
+                    categoria: 'Planejamento',
+                    titulo: 'Orçamento familiar: como organizar suas finanças',
+                    resumo: 'Aprenda a criar e manter um orçamento familiar eficiente que ajude a controlar gastos e alcançar objetivos financeiros.',
+                    autor: 'Harrison Costa',
+                    data: '28/05/2025',
+                    leitura: '7 min'
+                },
+                {
+                    imagem: 'img/hero-finance.png',
+                    categoria: 'Renda Fixa',
+                    titulo: 'Tesouro Direto: guia completo para iniciantes',
+                    resumo: 'Entenda como funciona o Tesouro Direto, quais são os tipos de títulos disponíveis e como escolher o melhor para seu perfil.',
+                    autor: 'Harrison Costa',
+                    data: '25/05/2025',
+                    leitura: '8 min'
+                },
+                {
+                    imagem: 'img/hero-finance.png',
+                    categoria: 'Mercado',
+                    titulo: 'Como a taxa Selic afeta seus investimentos',
+                    resumo: 'Saiba como as mudanças na taxa básica de juros impactam diferentes tipos de investimentos e como ajustar sua estratégia.',
+                    autor: 'Harrison Costa',
+                    data: '22/05/2025',
+                    leitura: '6 min'
+                },
+                {
+                    imagem: 'img/hero-finance.png',
+                    categoria: 'Educação',
+                    titulo: 'Educação financeira para crianças e adolescentes',
+                    resumo: 'Dicas e atividades para ensinar conceitos financeiros importantes para crianças e adolescentes desde cedo.',
+                    autor: 'Harrison Costa',
+                    data: '20/05/2025',
+                    leitura: '5 min'
+                }
+            ];
+            
+            const artigosContainer = document.getElementById('artigos-container');
+            
+            artigos.forEach(artigo => {
+                const artigoElement = document.createElement('div');
+                artigoElement.className = 'artigo-card';
+                
+                artigoElement.innerHTML = `
+                    <div class="artigo-imagem" style="background-image: url('${artigo.imagem}')"></div>
+                    <div class="artigo-conteudo">
+                        <span class="artigo-categoria">${artigo.categoria}</span>
+                        <h3 class="artigo-titulo">${artigo.titulo}</h3>
+                        <p class="artigo-resumo">${artigo.resumo}</p>
+                        <div class="artigo-meta">
+                            <div class="artigo-autor">
+                                <div class="artigo-autor-avatar" style="background-image: url('img/hero-finance.png')"></div>
+                                <span>${artigo.autor}</span>
+                            </div>
+                            <div>
+                                <span>${artigo.data}</span> • <span>${artigo.leitura} leitura</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                artigosContainer.appendChild(artigoElement);
+            });
+        }
+        
+        // Função para configurar eventos
+        function configurarEventos() {
+            // Configurar paginação
+            document.querySelectorAll('.paginacao-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    if (this.classList.contains('active') || this.innerHTML.includes('fas')) return;
+                    
+                    document.querySelector('.paginacao-item.active').classList.remove('active');
+                    this.classList.add('active');
+                    
+                    // Aqui seria implementada a lógica para carregar a página correspondente
+                    // Por simplicidade, apenas simulamos uma atualização
+                    const artigosContainer = document.getElementById('artigos-container');
+                    artigosContainer.style.opacity = '0.5';
+                    
+                    setTimeout(() => {
+                        artigosContainer.style.opacity = '1';
+                    }, 500);
+                });
+            });
+            
+            // Configurar links de tópicos
+            document.querySelectorAll('.topico-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Aqui seria implementada a lógica para filtrar artigos por tópico
+                    // Por simplicidade, apenas simulamos uma atualização
+                    const artigosContainer = document.getElementById('artigos-container');
+                    artigosContainer.style.opacity = '0.5';
+                    
+                    setTimeout(() => {
+                        artigosContainer.style.opacity = '1';
+                        
+                        // Atualizar título da seção (simulação)
+                        const titulo = this.querySelector('span').textContent;
+                        document.querySelector('.educacao-header h1').textContent = titulo;
+                    }, 500);
+                });
+            });
+            
+            // Configurar formulário de newsletter
+            document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const email = this.querySelector('input').value;
+                
+                if (email && email.includes('@')) {
+                    alert('Obrigado por se inscrever! Você receberá nossas atualizações no e-mail: ' + email);
+                    this.querySelector('input').value = '';
+                } else {
+                    alert('Por favor, insira um e-mail válido.');
+                }
+            });
+            
+            // Configurar links dos passos
+            document.querySelectorAll('.passo-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const titulo = this.parentElement.querySelector('.passo-titulo').textContent;
+                    alert(`Você selecionou: ${titulo}. Conteúdo detalhado será carregado em breve.`);
+                });
+            });
+            
+            // Configurar botões das ferramentas
+            document.querySelectorAll('.ferramenta-btn').forEach(btn => {
+                if (!btn.getAttribute('href').includes('ferramentas.html')) {
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        const titulo = this.parentElement.querySelector('.ferramenta-titulo').textContent;
+                        alert(`Você selecionou a ferramenta: ${titulo}. Esta funcionalidade estará disponível em breve.`);
+                    });
+                }
+            });
+        }
+        
+        // Função para atualizar conteúdo com dados de mercado
+        function atualizarConteudo(dados) {
+            if (!dados) return;
+            
+            // Atualizar artigos com informações de mercado
+            const artigosContainer = document.getElementById('artigos-container');
+            const artigos = artigosContainer.querySelectorAll('.artigo-card');
+            
+            // Adicionar tag "Novo" aos artigos mais recentes
+            artigos.forEach((artigo, index) => {
+                if (index < 2) {
+                    const categoria = artigo.querySelector('.artigo-categoria');
+                    if (!categoria.innerHTML.includes('NOVO')) {
+                        categoria.innerHTML = `${categoria.innerHTML} <span style="background-color: var(--vermelho-suave-transparente); color: var(--vermelho-suave); margin-left: 5px; padding: 2px 5px; border-radius: 3px;">NOVO</span>`;
+                    }
+                }
+            });
+            
+            // Atualizar glossário com dados atuais
+            const glossarioItems = document.querySelectorAll('.glossario-item');
+            
+            // Atualizar CDI
+            if (dados.cdi && glossarioItems[0]) {
+                const cdiDefinicao = glossarioItems[0].querySelector('.glossario-definicao');
+                cdiDefinicao.innerHTML = `Certificado de Depósito Interbancário, taxa de referência para investimentos de renda fixa. <strong>Atual: ${dados.cdi.valor.toFixed(2)}% a.a.</strong>`;
+            }
+            
+            // Atualizar Selic
+            if (dados.selic && glossarioItems[1]) {
+                const selicDefinicao = glossarioItems[1].querySelector('.glossario-definicao');
+                selicDefinicao.innerHTML = `Taxa básica de juros da economia brasileira, definida pelo Banco Central. <strong>Atual: ${dados.selic.valor.toFixed(2)}% a.a.</strong>`;
+            }
+            
+            // Atualizar IPCA
+            if (dados.ipca && glossarioItems[2]) {
+                const ipcaDefinicao = glossarioItems[2].querySelector('.glossario-definicao');
+                ipcaDefinicao.innerHTML = `Índice Nacional de Preços ao Consumidor Amplo, principal indicador de inflação no Brasil. <strong>Acumulado 12 meses: ${dados.ipca.valor.toFixed(2)}%</strong>`;
+            }
+            
+            // Atualizar dados no cartão de conhecimento
+            if (dados.selic) {
+                document.getElementById('taxa-selic-conhecimento').textContent = `${dados.selic.valor.toFixed(2)}% a.a.`;
+            }
+            
+            if (dados.ipca) {
+                document.getElementById('taxa-ipca-conhecimento').textContent = `${dados.ipca.valor.toFixed(2)}% a.a.`;
+            }
+            
+            if (dados.poupanca) {
+                document.getElementById('rendimento-poupanca-conhecimento').textContent = `${dados.poupanca.valor.toFixed(2)}% a.a.`;
+            }
+        }
+    </script>
+</body>
+</html>

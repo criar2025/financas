@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Mercado - finança.com</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .analise-header {
+            background-color: #f5f8fa;
+            padding: 40px 0;
+            margin-bottom: 30px;
+        }
+        
+        .analise-header h1 {
+            margin-bottom: 15px;
+            color: var(--azul-escuro);
+        }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .grafico-principal {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra-suave);
+        }
+        
+        .grafico-principal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .grafico-principal-header h2 {
+            margin-bottom: 0;
+            font-size: 1.5rem;
+        }
+        
+        .grafico-principal-controles {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .grafico-principal-canvas {
+            height: 400px;
+        }
+        
+        .indicadores-grid {
+            display: grid;
+            grid-template-rows: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .indicador-card {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: var(--sombra-suave);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .indicador-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .indicador-titulo {
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin: 0;
+        }
+        
+        .indicador-valor {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+        
+        .indicador-variacao {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .indicador-mini-grafico {
+            flex-grow: 1;
+            height: 50px;
+        }
+        
+        .analise-secoes {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .analise-secao {
+            background-color: var(--branco);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: var(--sombra-suave);
+        }
+        
+        .analise-secao h2 {
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .analise-secao-conteudo {
+            height: 300px;
+        }
+        
+        .noticias-lista {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            overflow-y: auto;
+        }
+        
+        .noticia-item {
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .noticia-item:last-child {
+            border-bottom: none;
+        }
+        
+        .noticia-titulo {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .noticia-resumo {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .noticia-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #999;
+        }
+        
+        .calendario-economico {
+            height: 100%;
+            overflow-y: auto;
+        }
+        
+        .evento-economico {
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+        }
+        
+        .evento-economico:last-child {
+            border-bottom: none;
+        }
+        
+        .evento-data {
+            width: 80px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .evento-info {
+            flex-grow: 1;
+        }
+        
+        .evento-titulo {
+            font-weight: 600;
+            margin-bottom: 3px;
+        }
+        
+        .evento-detalhe {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        .evento-impacto {
+            width: 60px;
+            text-align: right;
+        }
+        
+        .impacto-alto {
+            color: var(--vermelho-suave);
+        }
+        
+        .impacto-medio {
+            color: var(--amarelo);
+        }
+        
+        .impacto-baixo {
+            color: var(--verde-suave);
+        }
+        
+        .analise-tecnica {
+            height: 100%;
+        }
+        
+        .analise-tecnica-tabs {
+            display: flex;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 15px;
+        }
+        
+        .analise-tecnica-tab {
+            padding: 10px 15px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+        
+        .analise-tecnica-tab.active {
+            border-bottom-color: var(--azul-claro);
+            font-weight: 600;
+        }
+        
+        .analise-tecnica-conteudo {
+            height: calc(100% - 45px);
+        }
+        
+        .analise-tecnica-item {
+            display: none;
+            height: 100%;
+        }
+        
+        .analise-tecnica-item.active {
+            display: block;
+        }
+        
+        .indicadores-tecnicos {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .indicador-tecnico {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        
+        .indicador-tecnico-nome {
+            font-weight: 600;
+        }
+        
+        .indicador-tecnico-valor {
+            font-family: 'Roboto Mono', monospace;
+        }
+        
+        .indicador-tecnico-sinal {
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .sinal-compra {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: var(--verde-suave);
+        }
+        
+        .sinal-venda {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: var(--vermelho-suave);
+        }
+        
+        .sinal-neutro {
+            background-color: rgba(52, 152, 219, 0.2);
+            color: var(--azul-claro);
+        }
+        
+        @media (max-width: 1024px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .analise-secoes {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header-principal">
+        <div class="container header-container">
+            <div class="logo-container">
+                <a href="index.html" class="logo"><img src="img/logo.png" alt="finança.com logo"></a>
+                <div class="slogan">INVESTIGAÇÃO, perícia e rastreamento financeiro</div>
+            </div>
+            <nav class="menu-principal">
+                <button class="menu-hamburguer" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="menu-items">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="aplicacoes.html">Aplicações</a></li>
+                    <li><a href="analise.html" class="active">Análise de Mercado</a></li>
+                    <li><a href="ferramentas.html">Calculadoras</a></li>
+                    <li><a href="educacao.html">Educação Financeira</a></li>
+                </ul>
+            </nav>
+            <div class="modo-iniciante-toggle">
+                <label class="switch">
+                    <input type="checkbox" id="toggle-modo-iniciante">
+                    <span class="slider round"></span>
+                </label>
+                <span class="label-modo-iniciante">Modo Iniciante</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="analise-header">
+        <div class="container">
+            <h1>Análise de Mercado</h1>
+            <p>Acompanhe os principais indicadores econômicos, notícias e análises técnicas para tomar decisões financeiras informadas.</p>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="dashboard-grid">
+            <div class="grafico-principal">
+                <div class="grafico-principal-header">
+                    <h2>IBOVESPA</h2>
+                    <div class="grafico-principal-controles">
+                        <select id="periodo-grafico">
+                            <option value="1d">1 dia</option>
+                            <option value="5d">5 dias</option>
+                            <option value="1m" selected>1 mês</option>
+                            <option value="3m">3 meses</option>
+                            <option value="6m">6 meses</option>
+                            <option value="1y">1 ano</option>
+                            <option value="5y">5 anos</option>
+                        </select>
+                        <select id="tipo-grafico">
+                            <option value="linha">Linha</option>
+                            <option value="candle">Candlestick</option>
+                            <option value="area">Área</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grafico-principal-canvas">
+                    <canvas id="grafico-ibovespa-principal"></canvas>
+                </div>
+            </div>
+            
+            <div class="indicadores-grid">
+                <div class="indicador-card">
+                    <div class="indicador-header">
+                        <h3 class="indicador-titulo">IBOVESPA</h3>
+                        <span class="indicador-data">Tempo Real</span>
+                    </div>
+                    <div class="indicador-valor" id="ibovespa-valor-grande">125.670</div>
+                    <div class="indicador-variacao" id="ibovespa-variacao-grande">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>-1.24%</span>
+                    </div>
+                    <div class="indicador-mini-grafico">
+                        <canvas id="mini-grafico-ibovespa"></canvas>
+                    </div>
+                </div>
+                
+                <div class="indicador-card">
+                    <div class="indicador-header">
+                        <h3 class="indicador-titulo">Dólar</h3>
+                        <span class="indicador-data">Tempo Real</span>
+                    </div>
+                    <div class="indicador-valor" id="dolar-valor-grande">R$ 5.16</div>
+                    <div class="indicador-variacao" id="dolar-variacao-grande">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>+0.14%</span>
+                    </div>
+                    <div class="indicador-mini-grafico">
+                        <canvas id="mini-grafico-dolar"></canvas>
+                    </div>
+                </div>
+                
+                <div class="indicador-card">
+                    <div class="indicador-header">
+                        <h3 class="indicador-titulo">Taxa Selic</h3>
+                        <span class="indicador-data">Atual</span>
+                    </div>
+                    <div class="indicador-valor" id="selic-valor-grande">10.85%</div>
+                    <div class="indicador-variacao">
+                        <span>a.a.</span>
+                    </div>
+                    <div class="indicador-mini-grafico">
+                        <canvas id="mini-grafico-selic"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="analise-secoes">
+            <div class="analise-secao">
+                <h2>Notícias do Mercado</h2>
+                <div class="analise-secao-conteudo">
+                    <ul class="noticias-lista" id="noticias-lista">
+                        <!-- Conteúdo será preenchido dinamicamente -->
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="analise-secao">
+                <h2>Calendário Econômico</h2>
+                <div class="analise-secao-conteudo">
+                    <div class="calendario-economico" id="calendario-economico">
+                        <!-- Conteúdo será preenchido dinamicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="analise-secoes">
+            <div class="analise-secao">
+                <h2>Análise Técnica</h2>
+                <div class="analise-secao-conteudo">
+                    <div class="analise-tecnica">
+                        <div class="analise-tecnica-tabs">
+                            <div class="analise-tecnica-tab active" data-tab="ibovespa">IBOVESPA</div>
+                            <div class="analise-tecnica-tab" data-tab="dolar">Dólar</div>
+                            <div class="analise-tecnica-tab" data-tab="bbas3">BBAS3</div>
+                        </div>
+                        <div class="analise-tecnica-conteudo">
+                            <div class="analise-tecnica-item active" id="analise-ibovespa">
+                                <div class="indicadores-tecnicos" id="indicadores-ibovespa">
+                                    <!-- Conteúdo será preenchido dinamicamente -->
+                                </div>
+                            </div>
+                            <div class="analise-tecnica-item" id="analise-dolar">
+                                <div class="indicadores-tecnicos" id="indicadores-dolar">
+                                    <!-- Conteúdo será preenchido dinamicamente -->
+                                </div>
+                            </div>
+                            <div class="analise-tecnica-item" id="analise-bbas3">
+                                <div class="indicadores-tecnicos" id="indicadores-bbas3">
+                                    <!-- Conteúdo será preenchido dinamicamente -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="analise-secao">
+                <h2>Projeções de Mercado</h2>
+                <div class="analise-secao-conteudo">
+                    <canvas id="grafico-projecoes"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/alertas.js"></script>
+    <script src="js/prospeccao.js"></script>
+    <script src="js/api-real-time.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Inicializar gráficos e dados
+            inicializarGraficos();
+            carregarNoticias();
+            carregarCalendarioEconomico();
+            carregarAnalisesTecnicas();
+            carregarProjecoes();
+            
+            // Configurar atualizações em tempo real
+            setInterval(atualizarDadosTempoReal, 10000);
+            
+            // Configurar eventos de interface
+            configurarEventos();
+            
+            // Primeira atualização de dados
+            atualizarDadosTempoReal();
+        });
+        
+        // Função para inicializar gráficos
+        function inicializarGraficos() {
+            // Gráfico principal do IBOVESPA
+            const ctxIbovespaPrincipal = document.getElementById('grafico-ibovespa-principal');
+            const dadosIbovespa = gerarDadosHistoricos(125000, 130000, 30, -0.5, 0.5);
+            
+            window.graficoIbovespaPrincipal = new Chart(ctxIbovespaPrincipal, {
+                type: 'line',
+                data: {
+                    labels: gerarLabelsData(30),
+                    datasets: [{
+                        label: 'IBOVESPA',
+                        data: dadosIbovespa,
+                        borderColor: '#3498db',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    return 'IBOVESPA: ' + context.raw.toLocaleString('pt-BR');
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Mini gráficos para indicadores
+            const miniGraficos = [
+                { id: 'mini-grafico-ibovespa', dados: dadosIbovespa.slice(-7), cor: '#3498db' },
+                { id: 'mini-grafico-dolar', dados: gerarDadosHistoricos(5.0, 5.3, 7, -0.1, 0.1), cor: '#e74c3c' },
+                { id: 'mini-grafico-selic', dados: gerarDadosHistoricos(10.5, 11.0, 7, -0.05, 0.05), cor: '#f1c40f' }
+            ];
+            
+            miniGraficos.forEach(grafico => {
+                const ctx = document.getElementById(grafico.id);
+                
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: Array(grafico.dados.length).fill(''),
+                        datasets: [{
+                            data: grafico.dados,
+                            borderColor: grafico.cor,
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                enabled: false
+                            }
+                        },
+                        scales: {
+                            x: {
+                                display: false
+                            },
+                            y: {
+                                display: false
+                            }
+                        }
+                    }
+                });
+            });
+            
+            // Gráfico de projeções
+            const ctxProjecoes = document.getElementById('grafico-projecoes');
+            
+            new Chart(ctxProjecoes, {
+                type: 'line',
+                data: {
+                    labels: ['Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+                    datasets: [
+                        {
+                            label: 'IBOVESPA',
+                            data: [125000, 127000, 129000, 131000, 133000, 135000, 138000],
+                            borderColor: '#3498db',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            pointRadius: 3,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Dólar',
+                            data: [5.15, 5.10, 5.05, 5.00, 4.95, 4.90, 4.85].map(v => v * 25000),
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            pointRadius: 3,
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            callbacks: {
+                                label: function(context) {
+                                    if (context.dataset.label === 'IBOVESPA') {
+                                        return 'IBOVESPA: ' + context.raw.toLocaleString('pt-BR');
+                                    } else {
+                                        return 'Dólar: R$ ' + (context.raw / 25000).toFixed(2);
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return value.toLocaleString('pt-BR');
+                                }
+                            }
+                        },
+                        y1: {
+                            position: 'right',
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                callback: function(value) {
+                                    return 'R$ ' + (value / 25000).toFixed(2);
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Função para gerar dados históricos simulados
+        function gerarDadosHistoricos(min, max, quantidade, varMin, varMax) {
+            const dados = [];
+            let valor = min + Math.random() * (max - min);
+            
+            for (let i = 0; i < quantidade; i++) {
+                dados.push(valor);
+                const variacao = valor * (varMin + Math.random() * (varMax - varMin));
+                valor += variacao;
+            }
+            
+            return dados;
+        }
+        
+        // Função para gerar labels de data
+        function gerarLabelsData(quantidade) {
+            const labels = [];
+            const hoje = new Date();
+            
+            for (let i = quantidade - 1; i >= 0; i--) {
+                const data = new Date();
+                data.setDate(hoje.getDate() - i);
+                labels.push(data.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' }));
+            }
+            
+            return labels;
+        }
+        
+        // Função para carregar notícias
+        function carregarNoticias() {
+            const noticias = [
+                {
+                    titulo: 'Banco Central mantém taxa Selic em 10,75% ao ano',
+                    resumo: 'Decisão foi unânime entre os membros do Copom, que citaram preocupações com a inflação.',
+                    fonte: 'Economia Brasil',
+                    data: 'Hoje, 14:30'
+                },
+                {
+                    titulo: 'Ibovespa recua com pressão do cenário externo',
+                    resumo: 'Índice da B3 cai seguindo tendência das bolsas internacionais após dados econômicos dos EUA.',
+                    fonte: 'Mercado Financeiro',
+                    data: 'Hoje, 13:15'
+                },
+                {
+                    titulo: 'Dólar opera em alta frente ao real',
+                    resumo: 'Moeda americana sobe com fortalecimento global após falas do presidente do Fed.',
+                    fonte: 'Câmbio & Cia',
+                    data: 'Hoje, 11:45'
+                },
+                {
+                    titulo: 'Banco do Brasil anuncia nova linha de crédito para pequenas empresas',
+                    resumo: 'Instituição disponibilizará R$ 10 bilhões com taxas reduzidas para fomentar o setor.',
+                    fonte: 'Negócios & Finanças',
+                    data: 'Hoje, 10:20'
+                },
+                {
+                    titulo: 'Inflação de maio fica em 0,4%, abaixo das expectativas',
+                    resumo: 'IPCA do mês passado surpreendeu analistas que esperavam alta de 0,5%.',
+                    fonte: 'Economia Brasil',
+                    data: 'Ontem, 16:40'
+                },
+                {
+                    titulo: 'Governo anuncia pacote de estímulo econômico',
+                    resumo: 'Medidas incluem redução de impostos e incentivos para setores estratégicos.',
+                    fonte: 'Política Econômica',
+                    data: 'Ontem, 14:15'
+                }
+            ];
+            
+            const noticiasLista = document.getElementById('noticias-lista');
+            
+            noticias.forEach(noticia => {
+                const li = document.createElement('li');
+                li.className = 'noticia-item';
+                
+                li.innerHTML = `
+                    <div class="noticia-titulo">${noticia.titulo}</div>
+                    <div class="noticia-resumo">${noticia.resumo}</div>
+                    <div class="noticia-meta">
+                        <span>${noticia.fonte}</span>
+                        <span>${noticia.data}</span>
+                    </div>
+                `;
+                
+                noticiasLista.appendChild(li);
+            });
+        }
+        
+        // Função para carregar calendário econômico
+        function carregarCalendarioEconomico() {
+            const eventos = [
+                {
+                    data: 'Hoje',
+                    titulo: 'Decisão da Taxa Selic',
+                    detalhe: 'Banco Central do Brasil',
+                    impacto: 'alto'
+                },
+                {
+                    data: 'Hoje',
+                    titulo: 'Divulgação do IBC-Br',
+                    detalhe: 'Índice de Atividade Econômica',
+                    impacto: 'medio'
+                },
+                {
+                    data: 'Amanhã',
+                    titulo: 'Balança Comercial',
+                    detalhe: 'Ministério da Economia',
+                    impacto: 'medio'
+                },
+                {
+                    data: '03/06',
+                    titulo: 'PMI Industrial',
+                    detalhe: 'Índice de Gerentes de Compras',
+                    impacto: 'baixo'
+                },
+                {
+                    data: '05/06',
+                    titulo: 'IPCA',
+                    detalhe: 'Índice de Preços ao Consumidor Amplo',
+                    impacto: 'alto'
+                },
+                {
+                    data: '08/06',
+                    titulo: 'Reunião do FED',
+                    detalhe: 'Banco Central Americano',
+                    impacto: 'alto'
+                },
+                {
+                    data: '10/06',
+                    titulo: 'IGP-M',
+                    detalhe: 'Índice Geral de Preços do Mercado',
+                    impacto: 'medio'
+                }
+            ];
+            
+            const calendarioContainer = document.getElementById('calendario-economico');
+            
+            eventos.forEach(evento => {
+                const div = document.createElement('div');
+                div.className = 'evento-economico';
+                
+                div.innerHTML = `
+                    <div class="evento-data">${evento.data}</div>
+                    <div class="evento-info">
+                        <div class="evento-titulo">${evento.titulo}</div>
+                        <div class="evento-detalhe">${evento.detalhe}</div>
+                    </div>
+                    <div class="evento-impacto impacto-${evento.impacto}">
+                        ${getImpactoIcone(evento.impacto)}
+                    </div>
+                `;
+                
+                calendarioContainer.appendChild(div);
+            });
+        }
+        
+        // Função para obter ícone de impacto
+        function getImpactoIcone(impacto) {
+            switch(impacto) {
+                case 'alto':
+                    return '<i class="fas fa-exclamation-circle"></i> Alto';
+                case 'medio':
+                    return '<i class="fas fa-dot-circle"></i> Médio';
+                case 'baixo':
+                    return '<i class="fas fa-circle"></i> Baixo';
+                default:
+                    return '';
+            }
+        }
+        
+        // Função para carregar análises técnicas
+        function carregarAnalisesTecnicas() {
+            const indicadores = {
+                ibovespa: [
+                    { nome: 'Média Móvel (50)', valor: '124.850', sinal: 'neutro' },
+                    { nome: 'Média Móvel (200)', valor: '122.300', sinal: 'compra' },
+                    { nome: 'RSI (14)', valor: '48', sinal: 'neutro' },
+                    { nome: 'MACD', valor: '-120', sinal: 'venda' },
+                    { nome: 'Estocástico', valor: '65', sinal: 'neutro' },
+                    { nome: 'Bandas de Bollinger', valor: 'Meio', sinal: 'neutro' }
+                ],
+                dolar: [
+                    { nome: 'Média Móvel (50)', valor: 'R$ 5,10', sinal: 'compra' },
+                    { nome: 'Média Móvel (200)', valor: 'R$ 5,20', sinal: 'venda' },
+                    { nome: 'RSI (14)', valor: '52', sinal: 'neutro' },
+                    { nome: 'MACD', valor: '+0,02', sinal: 'compra' },
+                    { nome: 'Estocástico', valor: '70', sinal: 'compra' },
+                    { nome: 'Bandas de Bollinger', valor: 'Superior', sinal: 'venda' }
+                ],
+                bbas3: [
+                    { nome: 'Média Móvel (50)', valor: 'R$ 52,30', sinal: 'compra' },
+                    { nome: 'Média Móvel (200)', valor: 'R$ 50,80', sinal: 'compra' },
+                    { nome: 'RSI (14)', valor: '62', sinal: 'compra' },
+                    { nome: 'MACD', valor: '+0,45', sinal: 'compra' },
+                    { nome: 'Estocástico', valor: '75', sinal: 'compra' },
+                    { nome: 'Bandas de Bollinger', valor: 'Superior', sinal: 'venda' }
+                ]
+            };
+            
+            Object.keys(indicadores).forEach(ativo => {
+                const container = document.getElementById(`indicadores-${ativo}`);
+                
+                indicadores[ativo].forEach(indicador => {
+                    const div = document.createElement('div');
+                    div.className = 'indicador-tecnico';
+                    
+                    div.innerHTML = `
+                        <div class="indicador-tecnico-nome">${indicador.nome}</div>
+                        <div class="indicador-tecnico-valor">${indicador.valor}</div>
+                        <div class="indicador-tecnico-sinal sinal-${indicador.sinal}">${formatarSinal(indicador.sinal)}</div>
+                    `;
+                    
+                    container.appendChild(div);
+                });
+            });
+            
+            // Configurar tabs
+            document.querySelectorAll('.analise-tecnica-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remover classe active de todas as tabs
+                    document.querySelectorAll('.analise-tecnica-tab').forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    
+                    // Adicionar classe active à tab clicada
+                    this.classList.add('active');
+                    
+                    // Esconder todos os conteúdos
+                    document.querySelectorAll('.analise-tecnica-item').forEach(item => {
+                        item.classList.remove('active');
+                    });
+                    
+                    // Mostrar conteúdo correspondente
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(`analise-${tabId}`).classList.add('active');
+                });
+            });
+        }
+        
+        // Função para formatar sinal
+        function formatarSinal(sinal) {
+            switch(sinal) {
+                case 'compra':
+                    return 'COMPRA';
+                case 'venda':
+                    return 'VENDA';
+                case 'neutro':
+                    return 'NEUTRO';
+                default:
+                    return sinal.toUpperCase();
+            }
+        }
+        
+        // Função para carregar projeções
+        function carregarProjecoes() {
+            // Já implementado no gráfico de projeções
+        }
+        
+        // Função para atualizar dados em tempo real
+        function atualizarDadosTempoReal() {
+            // Tentar buscar dados reais primeiro
+            buscarDadosReais().then(dados => {
+                if (dados) {
+                    atualizarIndicadores(dados);
+                } else {
+                    // Fallback para dados simulados
+                    const dadosSimulados = {
+                        ibovespa: {
+                            valor: gerarValorAleatorio(120000, 130000, 0),
+                            variacao: gerarValorAleatorio(-1.5, 1.5, 2)
+                        },
+                        dolar: {
+                            valor: gerarValorAleatorio(5.0, 5.3, 2),
+                            variacao: gerarValorAleatorio(-0.8, 0.8, 2)
+                        },
+                        selic: {
+                            valor: gerarValorAleatorio(10.5, 11.0, 2),
+                            variacao: 'a.a.'
+                        }
+                    };
+                    
+                    atualizarIndicadores(dadosSimulados);
+                }
+            });
+        }
+        
+        // Função para atualizar indicadores na interface
+        function atualizarIndicadores(dados) {
+            // Atualizar IBOVESPA
+            const ibovespaValor = document.getElementById('ibovespa-valor-grande');
+            const ibovespaVariacao = document.getElementById('ibovespa-variacao-grande');
+            
+            if (ibovespaValor && ibovespaVariacao) {
+                ibovespaValor.textContent = Math.round(dados.ibovespa.valor).toLocaleString('pt-BR');
+                
+                const variacaoTexto = (dados.ibovespa.variacao > 0 ? '+' : '') + dados.ibovespa.variacao + '%';
+                ibovespaVariacao.innerHTML = `
+                    <i class="fas fa-arrow-${dados.ibovespa.variacao >= 0 ? 'up' : 'down'}"></i>
+                    <span>${variacaoTexto}</span>
+                `;
+                ibovespaVariacao.style.color = dados.ibovespa.variacao >= 0 ? 'var(--verde-suave)' : 'var(--vermelho-suave)';
+            }
+            
+            // Atualizar Dólar
+            const dolarValor = document.getElementById('dolar-valor-grande');
+            const dolarVariacao = document.getElementById('dolar-variacao-grande');
+            
+            if (dolarValor && dolarVariacao) {
+                dolarValor.textContent = 'R$ ' + dados.dolar.valor.toFixed(2);
+                
+                const variacaoTexto = (dados.dolar.variacao > 0 ? '+' : '') + dados.dolar.variacao + '%';
+                dolarVariacao.innerHTML = `
+                    <i class="fas fa-arrow-${dados.dolar.variacao >= 0 ? 'up' : 'down'}"></i>
+                    <span>${variacaoTexto}</span>
+                `;
+                dolarVariacao.style.color = dados.dolar.variacao >= 0 ? 'var(--verde-suave)' : 'var(--vermelho-suave)';
+            }
+            
+            // Atualizar Selic
+            const selicValor = document.getElementById('selic-valor-grande');
+            if (selicValor) {
+                selicValor.textContent = dados.selic.valor + '%';
+            }
+            
+            // Atualizar gráfico principal
+            if (window.graficoIbovespaPrincipal) {
+                const dataset = window.graficoIbovespaPrincipal.data.datasets[0];
+                dataset.data.push(dados.ibovespa.valor);
+                dataset.data.shift();
+                
+                window.graficoIbovespaPrincipal.update();
+            }
+        }
+        
+        // Função para gerar valor aleatório
+        function gerarValorAleatorio(min, max, casasDecimais) {
+            const valor = Math.random() * (max - min) + min;
+            return Number(valor.toFixed(casasDecimais));
+        }
+        
+        // Função para configurar eventos de interface
+        function configurarEventos() {
+            // Configurar seletor de período
+            document.getElementById('periodo-grafico').addEventListener('change', function() {
+                const periodo = this.value;
+                let quantidade;
+                
+                switch(periodo) {
+                    case '1d':
+                        quantidade = 24; // 24 horas
+                        break;
+                    case '5d':
+                        quantidade = 5; // 5 dias
+                        break;
+                    case '1m':
+                        quantidade = 30; // 30 dias
+                        break;
+                    case '3m':
+                        quantidade = 90; // 90 dias
+                        break;
+                    case '6m':
+                        quantidade = 180; // 180 dias
+                        break;
+                    case '1y':
+                        quantidade = 365; // 365 dias
+                        break;
+                    case '5y':
+                        quantidade = 60; // 60 meses (5 anos)
+                        break;
+                    default:
+                        quantidade = 30;
+                }
+                
+                // Gerar novos dados
+                const dadosIbovespa = gerarDadosHistoricos(100000, 130000, quantidade, -0.5, 0.5);
+                const labels = periodo === '1d' ? 
+                    Array.from({length: 24}, (_, i) => `${i}:00`) : 
+                    gerarLabelsData(quantidade);
+                
+                // Atualizar gráfico
+                window.graficoIbovespaPrincipal.data.labels = labels;
+                window.graficoIbovespaPrincipal.data.datasets[0].data = dadosIbovespa;
+                window.graficoIbovespaPrincipal.update();
+            });
+            
+            // Configurar seletor de tipo de gráfico
+            document.getElementById('tipo-grafico').addEventListener('change', function() {
+                const tipo = this.value;
+                
+                switch(tipo) {
+                    case 'linha':
+                        window.graficoIbovespaPrincipal.config.type = 'line';
+                        window.graficoIbovespaPrincipal.data.datasets[0].fill = true;
+                        break;
+                    case 'candle':
+                        // Simulação de candlestick (na prática, usaria dados OHLC reais)
+                        window.graficoIbovespaPrincipal.config.type = 'bar';
+                        window.graficoIbovespaPrincipal.data.datasets[0].fill = false;
+                        break;
+                    case 'area':
+                        window.graficoIbovespaPrincipal.config.type = 'line';
+                        window.graficoIbovespaPrincipal.data.datasets[0].fill = true;
+                        break;
+                }
+                
+                window.graficoIbovespaPrincipal.update();
+            });
+        }
+    </script>
+</body>
+</html>

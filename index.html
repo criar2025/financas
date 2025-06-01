@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>finança.com - Análise e Investimentos</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&family=Roboto+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="header-principal">
+        <div class="container header-container">
+            <div class="logo-container">
+                <a href="index.html" class="logo"><img src="img/logo.png" alt="finança.com logo"></a>
+                <div class="slogan">INVESTIGAÇÃO, perícia e rastreamento financeiro</div>
+            </div>
+            <nav class="menu-principal">
+                <button class="menu-hamburguer" aria-label="Menu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                <ul class="menu-items">
+                    <li><a href="index.html" class="active">Início</a></li>
+                    <li><a href="aplicacoes.html">Aplicações</a></li>
+                    <li><a href="analise.html">Análise de Mercado</a></li>
+                    <li><a href="ferramentas.html">Calculadoras</a></li>
+                    <li><a href="educacao.html">Educação Financeira</a></li>
+                </ul>
+            </nav>
+            <div class="modo-iniciante-toggle">
+                <label class="switch">
+                    <input type="checkbox" id="toggle-modo-iniciante">
+                    <span class="slider round"></span>
+                </label>
+                <span class="label-modo-iniciante">Modo Iniciante</span>
+            </div>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Investimentos inteligentes com dados em tempo real</h1>
+                <p>Acompanhe o mercado, receba alertas personalizados e tome decisões financeiras baseadas em análises precisas</p>
+                <div class="hero-buttons">
+                    <a href="aplicacoes.html" class="btn btn-primary">Explorar Aplicações</a>
+                    <a href="ferramentas.html" class="btn btn-secondary">Calculadoras</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="img/hero-finance.png" alt="Análise financeira">
+            </div>
+        </div>
+    </section>
+
+    <section class="indices-section">
+        <div class="container">
+            <h2>Índices em Tempo Real</h2>
+            <div class="indices-container">
+                <div class="indice-card">
+                    <div class="indice-header">
+                        <h3>IBOVESPA</h3>
+                        <span class="indice-valor" id="ibovespa-valor">125.000</span>
+                    </div>
+                    <div class="indice-variacao positiva" id="ibovespa-variacao">+0,75%</div>
+                    <div class="indice-grafico">
+                        <canvas id="grafico-ibovespa"></canvas>
+                    </div>
+                </div>
+
+                <div class="indice-card">
+                    <div class="indice-header">
+                        <h3>CDI</h3>
+                        <span class="indice-valor" id="cdi-valor">10,75%</span>
+                    </div>
+                    <div class="indice-variacao" id="cdi-variacao">a.a.</div>
+                    <div class="indice-grafico">
+                        <canvas id="grafico-cdi"></canvas>
+                    </div>
+                </div>
+
+                <div class="indice-card">
+                    <div class="indice-header">
+                        <h3>SELIC</h3>
+                        <span class="indice-valor" id="selic-valor">10,75%</span>
+                    </div>
+                    <div class="indice-variacao" id="selic-variacao">a.a.</div>
+                    <div class="indice-grafico">
+                        <canvas id="grafico-selic"></canvas>
+                    </div>
+                </div>
+
+                <div class="indice-card">
+                    <div class="indice-header">
+                        <h3>Dólar</h3>
+                        <span class="indice-valor" id="dolar-valor">R$ 5,12</span>
+                    </div>
+                    <div class="indice-variacao negativa" id="dolar-variacao">-0,25%</div>
+                    <div class="indice-grafico">
+                        <canvas id="grafico-dolar"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="alertas-section">
+        <div class="container">
+            <h2>Alertas de Investimento</h2>
+            <div class="alertas-container">
+                <div class="alerta-secao recomendados">
+                    <h3>Recomendados para Investir</h3>
+                    <div id="lista-recomendados" class="lista-alertas">
+                        <div class="alerta-item alerta-verde pulsando" id="alerta-cdb">
+                            <span class="indicador-alerta indicador-verde"></span>
+                            <div class="alerta-conteudo">
+                                <div class="alerta-titulo">CDB Banco do Brasil</div>
+                                <div class="alerta-descricao">Rentabilidade acima do CDI</div>
+                            </div>
+                        </div>
+                        <div class="alerta-item alerta-verde pulsando" id="alerta-tesouro">
+                            <span class="indicador-alerta indicador-verde"></span>
+                            <div class="alerta-conteudo">
+                                <div class="alerta-titulo">Tesouro IPCA+</div>
+                                <div class="alerta-descricao">Proteção contra inflação com boa rentabilidade</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="alerta-secao nao-recomendados">
+                    <h3>Não Recomendados</h3>
+                    <div id="lista-nao-recomendados" class="lista-alertas">
+                        <div class="alerta-item alerta-vermelho pulsando" id="alerta-poupanca">
+                            <span class="indicador-alerta indicador-vermelho"></span>
+                            <div class="alerta-conteudo">
+                                <div class="alerta-titulo">Poupança</div>
+                                <div class="alerta-descricao">Rentabilidade abaixo da inflação</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="aplicacoes-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Aplicações em Destaque</h2>
+                <a href="aplicacoes.html" class="ver-todas">Ver todas</a>
+            </div>
+            <div class="filtros-rapidos">
+                <button class="filtro-btn active" data-filtro="todos">Todos</button>
+                <button class="filtro-btn" data-filtro="renda-fixa">Renda Fixa</button>
+                <button class="filtro-btn" data-filtro="renda-variavel">Renda Variável</button>
+                <button class="filtro-btn" data-filtro="baixo-risco">Baixo Risco</button>
+            </div>
+            <div class="aplicacoes-grid">
+                <div class="aplicacao-card" data-tipo="renda-fixa baixo-risco">
+                    <div class="aplicacao-header">
+                        <h3>CDB Banco do Brasil</h3>
+                        <div class="aplicacao-risco baixo">Risco Baixo</div>
+                    </div>
+                    <div class="aplicacao-body">
+                        <div class="aplicacao-info">
+                            <div class="info-item">
+                                <span class="info-label">Rentabilidade:</span>
+                                <span class="info-valor">110% do CDI</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Valor mínimo:</span>
+                                <span class="info-valor">R$ 0,01</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Liquidez:</span>
+                                <span class="info-valor">Diária</span>
+                            </div>
+                        </div>
+                        <div class="aplicacao-grafico">
+                            <canvas id="grafico-aplicacao-1"></canvas>
+                        </div>
+                    </div>
+                    <div class="aplicacao-footer">
+                        <div class="alerta-verde pulsando">Recomendado</div>
+                        <a href="aplicacoes.html#cdb" class="btn btn-sm">Detalhes</a>
+                    </div>
+                </div>
+
+                <div class="aplicacao-card" data-tipo="renda-fixa baixo-risco">
+                    <div class="aplicacao-header">
+                        <h3>LCA Banco do Brasil</h3>
+                        <div class="aplicacao-risco baixo">Risco Baixo</div>
+                    </div>
+                    <div class="aplicacao-body">
+                        <div class="aplicacao-info">
+                            <div class="info-item">
+                                <span class="info-label">Rentabilidade:</span>
+                                <span class="info-valor">95% do CDI</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Valor mínimo:</span>
+                                <span class="info-valor">R$ 100,00</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Liquidez:</span>
+                                <span class="info-valor">Vencimento</span>
+                            </div>
+                        </div>
+                        <div class="aplicacao-grafico">
+                            <canvas id="grafico-aplicacao-2"></canvas>
+                        </div>
+                    </div>
+                    <div class="aplicacao-footer">
+                        <div class="alerta-neutro">Neutro</div>
+                        <a href="aplicacoes.html#lca" class="btn btn-sm">Detalhes</a>
+                    </div>
+                </div>
+
+                <div class="aplicacao-card" data-tipo="renda-variavel">
+                    <div class="aplicacao-header">
+                        <h3>Fundo de Ações BB</h3>
+                        <div class="aplicacao-risco alto">Risco Alto</div>
+                    </div>
+                    <div class="aplicacao-body">
+                        <div class="aplicacao-info">
+                            <div class="info-item">
+                                <span class="info-label">Rentabilidade:</span>
+                                <span class="info-valor">15,2% (12 meses)</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Valor mínimo:</span>
+                                <span class="info-valor">R$ 200,00</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Liquidez:</span>
+                                <span class="info-valor">D+3</span>
+                            </div>
+                        </div>
+                        <div class="aplicacao-grafico">
+                            <canvas id="grafico-aplicacao-3"></canvas>
+                        </div>
+                    </div>
+                    <div class="aplicacao-footer">
+                        <div class="alerta-neutro">Neutro</div>
+                        <a href="aplicacoes.html#fundo-acoes" class="btn btn-sm">Detalhes</a>
+                    </div>
+                </div>
+
+                <div class="aplicacao-card" data-tipo="renda-fixa baixo-risco">
+                    <div class="aplicacao-header">
+                        <h3>Tesouro IPCA+</h3>
+                        <div class="aplicacao-risco baixo">Risco Baixo</div>
+                    </div>
+                    <div class="aplicacao-body">
+                        <div class="aplicacao-info">
+                            <div class="info-item">
+                                <span class="info-label">Rentabilidade:</span>
+                                <span class="info-valor">IPCA + 5,5% a.a.</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Valor mínimo:</span>
+                                <span class="info-valor">R$ 30,00</span>
+                            </div>
+                            <div class="info-item">
+                                <span class="info-label">Liquidez:</span>
+                                <span class="info-valor">Diária</span>
+                            </div>
+                        </div>
+                        <div class="aplicacao-grafico">
+                            <canvas id="grafico-aplicacao-4"></canvas>
+                        </div>
+                    </div>
+                    <div class="aplicacao-footer">
+                        <div class="alerta-verde pulsando">Recomendado</div>
+                        <a href="aplicacoes.html#tesouro" class="btn btn-sm">Detalhes</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="prospeccao-section">
+        <div class="container">
+            <h2>Prospecção Futura</h2>
+            <div class="prospeccao-container">
+                <div class="prospeccao-header">
+                    <div class="controles">
+                        <div class="campo-controle">
+                            <label for="aplicacao-prospeccao">Aplicação:</label>
+                            <select id="aplicacao-prospeccao">
+                                <option value="cdb" selected>CDB Banco do Brasil</option>
+                                <option value="lca">LCA Banco do Brasil</option>
+                                <option value="tesouro">Tesouro IPCA+</option>
+                                <option value="fundo-acoes">Fundo de Ações BB</option>
+                            </select>
+                        </div>
+                        <div class="campo-controle">
+                            <label for="horizonte-prospeccao">Horizonte:</label>
+                            <select id="horizonte-prospeccao">
+                                <option value="6">6 meses</option>
+                                <option value="12" selected>1 ano</option>
+                                <option value="24">2 anos</option>
+                                <option value="36">3 anos</option>
+                                <option value="60">5 anos</option>
+                            </select>
+                        </div>
+                        <div class="campo-controle">
+                            <label for="valor-inicial">Valor inicial:</label>
+                            <input type="number" id="valor-inicial" value="1000" min="1" step="100">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="grafico-prospeccao">
+                    <canvas id="grafico-prospeccao-futura"></canvas>
+                </div>
+                
+                <div class="legenda-cenarios">
+                    <div class="cenario cenario-otimista">
+                        <span class="indicador"></span>
+                        <span class="label">Cenário Otimista</span>
+                    </div>
+                    <div class="cenario cenario-realista">
+                        <span class="indicador"></span>
+                        <span class="label">Cenário Realista</span>
+                    </div>
+                    <div class="cenario cenario-pessimista">
+                        <span class="indicador"></span>
+                        <span class="label">Cenário Pessimista</span>
+                    </div>
+                </div>
+                
+                <div class="explicacao-iniciante">
+                    <div class="explicacao-icone">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <div class="explicacao-texto">
+                        <p><strong>O que é isso?</strong> Este gráfico mostra como seu investimento pode crescer ao longo do tempo. O cenário realista é o mais provável, enquanto os cenários otimista e pessimista mostram possibilidades melhores ou piores.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="calculadoras-section">
+        <div class="container">
+            <h2>Calculadoras Financeiras</h2>
+            <div class="calculadoras-grid">
+                <div class="calculadora-card">
+                    <div class="calculadora-header">
+                        <h3>Calculadora de Rentabilidade</h3>
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <div class="calculadora-body">
+                        <p>Compare a rentabilidade de diferentes investimentos e descubra qual é a melhor opção para você.</p>
+                        <a href="ferramentas.html#rentabilidade" class="btn btn-primary">Acessar</a>
+                    </div>
+                </div>
+
+                <div class="calculadora-card">
+                    <div class="calculadora-header">
+                        <h3>Simulador de Investimentos</h3>
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="calculadora-body">
+                        <p>Simule quanto seu dinheiro pode render ao longo do tempo com aportes mensais.</p>
+                        <a href="ferramentas.html#simulador" class="btn btn-primary">Acessar</a>
+                    </div>
+                </div>
+
+                <div class="calculadora-card">
+                    <div class="calculadora-header">
+                        <h3>Comparador de Aplicações</h3>
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <div class="calculadora-body">
+                        <p>Compare lado a lado diferentes aplicações financeiras e suas características.</p>
+                        <a href="ferramentas.html#comparador" class="btn btn-primary">Acessar</a>
+                    </div>
+                </div>
+
+                <div class="calculadora-card">
+                    <div class="calculadora-header">
+                        <h3>Planejador Financeiro</h3>
+                        <i class="fas fa-bullseye"></i>
+                    </div>
+                    <div class="calculadora-body">
+                        <p>Defina objetivos financeiros e descubra quanto precisa investir para alcançá-los.</p>
+                        <a href="ferramentas.html#planejador" class="btn btn-primary">Acessar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="educacao-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Educação Financeira</h2>
+                <a href="educacao.html" class="ver-todas">Ver todos</a>
+            </div>
+            <div class="artigos-grid">
+                <div class="artigo-card">
+                    <div class="artigo-imagem">
+                        <img src="img/artigo-1.jpg" alt="Investimentos para iniciantes">
+                    </div>
+                    <div class="artigo-conteudo">
+                        <h3>Investimentos para iniciantes: por onde começar</h3>
+                        <p>Aprenda os conceitos básicos e dê os primeiros passos no mundo dos investimentos.</p>
+                        <a href="educacao.html#iniciantes" class="btn btn-sm">Ler artigo</a>
+                    </div>
+                </div>
+
+                <div class="artigo-card">
+                    <div class="artigo-imagem">
+                        <img src="img/artigo-2.jpg" alt="Renda fixa vs. Renda variável">
+                    </div>
+                    <div class="artigo-conteudo">
+                        <h3>Renda fixa vs. Renda variável: entenda as diferenças</h3>
+                        <p>Conheça as características, riscos e potenciais retornos de cada tipo de investimento.</p>
+                        <a href="educacao.html#renda-fixa-variavel" class="btn btn-sm">Ler artigo</a>
+                    </div>
+                </div>
+
+                <div class="artigo-card">
+                    <div class="artigo-imagem">
+                        <img src="img/artigo-3.jpg" alt="Diversificação de investimentos">
+                    </div>
+                    <div class="artigo-conteudo">
+                        <h3>A importância da diversificação nos investimentos</h3>
+                        <p>Descubra como distribuir seus investimentos para reduzir riscos e maximizar retornos.</p>
+                        <a href="educacao.html#diversificacao" class="btn btn-sm">Ler artigo</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-col">
+                    <div class="footer-logo">finança<span>.com</span></div>
+                    <p>Sua plataforma completa para análise de investimentos e aplicações financeiras.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h4>Navegação</h4>
+                    <ul>
+                        <li><a href="index.html">Início</a></li>
+                        <li><a href="aplicacoes.html">Aplicações</a></li>
+                        <li><a href="analise.html">Análise de Mercado</a></li>
+                        <li><a href="ferramentas.html">Calculadoras</a></li>
+                        <li><a href="educacao.html">Educação Financeira</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="#">Glossário Financeiro</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos de Uso</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contato</h4>
+                    <ul class="contato-info">
+                        <li><i class="fas fa-envelope"></i> contato@financa.com</li>
+                        <li><i class="fas fa-phone"></i> (11) 1234-5678</li>
+                        <li><i class="fas fa-map-marker-alt"></i> São Paulo, SP - Brasil</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 finança.com. Todos os direitos reservados.</p>
+                <p class="disclaimer">As informações contidas neste site são apenas para fins educacionais e não constituem recomendação de investimento.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="guia-navegacao" id="guia-navegacao">
+        <div class="guia-navegacao-header">
+            <h3>Guia de Navegação</h3>
+            <button class="btn-fechar-guia">&times;</button>
+        </div>
+        
+        <div class="guia-navegacao-conteudo">
+            <div class="guia-passo ativo">
+                <div class="guia-numero">1</div>
+                <div class="guia-texto">
+                    <h4>Explore os índices em tempo real</h4>
+                    <p>Acompanhe os principais indicadores do mercado financeiro atualizados constantemente.</p>
+                </div>
+            </div>
+            
+            <div class="guia-passo">
+                <div class="guia-numero">2</div>
+                <div class="guia-texto">
+                    <h4>Verifique os alertas</h4>
+                    <p>Observe os alertas verdes (recomendados) e vermelhos (não recomendados) para orientar suas decisões.</p>
+                </div>
+            </div>
+            
+            <div class="guia-passo">
+                <div class="guia-numero">3</div>
+                <div class="guia-texto">
+                    <h4>Compare aplicações</h4>
+                    <p>Analise diferentes opções de investimento e suas características.</p>
+                </div>
+            </div>
+            
+            <div class="guia-passo">
+                <div class="guia-numero">4</div>
+                <div class="guia-texto">
+                    <h4>Simule investimentos futuros</h4>
+                    <p>Use a ferramenta de prospecção para visualizar o potencial crescimento do seu dinheiro.</p>
+                </div>
+            </div>
+            
+            <div class="guia-passo">
+                <div class="guia-numero">5</div>
+                <div class="guia-texto">
+                    <h4>Utilize as calculadoras</h4>
+                    <p>Acesse ferramentas personalizáveis para planejar seus investimentos.</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="guia-navegacao-footer">
+            <button class="btn-nao-mostrar">Não mostrar novamente</button>
+            <button class="btn-proximo-passo">Próximo passo</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/alertas.js"></script>
+    <script src="js/prospeccao.js"></script>
+    <script src="js/api-real-time.js"></script>
+</body>
+</html>
